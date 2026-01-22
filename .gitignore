@@ -47,7 +47,7 @@ next-env.d.ts
 docs
 ./docs
 /docs
-docs*
+docs
 
 /app/generated/prisma
 
@@ -59,3 +59,7 @@ docs*
 .windsurf
 
 skills-lock.json
+
+# PUBLIC
+public/upload/*
+./public/upload

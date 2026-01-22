@@ -1,26 +1,66 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "../src/styles/variables.css";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-bg-paper: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-accent-mauve: var(--color-accent-mauve);
+  --color-accent-peach: var(--color-accent-peach);
+  --color-ink: var(--color-text);
+  --color-ink-muted: var(--color-text-muted);
+  --color-border-warm: var(--color-border);
+  --color-border-subtle: var(--color-border-subtle);
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-plus-jakarta), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+
+  *,
+  ::after,
+  ::before {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5px;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom Japanese Minimalist Utility Classes */
+.bg-paper {
+  background-color: var(--color-bg);
+}
+
+.text-ink {
+  color: var(--color-text);
+}
+
+.text-ink-muted {
+  color: var(--color-text-muted);
+}
+
+.border-warm {
+  border-color: var(--color-border);
+}
+
+.glass-surface {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-subtle);
 }

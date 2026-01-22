@@ -1,0 +1,30 @@
+/* Japanese Minimalist Portfolio Theme Variables */
+:root {
+  /* Core Color System */
+  --color-primary: #b04749;
+  --color-secondary: #b34c53;
+  --color-bg: #fef0de;
+  --color-surface: #ffffff;
+  --color-accent-mauve: #dac0ca;
+  --color-accent-peach: #f6e0ce;
+  --color-text: #121212;
+  --color-text-muted: #5a544f;
+  --color-border: #ebd9c8;
+  --color-border-subtle: #f3e6d8;
+  
+  /* Semantic Tokens */
+  --bg-main: var(--color-bg);
+  --bg-surface: var(--color-surface);
+  --text-main: var(--color-text);
+  --text-muted: var(--color-text-muted);
+  --primary: var(--color-primary);
+  --secondary: var(--color-secondary);
+  --border: var(--color-border);
+  
+  /* Shadows & Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-soft: 0 4px 20px -2px rgba(176, 71, 73, 0.05);
+  --shadow-card: 0 10px 30px -5px rgba(18, 18, 18, 0.04);
+}
