@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { ScrollToTop } from "./ScrollToTop";
 
 export interface MainLayoutProps {
   children: React.ReactNode;
@@ -12,6 +13,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <Navbar />
       <main className="flex-1 pt-20">{children}</main>
       <Footer />
+      <ScrollToTop />
     </div>
   );
 };
