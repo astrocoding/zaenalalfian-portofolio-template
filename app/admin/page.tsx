@@ -4,9 +4,8 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import {
   FolderGit2,
   BookOpen,
@@ -156,7 +155,7 @@ export default async function AdminDashboardPage() {
       <Card className="bg-surface p-6 space-y-4">
         <div className="flex items-center space-x-3 pb-3 border-b border-border-subtle">
           <Database className="w-5 h-5 text-primary" />
-          <h3 className="font-serif font-bold text-lg text-ink">Database & System Status</h3>
+          <h3 className="font-serif font-bold text-lg text-ink">Database &amp; System Status</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">

@@ -13,7 +13,7 @@ export default async function AdminBlogsPage() {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
-  let blogs: any[] = [];
+  let blogs: Awaited<ReturnType<typeof prisma.blog.findMany>> = [];
   try {
     blogs = await prisma.blog.findMany({
       orderBy: { createdAt: "desc" },
@@ -62,7 +62,7 @@ export default async function AdminBlogsPage() {
               {blogs.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="p-8 text-center text-ink-muted font-mono text-xs">
-                    No blog posts found in database. Click "Create Article" to add one.
+                    No blog posts found in database. Click &quot;Create Article&quot; to add one.
                   </td>
                 </tr>
               ) : (

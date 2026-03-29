@@ -49,7 +49,7 @@ export const HeroSection: React.FC = () => {
 
             {/* Sub-headline */}
             <p className="text-base sm:text-lg text-ink-muted leading-relaxed font-sans max-w-2xl">
-              Hi, I'm <strong className="text-ink font-semibold">Zaenal Alfian</strong>. A Senior Full-Stack Engineer & Frontend Architect specializing in Next.js 16, React 19, TypeScript, and high-performance Web Applications.
+              Hi, I&apos;m <strong className="text-ink font-semibold">Zaenal Alfian</strong>. A Senior Full-Stack Engineer &amp; Frontend Architect specializing in Next.js 16, React 19, TypeScript, and high-performance Web Applications.
             </p>
 
             {/* Tech Badges Row */}
@@ -117,21 +117,21 @@ export const HeroSection: React.FC = () => {
 
               {/* Mock Code Block */}
               <div className="space-y-1.5 font-mono text-xs text-ink leading-relaxed">
-                <p className="text-primary font-semibold">// Personal Philosophy</p>
+                <p className="text-primary font-semibold">{`// Personal Philosophy`}</p>
                 <p>
                   <span className="text-purple-600">const</span> developer = &#123;
                 </p>
                 <p className="pl-4">
-                  name: <span className="text-emerald-700">"Zaenal Alfian"</span>,
+                  name: <span className="text-emerald-700">&quot;Zaenal Alfian&quot;</span>,
                 </p>
                 <p className="pl-4">
-                  role: <span className="text-emerald-700">"Senior Full-Stack Architect"</span>,
+                  role: <span className="text-emerald-700">&quot;Senior Full-Stack Architect&quot;</span>,
                 </p>
                 <p className="pl-4">
-                  values: [<span className="text-emerald-700">"Clean Code"</span>, <span className="text-emerald-700">"Performance"</span>, <span className="text-emerald-700">"UX Excellence"</span>],
+                  values: [<span className="text-emerald-700">&quot;Clean Code&quot;</span>, <span className="text-emerald-700">&quot;Performance&quot;</span>, <span className="text-emerald-700">&quot;UX Excellence&quot;</span>],
                 </p>
                 <p className="pl-4">
-                  status: <span className="text-amber-700">"Building Great Products"</span>
+                  status: <span className="text-amber-700">&quot;Building Great Products&quot;</span>
                 </p>
                 <p>&#125;;</p>
               </div>

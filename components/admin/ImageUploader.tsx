@@ -27,6 +27,7 @@ const ImagePreviewCard: React.FC<{
       } flex flex-col items-center justify-center shadow-2xs`}
     >
       {!imageError ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
         <img
           src={url}
           alt={`Uploaded ${index + 1}`}
@@ -110,7 +111,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       } else {
         setError(data.error || "Failed to upload images.");
       }
-    } catch (err: any) {
+    } catch {
       setUploading(false);
       setError("Network error uploading images.");
     }
@@ -177,7 +178,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             <div className="flex flex-col items-center space-y-2 py-3">
               <Loader2 className="w-7 h-7 text-primary animate-spin" />
               <span className="text-xs font-mono text-ink-muted">
-                Compressing & Converting to WebP...
+                Compressing &amp; Converting to WebP...
               </span>
             </div>
           ) : (
@@ -187,7 +188,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
               </div>
               <div className="space-y-0.5">
                 <p className="text-xs font-bold text-ink">
-                  Drag & Drop {maxFiles === 1 ? "thumbnail image" : `${maxFiles} showcase images`} here, or{" "}
+                  Drag &amp; Drop {maxFiles === 1 ? "thumbnail image" : `${maxFiles} showcase images`} here, or{" "}
                   <span className="text-primary underline">browse</span>
                 </p>
                 <p className="text-[11px] font-mono text-ink-muted">

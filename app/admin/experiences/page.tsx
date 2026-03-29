@@ -6,14 +6,14 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { Plus, Edit, Trash2, ArrowLeft, Briefcase } from "lucide-react";
+import { Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
 import { deleteExperienceAction } from "@/app/actions/admin";
 
 export default async function AdminExperiencesPage() {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
-  let experiences: any[] = [];
+  let experiences: Awaited<ReturnType<typeof prisma.experience.findMany>> = [];
   try {
     experiences = await prisma.experience.findMany({
       orderBy: { order: "asc" },
@@ -53,7 +53,7 @@ export default async function AdminExperiencesPage() {
             <thead>
               <tr className="bg-paper border-b border-border-warm font-serif text-ink text-xs uppercase tracking-wider">
                 <th className="p-4">Order</th>
-                <th className="p-4">Role & Company</th>
+                <th className="p-4">Role &amp; Company</th>
                 <th className="p-4">Period</th>
                 <th className="p-4">Tech Skills</th>
                 <th className="p-4 text-right">Actions</th>
@@ -63,7 +63,7 @@ export default async function AdminExperiencesPage() {
               {experiences.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="p-8 text-center text-ink-muted font-mono text-xs">
-                    No experience records found. Click "Add Experience" to create one.
+                    No experience records found. Click &quot;Add Experience&quot; to create one.
                   </td>
                 </tr>
               ) : (

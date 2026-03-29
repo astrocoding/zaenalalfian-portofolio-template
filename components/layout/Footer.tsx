@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
               <span className="font-serif font-bold text-xl text-ink">Zaenal Alfian</span>
             </div>
             <p className="text-sm text-ink-muted leading-relaxed max-w-md font-serif italic">
-              "Simple is better than complex. Quiet design speaks louder than noise."
+              &quot;Simple is better than complex. Quiet design speaks louder than noise.&quot;
             </p>
             <p className="text-xs text-ink-muted leading-relaxed max-w-md">
               Senior Full-Stack Engineer, Frontend Architect, and Technical Writer building high-performance web products with clean code and minimalist design.
@@ -103,7 +103,7 @@ export const Footer: React.FC = () => {
           <div className="flex items-center space-x-1 font-mono text-[11px]">
             <span>Crafted with</span>
             <Heart className="w-3 h-3 text-primary fill-primary inline mx-1" />
-            <span>Next.js 16 & Japanese Minimalism</span>
+            <span>Next.js 16 &amp; Japanese Minimalism</span>
           </div>
         </div>
       </Container>

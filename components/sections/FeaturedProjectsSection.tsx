@@ -67,6 +67,7 @@ const ProjectCardThumbnail: React.FC<{ thumbnail: string; title: string; categor
   return (
     <div className="h-48 w-full bg-[#f6e0ce]/40 border-b border-border-subtle rounded-t-lg flex flex-col items-center justify-center relative overflow-hidden group">
       {isCustomImage ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
         <img
           src={thumbnail}
           alt={title}

@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { SectionWrapper } from "../ui/SectionWrapper";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui/Card";
+import { Card } from "../ui/Card";
 import { Button } from "../ui/Button";
-import { Mail, MapPin, Send, CheckCircle2, MessageSquare, Sparkles } from "lucide-react";
+import { Mail, MapPin, Send, CheckCircle2, Sparkles } from "lucide-react";
 
 export const ContactSection: React.FC = () => {
   const [submitted, setSubmitted] = React.useState(false);
@@ -77,14 +77,14 @@ export const ContactSection: React.FC = () => {
                   <span className="text-xs font-mono text-ink-muted block uppercase">Availability</span>
                   <span className="text-emerald-700 font-medium flex items-center gap-1.5 mt-0.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    Accepting Q3/Q4 Projects & Roles
+                    Accepting Q3/Q4 Projects &amp; Roles
                   </span>
                 </div>
               </div>
             </div>
 
             <div className="p-4 rounded bg-[#f6e0ce]/40 border border-[#ebd9c8] text-xs text-ink-muted font-serif italic">
-              "Quality is never an accident; it is always the result of high intention, sincere effort, and intelligent execution."
+              &quot;Quality is never an accident; it is always the result of high intention, sincere effort, and intelligent execution.&quot;
             </div>
           </Card>
         </div>

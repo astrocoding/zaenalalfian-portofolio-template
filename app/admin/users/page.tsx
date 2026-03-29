@@ -6,14 +6,14 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { UserPlus, Edit, Trash2, ArrowLeft, ShieldCheck, Mail, User as UserIcon } from "lucide-react";
+import { UserPlus, Edit, Trash2, ArrowLeft } from "lucide-react";
 import { deleteUserAction } from "@/app/actions/admin";
 
 export default async function AdminUsersPage() {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
-  let users: any[] = [];
+  let users: Awaited<ReturnType<typeof prisma.user.findMany>> = [];
   try {
     users = await prisma.user.findMany({
       orderBy: { createdAt: "desc" },
@@ -63,7 +63,7 @@ export default async function AdminUsersPage() {
               {users.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="p-8 text-center text-ink-muted font-mono text-xs">
-                    No users found in database. Click "Create Admin User" to add one.
+                    No users found in database. Click &quot;Create Admin User&quot; to add one.
                   </td>
                 </tr>
               ) : (

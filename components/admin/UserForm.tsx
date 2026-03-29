@@ -3,11 +3,19 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { Save, AlertCircle, Shield } from "lucide-react";
+import { Save, AlertCircle } from "lucide-react";
 import { createUserAction, updateUserAction } from "@/app/actions/admin";
 
+export interface UserData {
+  id?: string;
+  name?: string | null;
+  username?: string;
+  email?: string;
+  role?: string;
+}
+
 export interface UserFormProps {
-  initialData?: any;
+  initialData?: UserData | null;
   isEdit?: boolean;
 }
 
@@ -21,7 +29,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
     username: initialData?.username || "",
     email: initialData?.email || "",
     password: "",
-    role: initialData?.role || "ADMIN",
+    role: (initialData?.role as "ADMIN" | "USER") || "ADMIN",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -6,7 +6,7 @@ import { SectionWrapper } from "../ui/SectionWrapper";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../ui/Card";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
-import { ArrowRight, BookOpen, Clock, Calendar } from "lucide-react";
+import { ArrowRight, Clock, Calendar } from "lucide-react";
 
 export interface BlogItem {
   id: string;

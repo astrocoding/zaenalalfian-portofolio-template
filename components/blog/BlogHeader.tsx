@@ -1,7 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Badge } from "../ui/Badge";
-import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
+import { ArrowLeft, Calendar, Clock } from "lucide-react";
 
 export interface BlogHeaderProps {
   title: string;
@@ -49,7 +49,7 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
         </h1>
 
         <p className="text-lg text-ink-muted leading-relaxed font-serif italic max-w-3xl border-l-2 border-primary/40 pl-4 py-1">
-          "{description}"
+          &quot;{description}&quot;
         </p>
 
         <div className="flex items-center space-x-3 pt-2">

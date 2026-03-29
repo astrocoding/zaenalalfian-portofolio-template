@@ -3,6 +3,33 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
+declare module "next-auth" {
+  interface User {
+    id: string;
+    username?: string;
+    role?: string;
+  }
+
+  interface Session {
+    user?: {
+      id?: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      username?: string;
+      role?: string;
+    };
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id?: string;
+    username?: string;
+    role?: string;
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET || "zaenalalfian-portfolio-japanese-minimalist-secret-key-2026",
   session: {
@@ -66,16 +93,16 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.username = (user as any).username;
-        token.role = (user as any).role;
+        token.username = user.username;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = token.id;
-        (session.user as any).username = token.username;
-        (session.user as any).role = token.role;
+        session.user.id = token.id;
+        session.user.username = token.username;
+        session.user.role = token.role;
       }
       return session;
     },

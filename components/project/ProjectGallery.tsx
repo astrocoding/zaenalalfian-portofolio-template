@@ -26,6 +26,7 @@ const GallerySlide: React.FC<{ img: string; title: string; index: number; total:
   return (
     <div className="flex-[0_0_100%] min-w-0 h-[300px] sm:h-[480px] bg-[#f6e0ce]/30 flex flex-col items-center justify-center relative overflow-hidden group">
       {isCustomImage ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
         <img
           src={img}
           alt={`${title} screenshot ${index + 1}`}
@@ -73,10 +74,11 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
 
   React.useEffect(() => {
     if (!emblaApi) return;
-    onSelect();
     emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
     return () => {
       emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
     };
   }, [emblaApi, onSelect]);
 

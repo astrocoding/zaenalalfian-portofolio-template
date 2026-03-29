@@ -6,8 +6,19 @@ import { Button } from "@/components/ui/Button";
 import { Save, AlertCircle } from "lucide-react";
 import { createBlogAction, updateBlogAction } from "@/app/actions/admin";
 
+export interface BlogData {
+  id?: string;
+  title?: string;
+  slug?: string;
+  category?: string;
+  description?: string;
+  content?: string;
+  thumbnail?: string | null;
+  keywords?: string[];
+}
+
 export interface BlogFormProps {
-  initialData?: any;
+  initialData?: BlogData | null;
   isEdit?: boolean;
 }
 

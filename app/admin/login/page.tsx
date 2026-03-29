@@ -3,7 +3,7 @@
 import * as React from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Lock, Mail, User, KeyRound, AlertCircle, ArrowRight, ShieldCheck } from "lucide-react";
+import { User, KeyRound, AlertCircle, ArrowRight, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export default function AdminLoginPage() {
@@ -32,7 +32,7 @@ export default function AdminLoginPage() {
         router.push("/admin");
         router.refresh();
       }
-    } catch (err: any) {
+    } catch {
       setError("An unexpected authentication error occurred.");
       setLoading(false);
     }

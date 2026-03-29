@@ -3,12 +3,30 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { Save, ArrowLeft, AlertCircle } from "lucide-react";
+import { Save, AlertCircle } from "lucide-react";
 import { ImageUploader } from "./ImageUploader";
 import { createProjectAction, updateProjectAction } from "@/app/actions/admin";
 
+export interface ProjectData {
+  id?: string;
+  title?: string;
+  slug?: string;
+  category?: string;
+  description?: string;
+  thumbnail?: string | null;
+  images?: string[];
+  techstack?: string[];
+  problem?: string | null;
+  solution?: string | null;
+  architecture?: string | null;
+  challenge?: string | null;
+  result?: string | null;
+  repository?: string | null;
+  sourceLink?: string | null;
+}
+
 export interface ProjectFormProps {
-  initialData?: any;
+  initialData?: ProjectData | null;
   isEdit?: boolean;
 }
 

@@ -3,11 +3,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
-import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
+import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
-import { ArrowRight, Code2, Sparkles, Terminal, CheckCircle2, Award, Briefcase, Mail } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About & Engineering Philosophy | Zaenal Alfian",
@@ -52,7 +50,7 @@ export default function AboutPage() {
           {/* Header Banner */}
           <div className="space-y-4 border-b border-border-warm pb-8">
             <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
-              自己紹介 • BIOGRAPHY & PHILOSOPHY
+              自己紹介 • BIOGRAPHY &amp; PHILOSOPHY
             </span>
             <h1 className="text-4xl sm:text-5xl font-serif font-bold text-ink tracking-tight">
               Behind the Architecture
@@ -66,13 +64,13 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-7 space-y-6 text-ink-muted leading-relaxed font-sans text-base">
               <h2 className="text-2xl font-serif font-bold text-ink">
-                Bridging Design Vision & Technical Execution
+                Bridging Design Vision &amp; Technical Execution
               </h2>
               <p>
                 My journey in software development is rooted in a passion for craftsmanship. Over the past 6+ years, I have architected web platforms that serve millions of requests, led engineering teams in adopting modern frameworks like Next.js 16 and React 19, and built domain-driven design systems from scratch.
               </p>
               <p>
-                My philosophy is heavily influenced by traditional Japanese minimalism (*Wabi-Sabi* & *Ma*) — eliminating unnecessary clutter to let core function and performance shine. Every line of code, database query, and UI component is crafted with intentionality.
+                My philosophy is heavily influenced by traditional Japanese minimalism (*Wabi-Sabi* &amp; *Ma*) — eliminating unnecessary clutter to let core function and performance shine. Every line of code, database query, and UI component is crafted with intentionality.
               </p>
               <p>
                 Whether designing micro-frontends, optimizing PostgreSQL query access with Prisma 7, or fine-tuning Core Web Vitals to 99/100 scores, I focus on delivering long-term architectural longevity and delightful user experiences.
@@ -153,7 +151,7 @@ export default function AboutPage() {
             <div>
               <h3 className="text-xl font-serif font-bold text-ink">Interested in working together?</h3>
               <p className="text-xs text-ink-muted font-sans mt-1">
-                Let's discuss architecture consulting, senior engineering roles, or custom web development projects.
+                Let&apos;s discuss architecture consulting, senior engineering roles, or custom web development projects.
               </p>
             </div>
             <div className="flex items-center space-x-3">

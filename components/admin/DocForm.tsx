@@ -6,8 +6,18 @@ import { Button } from "@/components/ui/Button";
 import { Save, AlertCircle } from "lucide-react";
 import { createDocAction, updateDocAction } from "@/app/actions/admin";
 
+export interface DocData {
+  id?: string;
+  title?: string;
+  slug?: string;
+  category?: string;
+  description?: string;
+  content?: string;
+  order?: number;
+}
+
 export interface DocFormProps {
-  initialData?: any;
+  initialData?: DocData | null;
   isEdit?: boolean;
 }
 

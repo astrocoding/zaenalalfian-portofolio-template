@@ -18,11 +18,31 @@ const navItems = [
 
 const sectionIds = ["about", "projects", "blogs", "docs", "contact"];
 
+const getSectionForPath = (path: string) => {
+  if (path.startsWith("/about")) return "about";
+  if (path.startsWith("/projects")) return "projects";
+  if (path.startsWith("/blogs")) return "blogs";
+  if (path.startsWith("/docs")) return "docs";
+  return "home";
+};
+
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
-  const [activeSection, setActiveSection] = React.useState<string>("home");
   const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = React.useState(pathname);
+  const [activeSection, setActiveSection] = React.useState<string>(() =>
+    getSectionForPath(pathname)
+  );
+
+  // Sync state on route change without cascading effect renders
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setIsOpen(false);
+    if (pathname !== "/") {
+      setActiveSection(getSectionForPath(pathname));
+    }
+  }
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -34,15 +54,7 @@ export const Navbar: React.FC = () => {
 
   // Scroll Spy for dynamic section highlighting on landing page
   React.useEffect(() => {
-    if (pathname !== "/") {
-      // Set active based on subpage path
-      if (pathname.startsWith("/about")) setActiveSection("about");
-      else if (pathname.startsWith("/projects")) setActiveSection("projects");
-      else if (pathname.startsWith("/blogs")) setActiveSection("blogs");
-      else if (pathname.startsWith("/docs")) setActiveSection("docs");
-      else setActiveSection("");
-      return;
-    }
+    if (pathname !== "/") return;
 
     const handleScrollSpy = () => {
       const scrollPosition = window.scrollY;
@@ -69,11 +81,6 @@ export const Navbar: React.FC = () => {
     handleScrollSpy();
 
     return () => window.removeEventListener("scroll", handleScrollSpy);
-  }, [pathname]);
-
-  // Close mobile menu on route change
-  React.useEffect(() => {
-    setIsOpen(false);
   }, [pathname]);
 
   return (

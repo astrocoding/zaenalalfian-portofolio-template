@@ -16,7 +16,12 @@ import {
 } from "lucide-react";
 
 export interface AdminSidebarProps {
-  user?: any;
+  user?: {
+    name?: string | null;
+    email?: string | null;
+    username?: string;
+    role?: string;
+  } | null;
 }
 
 const adminNavItems = [

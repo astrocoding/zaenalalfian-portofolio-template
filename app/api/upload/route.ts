@@ -47,10 +47,11 @@ export async function POST(req: Request) {
       success: true,
       urls: uploadedUrls,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error processing image upload:", error);
+    const errMessage = error instanceof Error ? error.message : "Failed to process image upload.";
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to process image upload." },
+      { success: false, error: errMessage },
       { status: 500 }
     );
   }

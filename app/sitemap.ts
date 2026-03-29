@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       });
     });
-  } catch (e) {
+  } catch {
     // Fallback sample project routes
     const fallbackSlugs = [
       "zenith-architecture-platform",
@@ -55,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       });
     });
-  } catch (e) {
+  } catch {
     // Ignore error
   }
 
@@ -70,7 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
       });
     });
-  } catch (e) {
+  } catch {
     // Ignore error
   }
 

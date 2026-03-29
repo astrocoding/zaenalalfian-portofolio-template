@@ -13,7 +13,7 @@ export default async function AdminProjectsPage() {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
-  let projects: any[] = [];
+  let projects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
   try {
     projects = await prisma.project.findMany({
       orderBy: { createdAt: "desc" },
@@ -63,7 +63,7 @@ export default async function AdminProjectsPage() {
               {projects.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="p-8 text-center text-ink-muted font-mono text-xs">
-                    No projects found in database. Click "Create Project" to add one.
+                    No projects found in database. Click &quot;Create Project&quot; to add one.
                   </td>
                 </tr>
               ) : (

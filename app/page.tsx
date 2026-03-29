@@ -13,9 +13,9 @@ import { prisma } from "@/lib/prisma";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  let dbProjects: any[] = [];
-  let dbBlogs: any[] = [];
-  let dbExperiences: any[] = [];
+  let dbProjects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
+  let dbBlogs: Awaited<ReturnType<typeof prisma.blog.findMany>> = [];
+  let dbExperiences: Awaited<ReturnType<typeof prisma.experience.findMany>> = [];
 
   try {
     dbProjects = await prisma.project.findMany({
@@ -29,7 +29,7 @@ export default async function HomePage() {
     dbExperiences = await prisma.experience.findMany({
       orderBy: { order: "asc" },
     });
-  } catch (error) {
+  } catch {
     // Graceful fallback to static seed items when database is empty
   }
 
@@ -43,8 +43,8 @@ export default async function HomePage() {
           category: p.category,
           thumbnail: p.thumbnail,
           techstack: p.techstack,
-          problem: p.problem,
-          solution: p.solution,
+          problem: p.problem ?? undefined,
+          solution: p.solution ?? undefined,
         }))
       : undefined;
 

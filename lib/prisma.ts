@@ -1,6 +1,22 @@
 import { PrismaClient } from "@/app/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
+interface RuntimeField {
+  name?: string;
+}
+
+type PrismaClientInternal = PrismaClient & {
+  user?: unknown;
+  experience?: unknown;
+  _runtimeDataModel?: {
+    models?: {
+      Project?: {
+        fields?: RuntimeField[];
+      };
+    };
+  };
+};
+
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
@@ -13,15 +29,16 @@ const createPrismaClient = () => {
 
 const getPrismaClient = (): PrismaClient => {
   if (globalForPrisma.prisma) {
-    const runtimeFields = (globalForPrisma.prisma as any)?._runtimeDataModel?.models?.Project?.fields;
+    const internalPrisma = globalForPrisma.prisma as PrismaClientInternal;
+    const runtimeFields = internalPrisma._runtimeDataModel?.models?.Project?.fields;
     const hasImagesField =
       Array.isArray(runtimeFields) &&
-      runtimeFields.some((f: any) => f.name === "images");
+      runtimeFields.some((f) => f.name === "images");
 
     // Reset cached instance if missing newly added models or schema fields
     if (
-      !(globalForPrisma.prisma as any).user ||
-      !(globalForPrisma.prisma as any).experience ||
+      !internalPrisma.user ||
+      !internalPrisma.experience ||
       !hasImagesField
     ) {
       globalForPrisma.prisma = undefined;

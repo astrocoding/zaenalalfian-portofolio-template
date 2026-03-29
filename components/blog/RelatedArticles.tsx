@@ -1,9 +1,9 @@
 import * as React from "react";
 import Link from "next/link";
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "../ui/Card";
+import { Card, CardHeader, CardTitle, CardFooter } from "../ui/Card";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { BlogPost } from "@/lib/blogs";
 
 export interface RelatedArticlesProps {

@@ -4,6 +4,11 @@ import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
+function getErrorMessage(error: unknown, defaultMessage: string): string {
+  if (error instanceof Error) return error.message;
+  return defaultMessage;
+}
+
 // ==================== PROJECT ACTIONS ====================
 
 export async function createProjectAction(data: {
@@ -32,8 +37,8 @@ export async function createProjectAction(data: {
     revalidatePath("/");
     revalidatePath("/projects/[slug]", "page");
     return { success: true, project: newProject };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to create project" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to create project") };
   }
 }
 
@@ -64,8 +69,8 @@ export async function updateProjectAction(
     revalidatePath("/");
     revalidatePath(`/projects/${updated.slug}`);
     return { success: true, project: updated };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to update project" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to update project") };
   }
 }
 
@@ -74,8 +79,8 @@ export async function deleteProjectAction(id: string) {
     await prisma.project.delete({ where: { id } });
     revalidatePath("/");
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to delete project" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to delete project") };
   }
 }
 
@@ -101,8 +106,8 @@ export async function createBlogAction(data: {
     revalidatePath("/");
     revalidatePath("/blogs/[category]/[slug]", "page");
     return { success: true, blog: newBlog };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to create blog" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to create blog") };
   }
 }
 
@@ -126,8 +131,8 @@ export async function updateBlogAction(
     revalidatePath("/");
     revalidatePath(`/blogs/${updated.category}/${updated.slug}`);
     return { success: true, blog: updated };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to update blog" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to update blog") };
   }
 }
 
@@ -136,8 +141,8 @@ export async function deleteBlogAction(id: string) {
     await prisma.blog.delete({ where: { id } });
     revalidatePath("/");
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to delete blog" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to delete blog") };
   }
 }
 
@@ -160,8 +165,8 @@ export async function createDocAction(data: {
     });
     revalidatePath("/docs/[category]/[slug]", "page");
     return { success: true, doc: newDoc };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to create documentation" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to create documentation") };
   }
 }
 
@@ -183,8 +188,8 @@ export async function updateDocAction(
     });
     revalidatePath(`/docs/${updated.category}/${updated.slug}`);
     return { success: true, doc: updated };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to update documentation" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to update documentation") };
   }
 }
 
@@ -192,8 +197,8 @@ export async function deleteDocAction(id: string) {
   try {
     await prisma.doc.delete({ where: { id } });
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to delete documentation" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to delete documentation") };
   }
 }
 
@@ -218,8 +223,8 @@ export async function createUserAction(data: {
       },
     });
     return { success: true, user: { id: newUser.id, name: newUser.name, email: newUser.email, username: newUser.username } };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to create user" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to create user") };
   }
 }
 
@@ -234,7 +239,13 @@ export async function updateUserAction(
   }
 ) {
   try {
-    const updateData: any = {};
+    const updateData: {
+      name?: string;
+      username?: string;
+      email?: string;
+      role?: "ADMIN" | "USER";
+      password?: string;
+    } = {};
     if (data.name) updateData.name = data.name;
     if (data.username) updateData.username = data.username.toLowerCase().trim();
     if (data.email) updateData.email = data.email.toLowerCase().trim();
@@ -248,8 +259,8 @@ export async function updateUserAction(
       data: updateData,
     });
     return { success: true, user: updated };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to update user" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to update user") };
   }
 }
 
@@ -257,8 +268,8 @@ export async function deleteUserAction(id: string) {
   try {
     await prisma.user.delete({ where: { id } });
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to delete user" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to delete user") };
   }
 }
 
@@ -284,8 +295,8 @@ export async function createExperienceAction(data: {
     });
     revalidatePath("/");
     return { success: true, experience: newExperience };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to create experience record" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to create experience record") };
   }
 }
 
@@ -311,8 +322,8 @@ export async function updateExperienceAction(
     });
     revalidatePath("/");
     return { success: true, experience: updated };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to update experience record" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to update experience record") };
   }
 }
 
@@ -321,8 +332,7 @@ export async function deleteExperienceAction(id: string) {
     await prisma.experience.delete({ where: { id } });
     revalidatePath("/");
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message || "Failed to delete experience record" };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to delete experience record") };
   }
 }
-

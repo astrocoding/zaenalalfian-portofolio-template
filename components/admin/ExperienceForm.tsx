@@ -6,8 +6,19 @@ import { Button } from "@/components/ui/Button";
 import { Save, AlertCircle } from "lucide-react";
 import { createExperienceAction, updateExperienceAction } from "@/app/actions/admin";
 
+export interface ExperienceData {
+  id?: string;
+  role?: string;
+  company?: string;
+  period?: string;
+  isCurrent?: boolean;
+  description?: string;
+  skills?: string[];
+  order?: number;
+}
+
 export interface ExperienceFormProps {
-  initialData?: any;
+  initialData?: ExperienceData | null;
   isEdit?: boolean;
 }
 
@@ -127,12 +138,12 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
           className="w-4 h-4 rounded border-border-warm text-primary focus:ring-primary/50"
         />
         <label htmlFor="isCurrent" className="text-xs font-mono text-ink font-medium cursor-pointer">
-          Current Position / 現職 (Displays '現職' status badge)
+          Current Position / 現職 (Displays &apos;現職&apos; status badge)
         </label>
       </div>
 
       <div className="space-y-1.5">
-        <label className="text-xs font-mono font-medium text-ink">Key Technologies & Skills (comma separated)</label>
+        <label className="text-xs font-mono font-medium text-ink">Key Technologies &amp; Skills (comma separated)</label>
         <input
           type="text"
           value={formData.skills}
@@ -143,7 +154,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
       </div>
 
       <div className="space-y-1.5">
-        <label className="text-xs font-mono font-medium text-ink">Description & Accomplishments / 業務内容 *</label>
+        <label className="text-xs font-mono font-medium text-ink">Description &amp; Accomplishments / 業務内容 *</label>
         <textarea
           required
           rows={4}

@@ -18,6 +18,7 @@ const fallbackProjects = [
     description:
       "Enterprise Next.js 16 app with Server Components, PostgreSQL, and Prisma ORM for high-throughput cloud infrastructure management.",
     thumbnail: "/projects/zenith.jpg",
+    images: [] as string[],
     techstack: ["Next.js 16", "React 19", "PostgreSQL", "Prisma 7", "TailwindCSS v4"],
     repository: "https://github.com/zaenalalfian/zenith-platform",
     sourceLink: "https://zenith.dev",
@@ -41,6 +42,7 @@ const fallbackProjects = [
     description:
       "Japanese minimalist editorial design system for scalable web applications featuring soft warm palettes and accessible micro-interactions.",
     thumbnail: "/projects/kaizen.jpg",
+    images: [] as string[],
     techstack: ["React 19", "TypeScript", "TailwindCSS v4", "Framer Motion"],
     repository: "https://github.com/zaenalalfian/kaizen-ui",
     sourceLink: "https://kaizen-ui.dev",
@@ -64,6 +66,7 @@ const fallbackProjects = [
     description:
       "High-speed MDX-powered documentation platform with dynamic TOC, instant search, and code highlight optimizations.",
     thumbnail: "/projects/shuri.jpg",
+    images: [] as string[],
     techstack: ["Next.js 16", "MDX", "gray-matter", "TailwindCSS v4", "TypeScript"],
     repository: "https://github.com/zaenalalfian/shuri-docs",
     sourceLink: "https://shuri-docs.dev",
@@ -87,7 +90,7 @@ export async function generateStaticParams() {
     if (projects.length > 0) {
       return projects.map((p) => ({ slug: p.slug }));
     }
-  } catch (e) {
+  } catch {
     // Ignore error
   }
   return fallbackProjects.map((p) => ({ slug: p.slug }));
@@ -99,18 +102,18 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  let project: any = null;
+  let project: Awaited<ReturnType<typeof prisma.project.findUnique>> | typeof fallbackProjects[0] | null = null;
 
   try {
     project = await prisma.project.findUnique({
       where: { slug: resolvedParams.slug },
     });
-  } catch (e) {
+  } catch {
     // Fallback search
   }
 
   if (!project) {
-    project = fallbackProjects.find((p) => p.slug === resolvedParams.slug);
+    project = fallbackProjects.find((p) => p.slug === resolvedParams.slug) || null;
   }
 
   if (!project) {
@@ -135,18 +138,18 @@ export default async function ProjectDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const resolvedParams = await params;
-  let project: any = null;
+  let project: Awaited<ReturnType<typeof prisma.project.findUnique>> | typeof fallbackProjects[0] | null = null;
 
   try {
     project = await prisma.project.findUnique({
       where: { slug: resolvedParams.slug },
     });
-  } catch (e) {
+  } catch {
     // Fallback search
   }
 
   if (!project) {
-    project = fallbackProjects.find((p) => p.slug === resolvedParams.slug);
+    project = fallbackProjects.find((p) => p.slug === resolvedParams.slug) || null;
   }
 
   if (!project) {
@@ -163,8 +166,8 @@ export default async function ProjectDetailPage({
             category={project.category}
             description={project.description}
             techstack={project.techstack}
-            repository={project.repository}
-            sourceLink={project.sourceLink}
+            repository={project.repository ?? undefined}
+            sourceLink={project.sourceLink ?? undefined}
             createdAt={project.createdAt}
           />
 
@@ -173,11 +176,11 @@ export default async function ProjectDetailPage({
 
           {/* Case Study Details */}
           <ProjectCaseStudy
-            problem={project.problem}
-            solution={project.solution}
-            architecture={project.architecture}
-            challenge={project.challenge}
-            result={project.result}
+            problem={project.problem ?? undefined}
+            solution={project.solution ?? undefined}
+            architecture={project.architecture ?? undefined}
+            challenge={project.challenge ?? undefined}
+            result={project.result ?? undefined}
           />
         </Container>
       </div>
