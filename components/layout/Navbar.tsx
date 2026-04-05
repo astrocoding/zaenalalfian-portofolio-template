@@ -111,8 +111,8 @@ export const Navbar: React.FC = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
+          {/* Desktop Navigation Links (Visible on LG screens 1024px+) */}
+          <div className="hidden lg:flex items-center space-x-1 xl:space-x-2">
             {navItems.map((item) => {
               const isActive = activeSection === item.id;
 
@@ -152,11 +152,11 @@ export const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Mobile Navigation Toggle Button */}
+          {/* Mobile & Tablet Navigation Toggle Button (Visible up to LG screens <1024px) */}
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-md text-ink hover:bg-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="lg:hidden p-2 rounded-md text-ink hover:bg-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             aria-label={isOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
             aria-expanded={isOpen}
           >
@@ -165,7 +165,7 @@ export const Navbar: React.FC = () => {
         </nav>
       </Container>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile & Tablet Drawer Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -173,9 +173,9 @@ export const Navbar: React.FC = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden bg-surface/98 backdrop-blur-xl border-b border-border-warm overflow-hidden shadow-lg"
+            className="lg:hidden bg-surface/98 backdrop-blur-xl border-b border-t border-border-warm overflow-hidden shadow-lg mt-2 sm:mt-3"
           >
-            <Container className="py-6 space-y-4">
+            <Container className="pt-6 pb-6 space-y-5">
               <div className="flex flex-col space-y-2">
                 {navItems.map((item) => {
                   const isActive = activeSection === item.id;
@@ -184,7 +184,7 @@ export const Navbar: React.FC = () => {
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      className={`flex items-center justify-between py-2.5 px-3 rounded-md font-medium transition-colors ${
+                      className={`flex items-center justify-between py-3 px-3.5 rounded-md font-medium transition-colors ${
                         isActive ? "bg-primary/10 text-primary font-bold" : "text-ink hover:bg-[#f6e0ce]/40"
                       }`}
                     >
