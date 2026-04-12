@@ -156,31 +156,34 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
         />
       </div>
 
-      {/* Main Project Card Thumbnail Uploader */}
-      <div className="pt-2 pb-2 border-t border-border-subtle">
-        <ImageUploader
-          label="Main Project Card Thumbnail (Public Home Page)"
-          sublabel="/ サムネイル画像 (WebP)"
-          value={formData.thumbnail ? [formData.thumbnail] : []}
-          onChange={(newUrls) =>
-            setFormData({
-              ...formData,
-              thumbnail: newUrls[0] || "",
-            })
-          }
-          maxFiles={1}
-        />
-      </div>
+      {/* Side-by-Side Image Uploaders Grid (Thumbnail 1 Image : Showcase Carousel 3 Images) */}
+      <div className="pt-4 pb-4 border-y border-border-subtle grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Main Project Card Thumbnail (1 Image) */}
+        <div className="lg:col-span-4 bg-paper/40 p-4 sm:p-5 rounded-xl border border-border-subtle flex flex-col justify-between">
+          <ImageUploader
+            label="Main Thumbnail"
+            sublabel="/ サムネイル (WebP)"
+            value={formData.thumbnail ? [formData.thumbnail] : []}
+            onChange={(newUrls) =>
+              setFormData({
+                ...formData,
+                thumbnail: newUrls[0] || "",
+              })
+            }
+            maxFiles={1}
+          />
+        </div>
 
-      {/* Drag & Drop Multi-Image Showcase Uploader */}
-      <div className="pt-2 pb-2 border-y border-border-subtle">
-        <ImageUploader
-          label="Showcase Carousel Images (Max 3)"
-          sublabel="/ 実績詳細カルーセル (WebP)"
-          value={formData.images}
-          onChange={(newUrls) => setFormData({ ...formData, images: newUrls })}
-          maxFiles={3}
-        />
+        {/* Showcase Carousel Images (Max 3 Images) */}
+        <div className="lg:col-span-8 bg-paper/40 p-4 sm:p-5 rounded-xl border border-border-subtle flex flex-col justify-between">
+          <ImageUploader
+            label="Showcase Carousel Images (Max 3)"
+            sublabel="/ 実績詳細カルーセル (WebP)"
+            value={formData.images}
+            onChange={(newUrls) => setFormData({ ...formData, images: newUrls })}
+            maxFiles={3}
+          />
+        </div>
       </div>
 
       {/* Case Study Details Grid */}

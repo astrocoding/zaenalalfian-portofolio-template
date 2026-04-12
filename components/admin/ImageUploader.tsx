@@ -22,9 +22,7 @@ const ImagePreviewCard: React.FC<{
 
   return (
     <div
-      className={`relative group rounded-lg overflow-hidden border border-border-warm bg-surface ${
-        maxFiles === 1 ? "h-40" : "h-32"
-      } flex flex-col items-center justify-center shadow-2xs`}
+      className="relative group rounded-lg overflow-hidden border border-border-warm bg-surface h-32 sm:h-36 flex flex-col items-center justify-center shadow-2xs"
     >
       {!imageError ? (
         /* eslint-disable-next-line @next/next/no-img-element */
@@ -136,12 +134,12 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="text-xs font-mono font-medium text-ink flex items-center gap-1.5">
-          <span>{displayLabel}</span>
-          <span className="text-primary font-serif font-bold text-[11px]">{displaySublabel}</span>
+        <label className="text-xs font-mono font-medium text-ink flex items-center gap-1.5 truncate">
+          <span className="truncate">{displayLabel}</span>
+          <span className="text-primary font-serif font-bold text-[11px] shrink-0">{displaySublabel}</span>
         </label>
-        <span className="text-xs font-mono text-ink-muted">
-          {validUrls.length} / {maxFiles} Uploaded
+        <span className="text-xs font-mono text-ink-muted shrink-0 ml-2">
+          {validUrls.length} / {maxFiles}
         </span>
       </div>
 
@@ -155,7 +153,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
-          className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center space-y-2 ${
+          className={`border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center space-y-1.5 ${
             isDragging
               ? "border-primary bg-primary/5 scale-[1.01]"
               : "border-border-warm bg-paper hover:border-primary/50 hover:bg-surface"
@@ -175,24 +173,24 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           />
 
           {uploading ? (
-            <div className="flex flex-col items-center space-y-2 py-3">
-              <Loader2 className="w-7 h-7 text-primary animate-spin" />
-              <span className="text-xs font-mono text-ink-muted">
-                Compressing &amp; Converting to WebP...
+            <div className="flex flex-col items-center space-y-1.5 py-2">
+              <Loader2 className="w-6 h-6 text-primary animate-spin" />
+              <span className="text-[11px] font-mono text-ink-muted">
+                Converting to WebP...
               </span>
             </div>
           ) : (
             <>
-              <div className="w-10 h-10 rounded-full bg-[#f6e0ce]/50 text-primary flex items-center justify-center border border-border-warm">
-                <UploadCloud className="w-5 h-5" />
+              <div className="w-8 h-8 rounded-full bg-[#f6e0ce]/50 text-primary flex items-center justify-center border border-border-warm">
+                <UploadCloud className="w-4 h-4" />
               </div>
               <div className="space-y-0.5">
                 <p className="text-xs font-bold text-ink">
-                  Drag &amp; Drop {maxFiles === 1 ? "thumbnail image" : `${maxFiles} showcase images`} here, or{" "}
+                  Drag &amp; Drop {maxFiles === 1 ? "thumbnail" : `${maxFiles} images`} here, or{" "}
                   <span className="text-primary underline">browse</span>
                 </p>
-                <p className="text-[11px] font-mono text-ink-muted">
-                  Supports PNG, JPG, GIF. Automatically compressed to WebP format.
+                <p className="text-[10px] font-mono text-ink-muted">
+                  Auto converted to WebP format.
                 </p>
               </div>
             </>
@@ -204,7 +202,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
       {/* Image Preview Grid */}
       {validUrls.length > 0 && (
-        <div className={`grid gap-4 pt-1 ${maxFiles === 1 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-3"}`}>
+        <div className={`grid gap-3 pt-1 ${maxFiles === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-3"}`}>
           {validUrls.map((url, idx) => (
             <ImagePreviewCard
               key={url + idx}
