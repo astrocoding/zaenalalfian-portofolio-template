@@ -59,10 +59,10 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl bg-surface border border-border-warm rounded-xl p-6 sm:p-8 shadow-card">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full bg-surface border border-border-warm rounded-xl p-6 sm:p-8 md:p-10 shadow-card">
       {error && (
-        <div className="p-3.5 rounded bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
-          <AlertCircle className="w-4 h-4" />
+        <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
+          <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
@@ -79,7 +79,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">Username / ユーザー名 *</label>
           <input
@@ -105,7 +105,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">
             {isEdit ? "New Password (leave blank to keep current)" : "Password / パスワード *"}

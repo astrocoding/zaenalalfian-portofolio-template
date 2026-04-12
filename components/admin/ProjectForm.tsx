@@ -84,15 +84,15 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl bg-surface border border-border-warm rounded-xl p-6 sm:p-8 shadow-card">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full bg-surface border border-border-warm rounded-xl p-6 sm:p-8 md:p-10 shadow-card">
       {error && (
-        <div className="p-3.5 rounded bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
-          <AlertCircle className="w-4 h-4" />
+        <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
+          <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">Title / タイトル *</label>
           <input
@@ -118,7 +118,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">Category / カテゴリ *</label>
           <input
@@ -156,7 +156,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
         />
       </div>
 
-      {/* Main Project Card Thumbnail Uploader (1 Image WebP) */}
+      {/* Main Project Card Thumbnail Uploader */}
       <div className="pt-2 pb-2 border-t border-border-subtle">
         <ImageUploader
           label="Main Project Card Thumbnail (Public Home Page)"
@@ -172,7 +172,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
         />
       </div>
 
-      {/* Drag & Drop Multi-Image Showcase Uploader (Max 3 Images WebP) */}
+      {/* Drag & Drop Multi-Image Showcase Uploader */}
       <div className="pt-2 pb-2 border-y border-border-subtle">
         <ImageUploader
           label="Showcase Carousel Images (Max 3)"
@@ -187,67 +187,67 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
       <div className="space-y-4 pt-2">
         <h4 className="font-serif font-bold text-sm text-ink uppercase">Case Study Details / ケーススタディ詳細</h4>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="space-y-1.5">
             <label className="text-xs font-mono font-medium text-ink">Problem Statement / 課題</label>
             <textarea
-              rows={3}
+              rows={4}
               value={formData.problem}
               onChange={(e) => setFormData({ ...formData, problem: e.target.value })}
               placeholder="What technical problem did this project solve?"
-              className="w-full px-3.5 py-2 rounded-md border border-border-warm bg-paper text-ink text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
             />
           </div>
 
           <div className="space-y-1.5">
             <label className="text-xs font-mono font-medium text-ink">Solution Architecture / 解決策</label>
             <textarea
-              rows={3}
+              rows={4}
               value={formData.solution}
               onChange={(e) => setFormData({ ...formData, solution: e.target.value })}
               placeholder="What software architecture was implemented?"
-              className="w-full px-3.5 py-2 rounded-md border border-border-warm bg-paper text-ink text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div className="space-y-1.5">
             <label className="text-xs font-mono font-medium text-ink">System Architecture</label>
             <textarea
-              rows={2}
+              rows={3}
               value={formData.architecture}
               onChange={(e) => setFormData({ ...formData, architecture: e.target.value })}
               placeholder="System details..."
-              className="w-full px-3.5 py-2 rounded-md border border-border-warm bg-paper text-ink text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
             />
           </div>
 
           <div className="space-y-1.5">
             <label className="text-xs font-mono font-medium text-ink">Key Challenge</label>
             <textarea
-              rows={2}
+              rows={3}
               value={formData.challenge}
               onChange={(e) => setFormData({ ...formData, challenge: e.target.value })}
               placeholder="Main obstacle faced..."
-              className="w-full px-3.5 py-2 rounded-md border border-border-warm bg-paper text-ink text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
             />
           </div>
 
           <div className="space-y-1.5">
             <label className="text-xs font-mono font-medium text-ink">Result / Outcome</label>
             <textarea
-              rows={2}
+              rows={3}
               value={formData.result}
               onChange={(e) => setFormData({ ...formData, result: e.target.value })}
               placeholder="Metrics & speedups achieved..."
-              className="w-full px-3.5 py-2 rounded-md border border-border-warm bg-paper text-ink text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
             />
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">Repository URL</label>
           <input

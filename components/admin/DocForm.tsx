@@ -31,8 +31,8 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
     slug: initialData?.slug || "",
     category: initialData?.category || "architecture",
     description: initialData?.description || "",
-    content: initialData?.content || "# Guide Title\n\n## Section Overview\n\nDocumentation content goes here...",
-    order: initialData?.order ?? 1,
+    content: initialData?.content || "# Documentation Guide Title\n\nWrite guide content here...",
+    order: initialData?.order || 1,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,7 +42,7 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
 
     const payload = {
       ...formData,
-      order: Number(formData.order) || 99,
+      order: Number(formData.order) || 1,
     };
 
     let res;
@@ -62,16 +62,16 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl bg-surface border border-border-warm rounded-xl p-6 sm:p-8 shadow-card">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full bg-surface border border-border-warm rounded-xl p-6 sm:p-8 md:p-10 shadow-card">
       {error && (
-        <div className="p-3.5 rounded bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
-          <AlertCircle className="w-4 h-4" />
+        <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
+          <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="space-y-1.5 sm:col-span-2">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="space-y-1.5 md:col-span-2">
           <label className="text-xs font-mono font-medium text-ink">Guide Title / タイトル *</label>
           <input
             type="text"
@@ -95,7 +95,7 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">Slug / スラッグ *</label>
           <input
@@ -115,7 +115,7 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
             required
             value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            placeholder="e.g. architecture, design-system"
+            placeholder="architecture, design-system, or backend"
             className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
@@ -125,23 +125,23 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
         <label className="text-xs font-mono font-medium text-ink">Description / 概要 *</label>
         <textarea
           required
-          rows={2}
+          rows={3}
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          placeholder="Summary of documentation contents..."
+          placeholder="Brief description of the documentation guide..."
           className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
         />
       </div>
 
       <div className="space-y-1.5">
-        <label className="text-xs font-mono font-medium text-ink">Documentation Content (Markdown) *</label>
+        <label className="text-xs font-mono font-medium text-ink">Markdown / MDX Content / 本文 *</label>
         <textarea
           required
-          rows={12}
+          rows={16}
           value={formData.content}
           onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-          placeholder="Write documentation in Markdown syntax..."
-          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink font-mono text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
+          placeholder="Write technical guide in Markdown format..."
+          className="w-full px-4 py-3 rounded-md border border-border-warm bg-paper text-ink font-mono text-xs leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
         />
       </div>
 
@@ -162,7 +162,7 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
           disabled={loading}
           icon={<Save className="w-4 h-4" />}
         >
-          {loading ? "Saving..." : isEdit ? "Update Documentation" : "Create Documentation"}
+          {loading ? "Saving..." : isEdit ? "Update Guide" : "Create Guide"}
         </Button>
       </div>
     </form>

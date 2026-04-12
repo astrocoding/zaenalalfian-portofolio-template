@@ -68,15 +68,15 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl bg-surface border border-border-warm rounded-xl p-6 sm:p-8 shadow-card">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full bg-surface border border-border-warm rounded-xl p-6 sm:p-8 md:p-10 shadow-card">
       {error && (
-        <div className="p-3.5 rounded bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
-          <AlertCircle className="w-4 h-4" />
+        <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
+          <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">Title / タイトル *</label>
           <input
@@ -102,7 +102,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">Category / カテゴリ *</label>
           <input
@@ -131,7 +131,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
         <label className="text-xs font-mono font-medium text-ink">Description / 概要 *</label>
         <textarea
           required
-          rows={2}
+          rows={3}
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           placeholder="Short summary for search results & cards..."
@@ -143,11 +143,11 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
         <label className="text-xs font-mono font-medium text-ink">Markdown / MDX Content / 本文 *</label>
         <textarea
           required
-          rows={12}
+          rows={16}
           value={formData.content}
           onChange={(e) => setFormData({ ...formData, content: e.target.value })}
           placeholder="Write article content in Markdown format..."
-          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink font-mono text-xs focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
+          className="w-full px-4 py-3 rounded-md border border-border-warm bg-paper text-ink font-mono text-xs leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
         />
       </div>
 
