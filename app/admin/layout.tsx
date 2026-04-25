@@ -20,9 +20,9 @@ export default async function AdminLayout({
 
   return (
     <SessionProviderWrapper>
-      <div className="min-h-screen bg-paper text-ink flex flex-col lg:flex-row">
+      <div className="min-h-screen lg:h-screen w-full lg:overflow-hidden bg-paper text-ink flex flex-col lg:flex-row">
         {session && <AdminSidebar user={session.user} />}
-        <main className="flex-1 min-w-0 p-4 sm:p-8 lg:p-10">{children}</main>
+        <main className="flex-1 min-w-0 lg:h-full lg:overflow-y-auto p-4 sm:p-8 lg:p-10">{children}</main>
       </div>
     </SessionProviderWrapper>
   );

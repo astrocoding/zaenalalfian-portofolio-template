@@ -127,7 +127,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
   return (
     <>
       {/* Mobile & Tablet Header Bar (Visible up to LG screens <1024px) */}
-      <div className="lg:hidden sticky top-0 z-50 bg-surface border-b border-border-warm px-4 py-3.5 relative shadow-xs">
+      <div className="lg:hidden sticky top-0 z-50 bg-surface border-b border-border-warm px-4 py-3.5 relative shadow-xs shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-8.5 h-8.5 rounded-md bg-primary text-white flex items-center justify-center font-serif font-bold text-base shadow-xs">
@@ -150,7 +150,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
           </button>
         </div>
 
-        {/* Mobile & Tablet Floating Drawer Menu (No backdrop blur overlay) */}
+        {/* Mobile & Tablet Floating Drawer Menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -167,8 +167,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
         </AnimatePresence>
       </div>
 
-      {/* Desktop Persistent Left Sidebar (Visible on LG screens 1024px+) */}
-      <aside className="hidden lg:flex w-64 shrink-0 bg-surface border-r border-border-warm p-6 flex-col justify-between min-h-screen sticky top-0">
+      {/* Desktop Persistent Fixed Left Sidebar (Visible on LG screens 1024px+) */}
+      <aside className="hidden lg:flex w-64 shrink-0 h-full bg-surface border-r border-border-warm p-6 flex-col justify-between overflow-y-auto">
         <div className="space-y-6">
           <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
             <div className="w-9 h-9 rounded-md bg-primary text-white flex items-center justify-center font-serif font-bold text-lg">
