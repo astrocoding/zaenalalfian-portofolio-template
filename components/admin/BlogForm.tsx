@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Save, AlertCircle } from "lucide-react";
 import { createBlogAction, updateBlogAction } from "@/app/actions/admin";
+import { slugify } from "@/lib/utils";
 
 export interface BlogData {
   id?: string;
@@ -35,6 +36,15 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
     content: initialData?.content || "# Article Title\n\nWrite article content here...",
     keywords: initialData?.keywords ? initialData.keywords.join(", ") : "Next.js, Architecture",
   });
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      title: val,
+      slug: slugify(val),
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,7 +93,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
             type="text"
             required
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={handleTitleChange}
             placeholder="e.g. Mastering Next.js 16 App Router"
             className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
@@ -97,7 +107,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
             value={formData.slug}
             onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
             placeholder="e.g. mastering-nextjs-16-app-router"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
           />
         </div>
       </div>

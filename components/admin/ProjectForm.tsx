@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Save, AlertCircle } from "lucide-react";
 import { ImageUploader } from "./ImageUploader";
 import { createProjectAction, updateProjectAction } from "@/app/actions/admin";
+import { slugify } from "@/lib/utils";
 
 export interface ProjectData {
   id?: string;
@@ -51,6 +52,15 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
     repository: initialData?.repository || "",
     sourceLink: initialData?.sourceLink || "",
   });
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      title: val,
+      slug: slugify(val),
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,7 +109,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
             type="text"
             required
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={handleTitleChange}
             placeholder="e.g. Zenith Architecture Platform"
             className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
@@ -113,7 +123,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
             value={formData.slug}
             onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
             placeholder="e.g. zenith-architecture-platform"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
           />
         </div>
       </div>
@@ -156,9 +166,8 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
         />
       </div>
 
-      {/* Side-by-Side Image Uploaders Grid (Thumbnail 1 Image : Showcase Carousel 3 Images) */}
+      {/* Side-by-Side Image Uploaders Grid */}
       <div className="pt-4 pb-4 border-y border-border-subtle grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Main Project Card Thumbnail (1 Image) */}
         <div className="lg:col-span-4 bg-paper/40 p-4 sm:p-5 rounded-xl border border-border-subtle flex flex-col justify-between">
           <ImageUploader
             label="Main Thumbnail"
@@ -174,7 +183,6 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
           />
         </div>
 
-        {/* Showcase Carousel Images (Max 3 Images) */}
         <div className="lg:col-span-8 bg-paper/40 p-4 sm:p-5 rounded-xl border border-border-subtle flex flex-col justify-between">
           <ImageUploader
             label="Showcase Carousel Images (Max 3)"

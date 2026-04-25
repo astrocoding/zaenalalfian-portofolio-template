@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Save, AlertCircle } from "lucide-react";
 import { createDocAction, updateDocAction } from "@/app/actions/admin";
+import { slugify } from "@/lib/utils";
 
 export interface DocData {
   id?: string;
@@ -34,6 +35,15 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
     content: initialData?.content || "# Documentation Guide Title\n\nWrite guide content here...",
     order: initialData?.order || 1,
   });
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      title: val,
+      slug: slugify(val),
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,7 +87,7 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
             type="text"
             required
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={handleTitleChange}
             placeholder="e.g. System Architecture & Design Overview"
             className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
@@ -104,7 +114,7 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
             value={formData.slug}
             onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
             placeholder="e.g. system-design-overview"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
           />
         </div>
 

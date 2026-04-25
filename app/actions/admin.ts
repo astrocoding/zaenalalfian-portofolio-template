@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { generateUniqueSlug } from "@/lib/slug.server";
 
 function getErrorMessage(error: unknown, defaultMessage: string): string {
   if (error instanceof Error) return error.message;
@@ -13,7 +14,7 @@ function getErrorMessage(error: unknown, defaultMessage: string): string {
 
 export async function createProjectAction(data: {
   title: string;
-  slug: string;
+  slug?: string;
   category: string;
   description: string;
   thumbnail: string;
@@ -28,9 +29,11 @@ export async function createProjectAction(data: {
   sourceLink?: string;
 }) {
   try {
+    const slug = await generateUniqueSlug("project", data.title, data.slug);
     const newProject = await prisma.project.create({
       data: {
         ...data,
+        slug,
         images: data.images || [],
       },
     });
@@ -62,9 +65,19 @@ export async function updateProjectAction(
   }
 ) {
   try {
+    let slug = data.slug;
+    if (data.title || data.slug) {
+      slug = await generateUniqueSlug("project", data.title || "", data.slug, id);
+    }
+
+    const updatePayload = {
+      ...data,
+      ...(slug ? { slug } : {}),
+    };
+
     const updated = await prisma.project.update({
       where: { id },
-      data,
+      data: updatePayload,
     });
     revalidatePath("/");
     revalidatePath(`/projects/${updated.slug}`);
@@ -88,7 +101,7 @@ export async function deleteProjectAction(id: string) {
 
 export async function createBlogAction(data: {
   title: string;
-  slug: string;
+  slug?: string;
   category: string;
   description: string;
   content: string;
@@ -97,9 +110,11 @@ export async function createBlogAction(data: {
   publishedAt?: Date;
 }) {
   try {
+    const slug = await generateUniqueSlug("blog", data.title, data.slug);
     const newBlog = await prisma.blog.create({
       data: {
         ...data,
+        slug,
         publishedAt: data.publishedAt || new Date(),
       },
     });
@@ -124,9 +139,19 @@ export async function updateBlogAction(
   }
 ) {
   try {
+    let slug = data.slug;
+    if (data.title || data.slug) {
+      slug = await generateUniqueSlug("blog", data.title || "", data.slug, id);
+    }
+
+    const updatePayload = {
+      ...data,
+      ...(slug ? { slug } : {}),
+    };
+
     const updated = await prisma.blog.update({
       where: { id },
-      data,
+      data: updatePayload,
     });
     revalidatePath("/");
     revalidatePath(`/blogs/${updated.category}/${updated.slug}`);
@@ -150,16 +175,18 @@ export async function deleteBlogAction(id: string) {
 
 export async function createDocAction(data: {
   title: string;
-  slug: string;
+  slug?: string;
   category: string;
   description: string;
   content: string;
   order?: number;
 }) {
   try {
+    const slug = await generateUniqueSlug("doc", data.title, data.slug);
     const newDoc = await prisma.doc.create({
       data: {
         ...data,
+        slug,
         order: data.order ?? 99,
       },
     });
@@ -182,9 +209,19 @@ export async function updateDocAction(
   }
 ) {
   try {
+    let slug = data.slug;
+    if (data.title || data.slug) {
+      slug = await generateUniqueSlug("doc", data.title || "", data.slug, id);
+    }
+
+    const updatePayload = {
+      ...data,
+      ...(slug ? { slug } : {}),
+    };
+
     const updated = await prisma.doc.update({
       where: { id },
-      data,
+      data: updatePayload,
     });
     revalidatePath(`/docs/${updated.category}/${updated.slug}`);
     return { success: true, doc: updated };
