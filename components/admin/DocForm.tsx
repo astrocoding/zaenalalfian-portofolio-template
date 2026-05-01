@@ -80,15 +80,27 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="space-y-1.5 md:col-span-2">
-          <label className="text-xs font-mono font-medium text-ink">Guide Title / タイトル *</label>
+      <div className="space-y-1.5">
+        <label className="text-xs font-mono font-medium text-ink">Guide Title / タイトル *</label>
+        <input
+          type="text"
+          required
+          value={formData.title}
+          onChange={handleTitleChange}
+          placeholder="e.g. System Architecture & Design Overview"
+          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="space-y-1.5">
+          <label className="text-xs font-mono font-medium text-ink">Category / カテゴリ *</label>
           <input
             type="text"
             required
-            value={formData.title}
-            onChange={handleTitleChange}
-            placeholder="e.g. System Architecture & Design Overview"
+            value={formData.category}
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            placeholder="architecture, design-system, or backend"
             className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
@@ -100,32 +112,6 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
             value={formData.order}
             onChange={(e) => setFormData({ ...formData, order: Number(e.target.value) })}
             placeholder="1"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="space-y-1.5">
-          <label className="text-xs font-mono font-medium text-ink">Slug / スラッグ *</label>
-          <input
-            type="text"
-            required
-            value={formData.slug}
-            onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-            placeholder="e.g. system-design-overview"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
-          />
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="text-xs font-mono font-medium text-ink">Category / カテゴリ *</label>
-          <input
-            type="text"
-            required
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            placeholder="architecture, design-system, or backend"
             className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>

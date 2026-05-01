@@ -86,30 +86,16 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="space-y-1.5">
-          <label className="text-xs font-mono font-medium text-ink">Title / タイトル *</label>
-          <input
-            type="text"
-            required
-            value={formData.title}
-            onChange={handleTitleChange}
-            placeholder="e.g. Mastering Next.js 16 App Router"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-          />
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="text-xs font-mono font-medium text-ink">Slug / スラッグ *</label>
-          <input
-            type="text"
-            required
-            value={formData.slug}
-            onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-            placeholder="e.g. mastering-nextjs-16-app-router"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
-          />
-        </div>
+      <div className="space-y-1.5">
+        <label className="text-xs font-mono font-medium text-ink">Title / タイトル *</label>
+        <input
+          type="text"
+          required
+          value={formData.title}
+          onChange={handleTitleChange}
+          placeholder="e.g. Mastering Next.js 16 App Router"
+          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
