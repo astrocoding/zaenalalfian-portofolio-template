@@ -47,7 +47,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
             const fileContent = fs.readFileSync(filePath, "utf8");
             const { data, content } = matter(fileContent);
 
-            const processedContent = await remark().use(html).process(content);
+            const processedContent = await remark().use(html, { sanitize: false }).process(content);
             const htmlContent = processedContent.toString();
             const frontmatter = data as BlogFrontmatter;
 
@@ -70,7 +70,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
     });
 
     for (const blog of dbBlogs) {
-      const processedContent = await remark().use(html).process(blog.content);
+      const processedContent = await remark().use(html, { sanitize: false }).process(blog.content);
       postsMap.set(blog.slug, {
         frontmatter: {
           title: blog.title,
@@ -111,7 +111,7 @@ export async function getBlogPost(
     });
 
     if (dbBlog) {
-      const processedContent = await remark().use(html).process(dbBlog.content);
+      const processedContent = await remark().use(html, { sanitize: false }).process(dbBlog.content);
       return {
         frontmatter: {
           title: dbBlog.title,
@@ -149,7 +149,7 @@ export async function getBlogPost(
     if (!fs.existsSync(mdxPath)) return null;
     const fileContent = fs.readFileSync(mdxPath, "utf8");
     const { data, content } = matter(fileContent);
-    const processedContent = await remark().use(html).process(content);
+    const processedContent = await remark().use(html, { sanitize: false }).process(content);
     return {
       frontmatter: data as BlogFrontmatter,
       content,
@@ -160,7 +160,7 @@ export async function getBlogPost(
 
   const fileContent = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(fileContent);
-  const processedContent = await remark().use(html).process(content);
+  const processedContent = await remark().use(html, { sanitize: false }).process(content);
 
   return {
     frontmatter: data as BlogFrontmatter,

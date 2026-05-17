@@ -7,6 +7,7 @@ export async function POST(req: Request) {
   try {
     const formData = await req.formData();
     const files = formData.getAll("files") as File[];
+    const typePrefix = (formData.get("prefix") as string) || "blogs";
 
     if (!files || files.length === 0) {
       return NextResponse.json(
@@ -30,8 +31,9 @@ export async function POST(req: Request) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
-      // Generate unique filename with .webp extension
-      const filename = `project-${Date.now()}-${Math.random().toString(36).substring(2, 8)}.webp`;
+      // Generate format: blogs-randomizecodenumber.webp
+      const randomCode = `${Math.floor(10000000 + Math.random() * 90000000)}-${Date.now().toString().slice(-6)}`;
+      const filename = `${typePrefix}-${randomCode}.webp`;
       const filePath = path.join(uploadDir, filename);
 
       // Compress and convert image to WebP using sharp
@@ -50,6 +52,51 @@ export async function POST(req: Request) {
   } catch (error: unknown) {
     console.error("Error processing image upload:", error);
     const errMessage = error instanceof Error ? error.message : "Failed to process image upload.";
+    return NextResponse.json(
+      { success: false, error: errMessage },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    let url = searchParams.get("url");
+
+    if (!url) {
+      const body = await req.json().catch(() => ({}));
+      url = body.url;
+    }
+
+    if (!url || typeof url !== "string") {
+      return NextResponse.json(
+        { success: false, error: "Image URL is required for deletion." },
+        { status: 400 }
+      );
+    }
+
+    // Only allow deleting images inside /upload/img/
+    if (url.startsWith("/upload/img/") || url.includes("upload/img")) {
+      const filename = path.basename(url);
+      const filePath = path.join(process.cwd(), "public/upload/img", filename);
+
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        return NextResponse.json({
+          success: true,
+          message: `File ${filename} deleted physically.`,
+        });
+      }
+    }
+
+    return NextResponse.json(
+      { success: false, message: "File not found or not in upload directory." },
+      { status: 404 }
+    );
+  } catch (error: unknown) {
+    console.error("Error deleting image file:", error);
+    const errMessage = error instanceof Error ? error.message : "Failed to delete image file.";
     return NextResponse.json(
       { success: false, error: errMessage },
       { status: 500 }

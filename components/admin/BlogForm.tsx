@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Save, AlertCircle } from "lucide-react";
 import { createBlogAction, updateBlogAction } from "@/app/actions/admin";
 import { slugify } from "@/lib/utils";
+import { TiptapBlogEditor } from "./TiptapBlogEditor";
 
 export interface BlogData {
   id?: string;
@@ -145,13 +146,11 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
 
       <div className="space-y-1.5">
         <label className="text-xs font-mono font-medium text-ink">Markdown / MDX Content / 本文 *</label>
-        <textarea
-          required
-          rows={16}
-          value={formData.content}
-          onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-          placeholder="Write article content in Markdown format..."
-          className="w-full px-4 py-3 rounded-md border border-border-warm bg-paper text-ink font-mono text-xs leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
+        <TiptapBlogEditor
+          content={formData.content}
+          onChange={(newContent) =>
+            setFormData((prev) => ({ ...prev, content: newContent }))
+          }
         />
       </div>
 
