@@ -12,7 +12,7 @@ export async function generateUniqueSlug(
   rawSlug?: string,
   currentId?: string
 ): Promise<string> {
-  const sourceText = rawSlug && rawSlug.trim().length > 0 ? rawSlug : title;
+  const sourceText = title && title.trim().length > 0 ? title : (rawSlug && rawSlug.trim().length > 0 ? rawSlug : "");
   const baseSlug = slugify(sourceText) || "untitled";
 
   let exists = false;

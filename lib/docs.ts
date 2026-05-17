@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
+import { prisma } from "@/lib/prisma";
 
 export interface DocTocItem {
   id: string;
@@ -47,34 +48,62 @@ export function extractToc(content: string): DocTocItem[] {
 }
 
 export async function getAllDocs(): Promise<DocPost[]> {
-  if (!fs.existsSync(docsDirectory)) return [];
+  const docsMap = new Map<string, DocPost>();
 
-  const categories = fs.readdirSync(docsDirectory);
-  const docs: DocPost[] = [];
+  // 1. Fetch from local filesystem markdown files
+  if (fs.existsSync(docsDirectory)) {
+    const categories = fs.readdirSync(docsDirectory);
+    for (const category of categories) {
+      const categoryPath = path.join(docsDirectory, category);
+      if (fs.statSync(categoryPath).isDirectory()) {
+        const files = fs.readdirSync(categoryPath);
+        for (const file of files) {
+          if (file.endsWith(".md") || file.endsWith(".mdx")) {
+            const filePath = path.join(categoryPath, file);
+            const fileContent = fs.readFileSync(filePath, "utf8");
+            const { data, content } = matter(fileContent);
 
-  for (const category of categories) {
-    const categoryPath = path.join(docsDirectory, category);
-    if (fs.statSync(categoryPath).isDirectory()) {
-      const files = fs.readdirSync(categoryPath);
-      for (const file of files) {
-        if (file.endsWith(".md") || file.endsWith(".mdx")) {
-          const filePath = path.join(categoryPath, file);
-          const fileContent = fs.readFileSync(filePath, "utf8");
-          const { data, content } = matter(fileContent);
+            const processedContent = await remark().use(html).process(content);
+            const frontmatter = data as DocFrontmatter;
 
-          const processedContent = await remark().use(html).process(content);
-
-          docs.push({
-            frontmatter: data as DocFrontmatter,
-            content,
-            htmlContent: processedContent.toString(),
-            toc: extractToc(content),
-          });
+            docsMap.set(frontmatter.slug, {
+              frontmatter,
+              content,
+              htmlContent: processedContent.toString(),
+              toc: extractToc(content),
+            });
+          }
         }
       }
     }
   }
 
+  // 2. Fetch from Database (Prisma DB records add/override dynamic documentation)
+  try {
+    const dbDocs = await prisma.doc.findMany({
+      orderBy: { order: "asc" },
+    });
+
+    for (const doc of dbDocs) {
+      const processedContent = await remark().use(html).process(doc.content);
+      docsMap.set(doc.slug, {
+        frontmatter: {
+          title: doc.title,
+          slug: doc.slug,
+          category: doc.category,
+          description: doc.description,
+          order: doc.order,
+        },
+        content: doc.content,
+        htmlContent: processedContent.toString(),
+        toc: extractToc(doc.content),
+      });
+    }
+  } catch {
+    // Database query fallback
+  }
+
+  const docs = Array.from(docsMap.values());
   return docs.sort(
     (a, b) => (a.frontmatter.order || 99) - (b.frontmatter.order || 99)
   );
@@ -104,6 +133,32 @@ export async function getDocPost(
   category: string,
   slug: string
 ): Promise<DocPost | null> {
+  // 1. Try fetching from Database first
+  try {
+    const dbDoc = await prisma.doc.findUnique({
+      where: { slug: slug },
+    });
+
+    if (dbDoc) {
+      const processedContent = await remark().use(html).process(dbDoc.content);
+      return {
+        frontmatter: {
+          title: dbDoc.title,
+          slug: dbDoc.slug,
+          category: dbDoc.category,
+          description: dbDoc.description,
+          order: dbDoc.order,
+        },
+        content: dbDoc.content,
+        htmlContent: processedContent.toString(),
+        toc: extractToc(dbDoc.content),
+      };
+    }
+  } catch {
+    // Database query fallback
+  }
+
+  // 2. Fallback to local markdown files
   const filePath = path.join(
     docsDirectory,
     category.toLowerCase(),

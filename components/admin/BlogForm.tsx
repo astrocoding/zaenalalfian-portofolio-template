@@ -96,6 +96,14 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
           placeholder="e.g. Mastering Next.js 16 App Router"
           className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
         />
+        {formData.slug && (
+          <p className="text-[11px] font-mono text-ink-muted flex items-center gap-1.5 mt-1.5">
+            <span className="text-primary font-medium">Auto Slug:</span>
+            <code className="px-2 py-0.5 rounded bg-surface border border-border-subtle text-ink font-semibold">
+              {formData.slug}
+            </code>
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
