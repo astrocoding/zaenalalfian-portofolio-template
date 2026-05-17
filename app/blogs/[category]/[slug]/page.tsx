@@ -66,7 +66,7 @@ export default async function BlogDetailPage({
   return (
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper">
-        <Container size="narrow" className="space-y-8">
+        <Container size="narrow">
           {/* Header */}
           <BlogHeader
             title={post.frontmatter.title}
@@ -80,7 +80,9 @@ export default async function BlogDetailPage({
           <MarkdownRenderer contentHtml={post.htmlContent} />
 
           {/* Related Articles Footer */}
-          <RelatedArticles posts={relatedPosts} />
+          <div className="pt-10">
+            <RelatedArticles posts={relatedPosts} />
+          </div>
         </Container>
       </div>
     </MainLayout>

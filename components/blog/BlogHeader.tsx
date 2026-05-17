@@ -19,7 +19,7 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
   description,
 }) => {
   return (
-    <div className="space-y-6 pb-8 border-b border-border-warm">
+    <div className="space-y-6 pb-4 border-b border-border-warm">
       <Link
         href="/#blogs"
         className="inline-flex items-center space-x-2 text-xs font-mono text-ink-muted hover:text-primary transition-colors"

@@ -9,8 +9,9 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 }) => {
   return (
     <article
-      className="py-8 space-y-6 text-ink font-sans leading-relaxed text-base
-        [&>h1]:text-2xl [&>h1]:sm:text-3xl [&>h1]:font-bold [&>h1]:font-serif [&>h1]:text-ink [&>h1]:mt-10 [&>h1]:mb-4 [&>h1]:pb-2 [&>h1]:border-b [&>h1]:border-border-subtle
+      className="pt-7 pb-10 space-y-6 text-ink font-sans leading-relaxed text-base
+        [&>:first-child]:mt-3
+        [&>h1]:text-2xl [&>h1]:sm:text-3xl [&>h1]:font-bold [&>h1]:font-serif [&>h1]:text-ink [&>h1]:mt-8 [&>h1]:mb-4 [&>h1]:pb-2 [&>h1]:border-b [&>h1]:border-border-subtle
         [&>h2]:text-xl [&>h2]:sm:text-2xl [&>h2]:font-bold [&>h2]:font-serif [&>h2]:text-ink [&>h2]:mt-8 [&>h2]:mb-3
         [&>h3]:text-lg [&>h3]:font-semibold [&>h3]:text-ink [&>h3]:mt-6 [&>h3]:mb-2
         [&>p]:text-ink-muted [&>p]:leading-relaxed [&>p]:mb-4
