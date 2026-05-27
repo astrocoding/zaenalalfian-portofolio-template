@@ -7,11 +7,13 @@
   --color-surface: #ffffff;
   --color-accent-mauve: #dac0ca;
   --color-accent-peach: #f6e0ce;
+  --color-watermark: #f0decb;
+  --color-watermark-surface: #dadada;
   --color-text: #121212;
   --color-text-muted: #5a544f;
   --color-border: #ebd9c8;
   --color-border-subtle: #f3e6d8;
-  
+
   /* Semantic Tokens */
   --bg-main: var(--color-bg);
   --bg-surface: var(--color-surface);
@@ -20,7 +22,9 @@
   --primary: var(--color-primary);
   --secondary: var(--color-secondary);
   --border: var(--color-border);
-  
+  --watermark: var(--color-watermark);
+  --watermark-surface: var(--color-watermark-surface);
+
   /* Shadows & Radius */
   --radius-sm: 4px;
   --radius-md: 8px;
