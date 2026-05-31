@@ -45,7 +45,7 @@ export const ContactSection: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-serif font-bold text-lg text-ink">Zaenal Alfian</h3>
-                <p className="text-xs font-mono text-ink-muted">Senior Full-Stack Architect</p>
+                <p className="text-xs font-mono text-ink-muted">Full-Stack Engineer</p>
               </div>
             </div>
 
@@ -55,10 +55,10 @@ export const ContactSection: React.FC = () => {
                 <div>
                   <span className="text-xs font-mono text-ink-muted block uppercase">Direct Email</span>
                   <a
-                    href="mailto:contact@zaenalalfian.dev"
-                    className="text-ink font-medium hover:text-primary transition-colors text-base"
+                    href="mailto:zaenalalfian20@gmail.com"
+                    className="text-[#b34c53] font-medium hover:text-primary transition-colors text-base"
                   >
-                    contact@zaenalalfian.dev
+                    zaenalalfian20@gmail.com
                   </a>
                 </div>
               </div>
@@ -67,7 +67,7 @@ export const ContactSection: React.FC = () => {
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs font-mono text-ink-muted block uppercase">Location</span>
-                  <span className="text-ink font-medium">Tokyo, Japan / Jakarta, Indonesia</span>
+                  <span className="text-ink font-medium">Karawang, Indonesia</span>
                 </div>
               </div>
 
@@ -77,7 +77,7 @@ export const ContactSection: React.FC = () => {
                   <span className="text-xs font-mono text-ink-muted block uppercase">Availability</span>
                   <span className="text-emerald-700 font-medium flex items-center gap-1.5 mt-0.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    Accepting Q3/Q4 Projects &amp; Roles
+                    Accepting Projects &amp; Roles
                   </span>
                 </div>
               </div>
@@ -170,7 +170,7 @@ export const ContactSection: React.FC = () => {
                   className="w-full justify-center"
                   icon={<Send className="w-4 h-4" />}
                 >
-                  {loading ? "Sending Message..." : "Send Message / メッセージ送信"}
+                  {loading ? "Sending Message..." : "Send Message"}
                 </Button>
               </form>
             )}

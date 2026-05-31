@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { SectionWrapper } from "../ui/SectionWrapper";
-import { Card } from "../ui/Card";
-import { Badge } from "../ui/Badge";
+import { SectionWrapper, Card, Badge, CardCornerSeigaiha } from "../ui";
 import { Code, Database, Layers, Wrench } from "lucide-react";
 
 const skillCategories = [
@@ -77,28 +75,42 @@ export const SkillsSection: React.FC = () => {
       sectionTitle="Technical Capabilities"
       sectionDescription="Comprehensive toolset honed across years of full-stack engineering and product deployment."
       bgVariant="paper"
+      className="relative overflow-hidden"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {skillCategories.map((category) => (
-          <Card key={category.title} hoverEffect className="p-6">
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-border-subtle">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 rounded bg-[#f6e0ce]/50 border border-border-warm">
-                  {category.icon}
-                </div>
-                <h3 className="text-lg font-bold font-serif text-ink">{category.title}</h3>
-              </div>
-              <span className="font-serif text-xs text-primary/50 font-semibold uppercase">
-                {category.kanji}
-              </span>
-            </div>
+      {/* Subtle Japanese Watermark Accent ("技術スキル") matching paper bg (#fef0de) */}
+      <div
+        className="hidden md:block absolute top-8 sm:top-12 right-6 sm:right-16 font-serif text-5xl sm:text-7xl lg:text-8xl font-bold tracking-[0.08em] select-none pointer-events-none z-0 leading-none text-[var(--color-watermark)] opacity-90"
+        aria-hidden="true"
+      >
+        技術スキル
+      </div>
 
-            <div className="flex flex-wrap gap-2">
-              {category.skills.map((skill) => (
-                <Badge key={skill} variant="tech" size="md">
-                  {skill}
-                </Badge>
-              ))}
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {skillCategories.map((category) => (
+          <Card key={category.title} hoverEffect className="relative overflow-hidden p-6">
+            {/* Bottom-right diagonal Seigaiha wave accent - identical to experience cards */}
+            <CardCornerSeigaiha cardBgColor="#ffffff" />
+
+            <div className="relative z-10 space-y-4">
+              <div className="flex items-center justify-between pb-4 mb-2 border-b border-border-subtle">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 rounded bg-[#f6e0ce]/50 border border-border-warm">
+                    {category.icon}
+                  </div>
+                  <h3 className="text-lg font-bold font-serif text-ink">{category.title}</h3>
+                </div>
+                <span className="font-serif text-xs text-primary/50 font-semibold uppercase">
+                  {category.kanji}
+                </span>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {category.skills.map((skill) => (
+                  <Badge key={skill} variant="tech" size="md">
+                    {skill}
+                  </Badge>
+                ))}
+              </div>
             </div>
           </Card>
         ))}

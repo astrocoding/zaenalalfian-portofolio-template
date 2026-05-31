@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { SectionWrapper } from "../ui/SectionWrapper";
-import { Badge } from "../ui/Badge";
+import { SectionWrapper, Badge, CardCornerSeigaiha } from "../ui";
 import { Briefcase, Calendar } from "lucide-react";
 
 export interface ExperienceItem {
@@ -66,35 +65,40 @@ export const ExperienceSection: React.FC<{ experiences?: ExperienceItem[] }> = (
               <div className="w-1.5 h-1.5 rounded-full bg-primary group-hover:bg-white transition-colors" />
             </div>
 
-            <div className="bg-paper border border-border-warm rounded-lg p-6 space-y-4 hover:border-primary/40 transition-colors shadow-2xs">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle pb-3">
-                <div>
-                  <h3 className="text-xl font-bold font-serif text-ink">{exp.role}</h3>
-                  <div className="flex items-center space-x-2 text-sm text-primary font-medium mt-0.5">
-                    <Briefcase className="w-4 h-4" />
-                    <span>{exp.company}</span>
+            <div className="relative overflow-hidden bg-paper border border-border-warm rounded-xl p-6 hover:border-primary/40 transition-colors shadow-2xs">
+              {/* Bottom-right diagonal Seigaiha wave accent */}
+              <CardCornerSeigaiha cardBgColor="#fef0de" />
+
+              <div className="relative z-10 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle pb-3">
+                  <div>
+                    <h3 className="text-xl font-bold font-serif text-ink">{exp.role}</h3>
+                    <div className="flex items-center space-x-2 text-sm text-primary font-medium mt-0.5">
+                      <Briefcase className="w-4 h-4" />
+                      <span>{exp.company}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3 text-xs text-ink-muted font-mono">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5" />
+                      {exp.period}
+                    </span>
+                    {exp.isCurrent && (
+                      <span className="font-serif text-primary font-semibold">現職</span>
+                    )}
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3 text-xs text-ink-muted font-mono">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5" />
-                    {exp.period}
-                  </span>
-                  {exp.isCurrent && (
-                    <span className="font-serif text-primary font-semibold">現職</span>
-                  )}
+                <p className="text-sm text-ink-muted leading-relaxed font-sans">{exp.description}</p>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {exp.skills.map((tech) => (
+                    <Badge key={tech} variant="ghost" size="sm">
+                      {tech}
+                    </Badge>
+                  ))}
                 </div>
-              </div>
-
-              <p className="text-sm text-ink-muted leading-relaxed font-sans">{exp.description}</p>
-
-              <div className="flex flex-wrap gap-2 pt-2">
-                {exp.skills.map((tech) => (
-                  <Badge key={tech} variant="ghost" size="sm">
-                    {tech}
-                  </Badge>
-                ))}
               </div>
             </div>
           </div>
