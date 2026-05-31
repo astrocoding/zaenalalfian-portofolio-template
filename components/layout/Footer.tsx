@@ -1,7 +1,9 @@
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, ArrowUpRight, Heart, Globe, Code2 } from "lucide-react";
 import { Container } from "../ui/Container";
+import { GithubContributionGraph } from "../ui/GithubContributionGraph";
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -13,10 +15,14 @@ export const Footer: React.FC = () => {
           {/* Brand & Mission Column */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-serif font-bold text-base">
-                才
-              </div>
-              <span className="font-serif font-bold text-xl text-ink">Zaenal Alfian</span>
+              <Image
+                src="/zen.svg"
+                alt="Zaenal Alfian Logo"
+                width={32}
+                height={32}
+                className="w-8 h-8 object-contain"
+              />
+              <span className="font-serif font-bold text-xl text-primary uppercase">ZAENAL ALFIAN</span>
             </div>
             <p className="text-sm text-ink-muted leading-relaxed max-w-md font-serif italic">
               &quot;Simple is better than complex. Quiet design speaks louder than noise.&quot;
@@ -24,6 +30,9 @@ export const Footer: React.FC = () => {
             <p className="text-xs text-ink-muted leading-relaxed max-w-md">
               Senior Full-Stack Engineer, Frontend Architect, and Technical Writer building high-performance web products with clean code and minimalist design.
             </p>
+
+            {/* GitHub Contribution Graph */}
+            <GithubContributionGraph />
           </div>
 
           {/* Quick Navigation Links */}
@@ -43,8 +52,8 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/#docs" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                  Documentation <span className="text-[10px] text-primary/50 font-serif">/ 文書</span>
+                <Link href="/#experience" className="hover:text-primary transition-colors inline-flex items-center gap-1">
+                  Experience <span className="text-[10px] text-primary/50 font-serif">/ 経歴</span>
                 </Link>
               </li>
               <li>
@@ -82,11 +91,11 @@ export const Footer: React.FC = () => {
                 <ArrowUpRight className="w-3 h-3 opacity-60" />
               </a>
               <a
-                href="mailto:contact@zaenalalfian.dev"
+                href="mailto:zaenalalfian20@gmail.com"
                 className="hover:text-primary transition-colors inline-flex items-center gap-2 text-primary font-medium"
               >
                 <Mail className="w-4 h-4" />
-                <span>contact@zaenalalfian.dev</span>
+                <span>zaenalalfian20@gmail.com</span>
               </a>
             </div>
           </div>

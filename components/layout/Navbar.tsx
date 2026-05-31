@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
@@ -9,20 +10,19 @@ import { Container } from "../ui/Container";
 
 const navItems = [
   { label: "Home", href: "/", id: "home", kanji: "ホーム" },
+  { label: "About", href: "/#about", id: "about", kanji: "概要" },
+  { label: "Experience", href: "/#experience", id: "experience", kanji: "経歴" },
   { label: "Projects", href: "/#projects", id: "projects", kanji: "実績" },
   { label: "Blog", href: "/#blogs", id: "blogs", kanji: "記事" },
-  { label: "Docs", href: "/#docs", id: "docs", kanji: "文書" },
-  { label: "About", href: "/#about", id: "about", kanji: "概要" },
   { label: "Contact", href: "/#contact", id: "contact", kanji: "連絡" },
 ];
 
-const sectionIds = ["about", "projects", "blogs", "docs", "contact"];
+const sectionIds = ["about", "experience", "projects", "blogs", "contact"];
 
 const getSectionForPath = (path: string) => {
   if (path.startsWith("/about")) return "about";
   if (path.startsWith("/projects")) return "projects";
   if (path.startsWith("/blogs")) return "blogs";
-  if (path.startsWith("/docs")) return "docs";
   return "home";
 };
 
@@ -44,13 +44,35 @@ export const Navbar: React.FC = () => {
     }
   }
 
+  // Handle Navbar Background Scroll State on Mount and Scroll
   React.useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    window.addEventListener("scroll", handleScroll);
+
+    // Execute immediately on mount to establish scroll state on hard refresh
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Event-driven smooth scroll handler for nav clicks
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (pathname === "/") {
+      if (href === "/" || href === "/#home" || href === "/#hero") {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (href.startsWith("/#")) {
+        const sectionId = href.replace("/#", "");
+        const targetEl = document.getElementById(sectionId);
+        if (targetEl) {
+          e.preventDefault();
+          targetEl.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }
+  };
 
   // Scroll Spy for dynamic section highlighting on landing page
   React.useEffect(() => {
@@ -87,7 +109,7 @@ export const Navbar: React.FC = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-surface/90 backdrop-blur-md border-b border-border-subtle shadow-xs py-3.5"
+          ? "bg-white/95 backdrop-blur-md border-b border-border-subtle shadow-xs py-3.5"
           : "bg-transparent py-5"
       }`}
     >
@@ -96,14 +118,20 @@ export const Navbar: React.FC = () => {
           {/* Logo Branding */}
           <Link
             href="/"
+            onClick={(e) => handleNavClick(e, "/")}
             className="group flex items-center space-x-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md p-1"
           >
-            <div className="w-9 h-9 rounded-md bg-primary text-white flex items-center justify-center font-serif font-bold text-lg shadow-xs group-hover:bg-[#993b3d] transition-colors">
-              才
-            </div>
+            <Image
+              src="/zen.svg"
+              alt="Zaenal Alfian Logo"
+              width={36}
+              height={36}
+              className="w-9 h-9 object-contain group-hover:scale-105 transition-transform"
+              priority
+            />
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-ink text-base tracking-tight leading-none group-hover:text-primary transition-colors">
-                Zaenal Alfian
+              <span className="font-serif font-bold text-primary text-base tracking-tight leading-none uppercase transition-colors">
+                ZAENAL ALFIAN
               </span>
               <span className="text-[10px] font-mono tracking-widest text-ink-muted uppercase mt-0.5">
                 フルスタックエンジニア
@@ -120,6 +148,7 @@ export const Navbar: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
                   className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all relative group flex items-center space-x-1.5 ${
                     isActive
                       ? "text-primary font-semibold"
@@ -145,6 +174,7 @@ export const Navbar: React.FC = () => {
 
             <Link
               href="/#contact"
+              onClick={(e) => handleNavClick(e, "/#contact")}
               className="inline-flex items-center justify-center text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-primary text-white hover:bg-[#993b3d] transition-colors shadow-2xs space-x-1"
             >
               <span>Get in Touch</span>
@@ -183,7 +213,10 @@ export const Navbar: React.FC = () => {
                     <Link
                       key={item.href}
                       href={item.href}
-                      onClick={() => setIsOpen(false)}
+                      onClick={(e) => {
+                        setIsOpen(false);
+                        handleNavClick(e, item.href);
+                      }}
                       className={`flex items-center justify-between py-3 px-3.5 rounded-md font-medium transition-colors ${
                         isActive ? "bg-primary/10 text-primary font-bold" : "text-ink hover:bg-[#f6e0ce]/40"
                       }`}
@@ -198,7 +231,10 @@ export const Navbar: React.FC = () => {
               <div className="pt-4 border-t border-border-subtle flex flex-col space-y-3">
                 <Link
                   href="/#contact"
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => {
+                    setIsOpen(false);
+                    handleNavClick(e, "/#contact");
+                  }}
                   className="w-full py-3 px-4 bg-primary text-white text-center font-medium rounded-md text-sm shadow-xs flex items-center justify-center space-x-2"
                 >
                   <span>Get in Touch</span>
