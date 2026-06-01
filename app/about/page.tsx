@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
@@ -80,12 +81,16 @@ export default function AboutPage() {
             {/* Quick Stats Card */}
             <div className="lg:col-span-5 bg-surface border border-border-warm rounded-2xl p-6 sm:p-8 space-y-6 shadow-card">
               <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
-                <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-serif font-bold text-lg">
-                  才
-                </div>
+                <Image
+                  src="/zen.svg"
+                  alt="Zaenal Alfian Logo"
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 object-contain"
+                />
                 <div>
                   <h3 className="font-serif font-bold text-base text-ink">Zaenal Alfian</h3>
-                  <p className="text-xs font-mono text-ink-muted">Senior Full-Stack Architect</p>
+                  <p className="text-xs font-mono text-ink-muted">Full-Stack Engineer</p>
                 </div>
               </div>
 

@@ -1,5 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Badge } from "../ui/Badge";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 
@@ -53,12 +54,16 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
         </p>
 
         <div className="flex items-center space-x-3 pt-2">
-          <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-serif font-bold text-sm">
-            才
-          </div>
+          <Image
+            src="/zen.svg"
+            alt="Zaenal Alfian Logo"
+            width={36}
+            height={36}
+            className="w-9 h-9 object-contain"
+          />
           <div>
             <div className="text-sm font-bold text-ink font-sans">Zaenal Alfian</div>
-            <div className="text-xs font-mono text-ink-muted">Senior Full-Stack Architect</div>
+            <div className="text-xs font-mono text-ink-muted">Full-Stack Engineer</div>
           </div>
         </div>
       </div>
