@@ -73,7 +73,7 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 w-full bg-surface border border-border-warm rounded-xl p-6 sm:p-8 md:p-10 shadow-card">
+    <form onSubmit={handleSubmit} className="space-y-5 w-full bg-surface border border-border-warm rounded-xl p-5 sm:p-6 shadow-card">
       {error && (
         <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
           <AlertCircle className="w-4 h-4 shrink-0" />

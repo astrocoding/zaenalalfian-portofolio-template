@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -130,9 +131,13 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
       <div className="lg:hidden sticky top-0 z-50 bg-surface border-b border-border-warm px-4 py-3.5 relative shadow-xs shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-8.5 h-8.5 rounded-md bg-primary text-white flex items-center justify-center font-serif font-bold text-base shadow-xs">
-              才
-            </div>
+            <Image
+              src="/zen.svg"
+              alt="Zaenal Alfian Logo"
+              width={34}
+              height={34}
+              className="w-8.5 h-8.5 object-contain"
+            />
             <div>
               <h2 className="font-serif font-bold text-sm text-ink leading-tight">Admin Portal</h2>
               <span className="text-[9px] font-mono text-ink-muted uppercase">管理パネル</span>
@@ -171,9 +176,13 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
       <aside className="hidden lg:flex w-64 shrink-0 h-full bg-surface border-r border-border-warm p-6 flex-col justify-between overflow-y-auto">
         <div className="space-y-6">
           <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
-            <div className="w-9 h-9 rounded-md bg-primary text-white flex items-center justify-center font-serif font-bold text-lg">
-              才
-            </div>
+            <Image
+              src="/zen.svg"
+              alt="Zaenal Alfian Logo"
+              width={36}
+              height={36}
+              className="w-9 h-9 object-contain"
+            />
             <div>
               <h2 className="font-serif font-bold text-base text-ink leading-tight">Admin Portal</h2>
               <span className="text-[10px] font-mono text-ink-muted uppercase">管理パネル</span>
