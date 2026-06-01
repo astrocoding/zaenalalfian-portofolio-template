@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { User, KeyRound, AlertCircle, ArrowRight, ShieldCheck } from "lucide-react";
@@ -46,9 +47,14 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md bg-surface border border-border-warm rounded-2xl p-8 shadow-card relative z-10 space-y-6">
         {/* Header Branding */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-primary text-white mx-auto flex items-center justify-center font-serif font-bold text-xl shadow-xs">
-            才
-          </div>
+          <Image
+            src="/zen.svg"
+            alt="Zaenal Alfian Logo"
+            width={48}
+            height={48}
+            className="w-12 h-12 mx-auto object-contain"
+            priority
+          />
           <h1 className="text-2xl font-serif font-bold text-ink tracking-tight pt-2">
             Admin Authentication / ログイン
           </h1>
