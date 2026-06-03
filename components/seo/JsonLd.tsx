@@ -8,7 +8,7 @@ export const JsonLd: React.FC = () => {
     "@type": "Person",
     name: "Zaenal Alfian",
     alternateName: "才",
-    jobTitle: "Senior Full-Stack Architect & Frontend Engineer",
+    jobTitle: "Full-Stack Engineer",
     url: baseUrl,
     sameAs: [
       "https://github.com/zaenalalfian",
