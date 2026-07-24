@@ -16,31 +16,31 @@ export interface ExperienceItem {
 
 const fallbackExperiences: ExperienceItem[] = [
   {
-    role: "Lead Full-Stack Architect",
-    company: "Apex Digital Systems",
-    period: "2024 — Present",
+    role: "Lead & Full-Stack Developer",
+    company: "Cipta Grafika, Karawang (On-site)",
+    period: "Dec 2024 — Present",
     isCurrent: true,
     description:
-      "Spearheaded the design system migration to Next.js 16 App Router and TailwindCSS v4. Reduced page load times by 45% and improved Core Web Vitals to 99/100.",
-    skills: ["Next.js 16", "React 19", "TypeScript", "PostgreSQL", "Prisma 7", "TailwindCSS"],
+      "Architected a three-tier architecture for ERP system using Node.js & Hapi, React, PostgreSQL, and Redis, improving system performance by 150% compared to legacy code. Developed and deployed a web-based employee attendance system using barcode scanning integrated with payroll management in Laravel, reducing HR's time spent on attendance reconciliation by 65%.",
+    skills: ["Node.js", "Hapi.js", "React", "Laravel", "PostgreSQL", "Redis"],
   },
   {
-    role: "Senior Frontend Engineer",
-    company: "Kurofune Technologies",
-    period: "2022 — 2024",
+    role: "Backend Developer Intern",
+    company: "SchoolTech Indonesia, Malang (Remote)",
+    period: "Aug 2024 — Dec 2024",
     isCurrent: false,
     description:
-      "Architected complex micro-frontend applications and real-time analytical dashboards. Led a team of engineers in establishing strict TypeScript conventions and CI/CD pipelines.",
-    skills: ["React", "TypeScript", "GraphQL", "Docker", "TailwindCSS", "Jest"],
+      "Contributed to backend development of InternPro, a web-based internship platform for vocational high school students, using Laravel. Collaborated closely with Frontend Developers, System Analysts, Project Managers, and QA teams to deliver features aligned with specifications and timelines.",
+    skills: ["Laravel", "PHP", "REST API", "MySQL", "Agile"],
   },
   {
     role: "Full-Stack Developer",
-    company: "Sakura Cloud Solutions",
-    period: "2020 — 2022",
+    company: "Kodetopia Indonesia, Karawang (Hybrid)",
+    period: "Feb 2023 — Mar 2024",
     isCurrent: false,
     description:
-      "Developed high-throughput REST APIs, database schemas, and responsive web portals for enterprise clients in e-commerce and fintech.",
-    skills: ["Node.js", "Express", "PostgreSQL", "React", "Redis"],
+      "Developed custom web applications based on client requirements using diverse technology stacks including Laravel, React, Express, MySQL, and PostgreSQL. Involved in end-to-end development from requirements analysis to deployment with a strong focus on deadlines, coding standards, sprint planning, and code reviews in Agile teams.",
+    skills: ["Laravel", "React", "Express.js", "MySQL", "PostgreSQL", "CI/CD"],
   },
 ];
 
