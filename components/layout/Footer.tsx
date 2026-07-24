@@ -104,7 +104,13 @@ export const Footer: React.FC = () => {
         {/* Bottom copyright line */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-ink-muted gap-4">
           <div className="flex items-center space-x-2">
-            <span>© {currentYear} Zaenal Alfian. All rights reserved.</span>
+            <span>
+              © {currentYear}{" "}
+              <Link href="/" className="font-bold text-secondary hover:text-primary transition-colors">
+                Zaenal Alfian
+              </Link>
+              . All rights reserved.
+            </span>
             <span className="text-border-warm">•</span>
             <span className="font-serif text-primary/60">無の境地</span>
           </div>
