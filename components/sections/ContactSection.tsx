@@ -31,7 +31,7 @@ export const ContactSection: React.FC = () => {
     <SectionWrapper
       id="contact"
       kanjiSubtitle="お問い合わせ"
-      sectionTitle="Let's Build Something Exceptional"
+      sectionTitle="Let's Build Something Great!"
       sectionDescription="Open for senior engineering leadership, frontend architecture consulting, and high-impact web product development."
       bgVariant="paper"
     >
@@ -67,7 +67,7 @@ export const ContactSection: React.FC = () => {
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs font-mono text-ink-muted block uppercase">Location</span>
-                  <span className="text-ink font-medium">Karawang, Indonesia</span>
+                  <span className="text-ink font-medium">Karawang, Indonesia / Remote</span>
                 </div>
               </div>
 
@@ -120,7 +120,7 @@ export const ContactSection: React.FC = () => {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g. Kenji Tanaka"
+                      placeholder="e.g. Zaenal Alfian"
                       className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
                     />
                   </div>
@@ -132,7 +132,7 @@ export const ContactSection: React.FC = () => {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="e.g. kenji@example.com"
+                      placeholder="e.g. zaenal@example.com"
                       className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
                     />
                   </div>
@@ -157,7 +157,7 @@ export const ContactSection: React.FC = () => {
                     rows={5}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell me about your project, timeline, and architectural goals..."
+                    placeholder="Tell me about your project, timeline, and product goals...."
                     className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors resize-none"
                   />
                 </div>
