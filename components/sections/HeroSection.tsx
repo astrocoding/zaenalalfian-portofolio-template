@@ -228,9 +228,9 @@ export const HeroSection: React.FC = () => {
               </div>
               <div>
                 <div className="text-2xl sm:text-3xl font-bold font-serif text-ink">
-                  <CounterNumber to={99.9} decimals={1} suffix="%" delay={0.25} duration={0.85} />
+                  <CounterNumber to={98} suffix="+" delay={0.25} duration={0.85} />
                 </div>
-                <div className="text-xs text-ink-muted font-mono mt-0.5">Code Quality</div>
+                <div className="text-xs text-ink-muted font-mono mt-0.5">Lighthouse Score</div>
               </div>
             </div>
           </motion.div>

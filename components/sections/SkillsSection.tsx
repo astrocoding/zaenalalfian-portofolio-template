@@ -72,7 +72,7 @@ export const SkillsSection: React.FC = () => {
     <SectionWrapper
       id="skills"
       kanjiSubtitle="技術スキル"
-      sectionTitle="Technical Capabilities"
+      sectionTitle="Technical Skillset"
       sectionDescription="Comprehensive toolset honed across years of full-stack engineering and product deployment."
       bgVariant="paper"
       className="relative overflow-hidden"
