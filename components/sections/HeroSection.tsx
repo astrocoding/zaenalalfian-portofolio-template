@@ -7,6 +7,7 @@ import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
 import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
 import { Container } from "../ui/Container";
+import { fetchGitHubAllTimeCommits } from "@/lib/github";
 
 interface CounterNumberProps {
   from?: number;
@@ -128,6 +129,24 @@ export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({ className
 };
 
 export const HeroSection: React.FC = () => {
+  const [gitStats, setGitStats] = React.useState<{ val: number; decimals: number; suffix: string }>({
+    val: 6.7,
+    decimals: 1,
+    suffix: "K+",
+  });
+
+  React.useEffect(() => {
+    let isMounted = true;
+    fetchGitHubAllTimeCommits("astrocoding").then((stats) => {
+      if (isMounted) {
+        setGitStats(stats.formattedDisplay);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <section id="hero" className="relative pt-2 sm:pt-4 lg:pt-6 pb-24 sm:pb-28 lg:pb-32 overflow-hidden bg-paper min-h-[calc(100vh-80px)] flex items-center">
       {/* Decorative Subtle Japanese Grid & Background Motifs */}
@@ -228,9 +247,15 @@ export const HeroSection: React.FC = () => {
               </div>
               <div>
                 <div className="text-2xl sm:text-3xl font-bold font-serif text-ink">
-                  <CounterNumber to={98} suffix="+" delay={0.25} duration={0.85} />
+                  <CounterNumber
+                    to={gitStats.val}
+                    decimals={gitStats.decimals}
+                    suffix={gitStats.suffix}
+                    delay={0.25}
+                    duration={0.85}
+                  />
                 </div>
-                <div className="text-xs text-ink-muted font-mono mt-0.5">Lighthouse Score</div>
+                <div className="text-xs text-ink-muted font-mono mt-0.5">Git Commits</div>
               </div>
             </div>
           </motion.div>
