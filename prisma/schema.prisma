@@ -84,3 +84,16 @@ model Experience {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Skillset {
+  id            String   @id @default(cuid())
+  skillName     String   @map("skill_name")
+  category      String
+  categoryOrder Int      @default(1) @map("category_order")
+  link          String?
+  description   String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("skillsets")
+}

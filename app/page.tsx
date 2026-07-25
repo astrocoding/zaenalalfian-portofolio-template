@@ -16,6 +16,7 @@ export default async function HomePage() {
   let dbProjects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
   let dbBlogs: Awaited<ReturnType<typeof prisma.blog.findMany>> = [];
   let dbExperiences: Awaited<ReturnType<typeof prisma.experience.findMany>> = [];
+  let dbSkillsets: Awaited<ReturnType<typeof prisma.skillset.findMany>> = [];
 
   try {
     dbProjects = await prisma.project.findMany({
@@ -28,6 +29,9 @@ export default async function HomePage() {
     });
     dbExperiences = await prisma.experience.findMany({
       orderBy: { order: "asc" },
+    });
+    dbSkillsets = await prisma.skillset.findMany({
+      orderBy: [{ categoryOrder: "asc" }, { createdAt: "asc" }],
     });
   } catch {
     // Graceful fallback to static seed items when database is empty
@@ -74,11 +78,43 @@ export default async function HomePage() {
         }))
       : undefined;
 
+  const skillCategoriesMap = new Map<
+    string,
+    {
+      title: string;
+      categoryOrder: number;
+      skills: { id: string; skillName: string; link?: string | null; description?: string | null }[];
+    }
+  >();
+
+  dbSkillsets.forEach((item) => {
+    if (!skillCategoriesMap.has(item.category)) {
+      skillCategoriesMap.set(item.category, {
+        title: item.category,
+        categoryOrder: item.categoryOrder,
+        skills: [],
+      });
+    }
+    skillCategoriesMap.get(item.category)?.skills.push({
+      id: item.id,
+      skillName: item.skillName,
+      link: item.link,
+      description: item.description,
+    });
+  });
+
+  const skillCategories =
+    dbSkillsets.length > 0
+      ? Array.from(skillCategoriesMap.values()).sort(
+          (a, b) => a.categoryOrder - b.categoryOrder
+        )
+      : undefined;
+
   return (
     <MainLayout>
       <HeroSection />
       <AboutSection />
-      <SkillsSection />
+      <SkillsSection skillCategories={skillCategories} />
       <ExperienceSection experiences={experiences} />
       <FeaturedProjectsSection projects={projects} />
       <LatestBlogsSection blogs={blogs} />

@@ -13,6 +13,7 @@ import {
   FileCode,
   Users,
   Briefcase,
+  Wrench,
   LogOut,
   ExternalLink,
   Menu,
@@ -34,6 +35,7 @@ const adminNavItems = [
   { label: "Blogs", href: "/admin/blogs", icon: BookOpen, kanji: "記事" },
   { label: "Documentation", href: "/admin/docs", icon: FileCode, kanji: "文書" },
   { label: "Experiences", href: "/admin/experiences", icon: Briefcase, kanji: "経歴" },
+  { label: "Skillsets", href: "/admin/skillsets", icon: Wrench, kanji: "技能" },
   { label: "Users & Access", href: "/admin/users", icon: Users, kanji: "ユーザー" },
 ];
 

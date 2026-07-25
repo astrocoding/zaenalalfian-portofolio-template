@@ -26,10 +26,17 @@ const getSectionForPath = (path: string) => {
   return "home";
 };
 
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
+
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [scrolled, setScrolled] = React.useState(false);
   const pathname = usePathname();
+  const isSubPage = pathname !== "/";
+
+  // Initial state matches SSR output deterministically to avoid hydration mismatches
+  const [scrolled, setScrolled] = React.useState<boolean>(isSubPage);
+
   const [prevPathname, setPrevPathname] = React.useState(pathname);
   const [activeSection, setActiveSection] = React.useState<string>(() =>
     getSectionForPath(pathname)
@@ -41,23 +48,24 @@ export const Navbar: React.FC = () => {
     setIsOpen(false);
     if (pathname !== "/") {
       setActiveSection(getSectionForPath(pathname));
+      setScrolled(true);
     }
   }
 
-  // Handle Navbar Background Scroll State on Mount and Scroll
-  React.useEffect(() => {
+  // Handle Navbar Background Scroll State before browser paint on mount and scroll
+  useIsomorphicLayoutEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 20 || isSubPage);
     };
 
-    // Execute immediately on mount to establish scroll state on hard refresh
+    // Execute immediately on mount
     handleScroll();
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname, isSubPage]);
 
-  // Event-driven smooth scroll handler for nav clicks
+  // Event-driven smooth scroll handler ONLY on explicit user link clicks
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (pathname === "/") {
       if (href === "/" || href === "/#home" || href === "/#hero") {
@@ -74,8 +82,8 @@ export const Navbar: React.FC = () => {
     }
   };
 
-  // Scroll Spy for dynamic section highlighting on landing page
-  React.useEffect(() => {
+  // Synchronously compute and update active section based on user's actual scroll position
+  useIsomorphicLayoutEffect(() => {
     if (pathname !== "/") return;
 
     const handleScrollSpy = () => {
@@ -99,14 +107,16 @@ export const Navbar: React.FC = () => {
       setActiveSection(current);
     };
 
-    window.addEventListener("scroll", handleScrollSpy, { passive: true });
+    // Execute immediately before paint on mount to prevent indicator jumping from "home"
     handleScrollSpy();
 
+    window.addEventListener("scroll", handleScrollSpy, { passive: true });
     return () => window.removeEventListener("scroll", handleScrollSpy);
   }, [pathname]);
 
   return (
     <header
+      suppressHydrationWarning
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-white/95 backdrop-blur-md border-b border-border-subtle shadow-xs py-3.5"

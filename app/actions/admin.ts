@@ -373,3 +373,74 @@ export async function deleteExperienceAction(id: string) {
     return { success: false, error: getErrorMessage(error, "Failed to delete experience record") };
   }
 }
+
+// ==================== SKILLSET ACTIONS ====================
+
+export async function createSkillsetAction(data: {
+  skillName: string;
+  category: string;
+  categoryOrder?: number;
+  link?: string;
+  description?: string;
+}) {
+  try {
+    const newSkill = await prisma.skillset.create({
+      data: {
+        skillName: data.skillName.trim(),
+        category: data.category.trim(),
+        categoryOrder: data.categoryOrder ?? 1,
+        link: data.link ? data.link.trim() : null,
+        description: data.description ? data.description.trim() : null,
+      },
+    });
+    revalidatePath("/");
+    return { success: true, skillset: newSkill };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to create skillset item") };
+  }
+}
+
+export async function updateSkillsetAction(
+  id: string,
+  data: {
+    skillName?: string;
+    category?: string;
+    categoryOrder?: number;
+    link?: string;
+    description?: string;
+  }
+) {
+  try {
+    const updatePayload: {
+      skillName?: string;
+      category?: string;
+      categoryOrder?: number;
+      link?: string | null;
+      description?: string | null;
+    } = {};
+    if (data.skillName !== undefined) updatePayload.skillName = data.skillName.trim();
+    if (data.category !== undefined) updatePayload.category = data.category.trim();
+    if (data.categoryOrder !== undefined) updatePayload.categoryOrder = data.categoryOrder;
+    if (data.link !== undefined) updatePayload.link = data.link ? data.link.trim() : null;
+    if (data.description !== undefined) updatePayload.description = data.description ? data.description.trim() : null;
+
+    const updated = await prisma.skillset.update({
+      where: { id },
+      data: updatePayload,
+    });
+    revalidatePath("/");
+    return { success: true, skillset: updated };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to update skillset item") };
+  }
+}
+
+export async function deleteSkillsetAction(id: string) {
+  try {
+    await prisma.skillset.delete({ where: { id } });
+    revalidatePath("/");
+    return { success: true };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to delete skillset item") };
+  }
+}

@@ -29,6 +29,7 @@ export default async function AdminDashboardPage() {
   let blogCount = 0;
   let docCount = 0;
   let experienceCount = 0;
+  let skillsetCount = 0;
   let userCount = 0;
 
   try {
@@ -36,6 +37,7 @@ export default async function AdminDashboardPage() {
     blogCount = await prisma.blog.count();
     docCount = await prisma.doc.count();
     experienceCount = await prisma.experience.count();
+    skillsetCount = await prisma.skillset.count();
     userCount = await prisma.user.count();
   } catch (e) {
     console.warn("Database query error on admin dashboard:", e);
@@ -73,6 +75,14 @@ export default async function AdminDashboardPage() {
       href: "/admin/experiences",
       newHref: "/admin/experiences/new",
       icon: Briefcase,
+    },
+    {
+      title: "Technical Skillsets",
+      count: skillsetCount,
+      kanji: "技能",
+      href: "/admin/skillsets",
+      newHref: "/admin/skillsets/new",
+      icon: Database,
     },
     {
       title: "Admin Users",

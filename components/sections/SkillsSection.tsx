@@ -4,7 +4,49 @@ import * as React from "react";
 import { SectionWrapper, Card, Badge, CardCornerSeigaiha } from "../ui";
 import { Code, Database, Layers, Wrench } from "lucide-react";
 
-const skillCategories = [
+export interface SkillItem {
+  id?: string;
+  skillName: string;
+  link?: string | null;
+  description?: string | null;
+}
+
+export interface SkillCategoryGroup {
+  title: string;
+  categoryOrder?: number;
+  kanji?: string;
+  icon?: React.ReactNode;
+  skills: (string | SkillItem)[];
+}
+
+export interface SkillsSectionProps {
+  skillCategories?: SkillCategoryGroup[];
+}
+
+const CATEGORY_META: Record<string, { kanji: string; icon: React.ReactNode }> = {
+  "Frontend Engineering": {
+    kanji: "フロントエンド",
+    icon: <Code className="w-5 h-5 text-primary" />,
+  },
+  "Backend & Database": {
+    kanji: "バックエンド",
+    icon: <Database className="w-5 h-5 text-primary" />,
+  },
+  "Backend & Databases": {
+    kanji: "バックエンド",
+    icon: <Database className="w-5 h-5 text-primary" />,
+  },
+  "Architecture & DevOps": {
+    kanji: "アーキテクチャ",
+    icon: <Layers className="w-5 h-5 text-primary" />,
+  },
+  "Tools & Methodologies": {
+    kanji: "ツール",
+    icon: <Wrench className="w-5 h-5 text-primary" />,
+  },
+};
+
+const DEFAULT_SKILL_CATEGORIES: SkillCategoryGroup[] = [
   {
     title: "Frontend Engineering",
     kanji: "フロントエンド",
@@ -67,7 +109,14 @@ const skillCategories = [
   },
 ];
 
-export const SkillsSection: React.FC = () => {
+export const SkillsSection: React.FC<SkillsSectionProps> = ({
+  skillCategories: propsCategories,
+}) => {
+  const categoriesToRender =
+    propsCategories && propsCategories.length > 0
+      ? propsCategories
+      : DEFAULT_SKILL_CATEGORIES;
+
   return (
     <SectionWrapper
       id="skills"
@@ -86,34 +135,46 @@ export const SkillsSection: React.FC = () => {
       </div>
 
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {skillCategories.map((category) => (
-          <Card key={category.title} hoverEffect className="relative overflow-hidden p-6">
-            {/* Bottom-right diagonal Seigaiha wave accent - identical to experience cards */}
-            <CardCornerSeigaiha cardBgColor="#ffffff" />
+        {categoriesToRender.map((category) => {
+          const meta = CATEGORY_META[category.title] || {
+            kanji: category.kanji || "技能",
+            icon: category.icon || <Code className="w-5 h-5 text-primary" />,
+          };
 
-            <div className="relative z-10 space-y-4">
-              <div className="flex items-center justify-between pb-4 mb-2 border-b border-border-subtle">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded bg-[#f6e0ce]/50 border border-border-warm">
-                    {category.icon}
+          return (
+            <Card key={category.title} hoverEffect className="relative overflow-hidden p-6">
+              {/* Bottom-right diagonal Seigaiha wave accent - identical to experience cards */}
+              <CardCornerSeigaiha cardBgColor="#ffffff" />
+
+              <div className="relative z-10 space-y-4">
+                <div className="flex items-center justify-between pb-4 mb-2 border-b border-border-subtle">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 rounded bg-[#f6e0ce]/50 border border-border-warm">
+                      {category.icon || meta.icon}
+                    </div>
+                    <h3 className="text-lg font-bold font-serif text-ink">{category.title}</h3>
                   </div>
-                  <h3 className="text-lg font-bold font-serif text-ink">{category.title}</h3>
+                  <span className="font-serif text-xs text-primary/50 font-semibold uppercase">
+                    {category.kanji || meta.kanji}
+                  </span>
                 </div>
-                <span className="font-serif text-xs text-primary/50 font-semibold uppercase">
-                  {category.kanji}
-                </span>
-              </div>
 
-              <div className="flex flex-wrap gap-2">
-                {category.skills.map((skill) => (
-                  <Badge key={skill} variant="tech" size="md">
-                    {skill}
-                  </Badge>
-                ))}
+                <div className="flex flex-wrap gap-2">
+                  {category.skills.map((skill) => {
+                    const skillName = typeof skill === "string" ? skill : skill.skillName;
+                    const skillKey = typeof skill === "string" ? skill : skill.id || skill.skillName;
+
+                    return (
+                      <Badge key={skillKey} variant="tech" size="md">
+                        {skillName}
+                      </Badge>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          );
+        })}
       </div>
     </SectionWrapper>
   );

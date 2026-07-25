@@ -8,6 +8,7 @@ interface RuntimeField {
 type PrismaClientInternal = PrismaClient & {
   user?: unknown;
   experience?: unknown;
+  skillset?: unknown;
   _runtimeDataModel?: {
     models?: {
       Project?: {
@@ -39,6 +40,7 @@ const getPrismaClient = (): PrismaClient => {
     if (
       !internalPrisma.user ||
       !internalPrisma.experience ||
+      !internalPrisma.skillset ||
       !hasImagesField
     ) {
       globalForPrisma.prisma = undefined;
@@ -52,6 +54,15 @@ const getPrismaClient = (): PrismaClient => {
   return globalForPrisma.prisma;
 };
 
-export const prisma = getPrismaClient();
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, prop: keyof PrismaClient) {
+    const client = getPrismaClient();
+    const value = client[prop];
+    if (typeof value === "function") {
+      return value.bind(client);
+    }
+    return value;
+  },
+});
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = getPrismaClient();

@@ -75,6 +75,61 @@ async function main() {
       console.log(`- Created experience: ${exp.role} at ${exp.company}`);
     }
   }
+
+  console.log("\nSeeding initial skillsets...");
+
+  const skillsetsData = [
+    // Category 1: Frontend Engineering
+    { skillName: "Next.js 16 (App Router)", category: "Frontend Engineering", categoryOrder: 1 },
+    { skillName: "React 19", category: "Frontend Engineering", categoryOrder: 1 },
+    { skillName: "TypeScript", category: "Frontend Engineering", categoryOrder: 1 },
+    { skillName: "TailwindCSS v4", category: "Frontend Engineering", categoryOrder: 1 },
+    { skillName: "Framer Motion", category: "Frontend Engineering", categoryOrder: 1 },
+    { skillName: "State Management (Zustand)", category: "Frontend Engineering", categoryOrder: 1 },
+    { skillName: "HTML5 / Semantic Web", category: "Frontend Engineering", categoryOrder: 1 },
+    { skillName: "Web Performance (CWV)", category: "Frontend Engineering", categoryOrder: 1 },
+
+    // Category 2: Backend & Database
+    { skillName: "Node.js / Bun", category: "Backend & Database", categoryOrder: 2 },
+    { skillName: "PostgreSQL", category: "Backend & Database", categoryOrder: 2 },
+    { skillName: "Prisma 7 ORM", category: "Backend & Database", categoryOrder: 2 },
+    { skillName: "RESTful & GraphQL APIs", category: "Backend & Database", categoryOrder: 2 },
+    { skillName: "Server Actions", category: "Backend & Database", categoryOrder: 2 },
+    { skillName: "Redis Caching", category: "Backend & Database", categoryOrder: 2 },
+    { skillName: "Database Indexing", category: "Backend & Database", categoryOrder: 2 },
+    { skillName: "Auth (NextAuth / Lucia)", category: "Backend & Database", categoryOrder: 2 },
+
+    // Category 3: Architecture & DevOps
+    { skillName: "Vercel Deployment", category: "Architecture & DevOps", categoryOrder: 3 },
+    { skillName: "Docker & Containers", category: "Architecture & DevOps", categoryOrder: 3 },
+    { skillName: "CI/CD Pipelines", category: "Architecture & DevOps", categoryOrder: 3 },
+    { skillName: "Microservice Patterns", category: "Architecture & DevOps", categoryOrder: 3 },
+    { skillName: "Edge Computing", category: "Architecture & DevOps", categoryOrder: 3 },
+    { skillName: "SEO Optimization", category: "Architecture & DevOps", categoryOrder: 3 },
+    { skillName: "Serverless Functions", category: "Architecture & DevOps", categoryOrder: 3 },
+    { skillName: "Monorepos (Turborepo)", category: "Architecture & DevOps", categoryOrder: 3 },
+
+    // Category 4: Tools & Methodologies
+    { skillName: "Git & GitHub Actions", category: "Tools & Methodologies", categoryOrder: 4 },
+    { skillName: "Figma to Code", category: "Tools & Methodologies", categoryOrder: 4 },
+    { skillName: "Jest & React Testing Library", category: "Tools & Methodologies", categoryOrder: 4 },
+    { skillName: "Playwright End-to-End", category: "Tools & Methodologies", categoryOrder: 4 },
+    { skillName: "ESLint & Prettier", category: "Tools & Methodologies", categoryOrder: 4 },
+    { skillName: "Agile & Pair Programming", category: "Tools & Methodologies", categoryOrder: 4 },
+    { skillName: "Technical Documentation", category: "Tools & Methodologies", categoryOrder: 4 },
+    { skillName: "Design Systems", category: "Tools & Methodologies", categoryOrder: 4 },
+  ];
+
+  for (const item of skillsetsData) {
+    const existing = await prisma.skillset.findFirst({
+      where: { skillName: item.skillName, category: item.category },
+    });
+
+    if (!existing) {
+      await prisma.skillset.create({ data: item });
+      console.log(`- Created skillset: ${item.skillName} (${item.category})`);
+    }
+  }
 }
 
 main()
