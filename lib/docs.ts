@@ -63,7 +63,9 @@ export async function getAllDocs(): Promise<DocPost[]> {
             const fileContent = fs.readFileSync(filePath, "utf8");
             const { data, content } = matter(fileContent);
 
-            const processedContent = await remark().use(html, { sanitize: false }).process(content);
+            const processedContent = await remark()
+              .use(html, { sanitize: false, allowDangerousHtml: true })
+              .process(content);
             const frontmatter = data as DocFrontmatter;
 
             docsMap.set(frontmatter.slug, {
@@ -85,7 +87,9 @@ export async function getAllDocs(): Promise<DocPost[]> {
     });
 
     for (const doc of dbDocs) {
-      const processedContent = await remark().use(html, { sanitize: false }).process(doc.content);
+      const processedContent = await remark()
+        .use(html, { sanitize: false, allowDangerousHtml: true })
+        .process(doc.content);
       docsMap.set(doc.slug, {
         frontmatter: {
           title: doc.title,
@@ -140,7 +144,9 @@ export async function getDocPost(
     });
 
     if (dbDoc) {
-      const processedContent = await remark().use(html, { sanitize: false }).process(dbDoc.content);
+      const processedContent = await remark()
+        .use(html, { sanitize: false, allowDangerousHtml: true })
+        .process(dbDoc.content);
       return {
         frontmatter: {
           title: dbDoc.title,
@@ -179,7 +185,9 @@ export async function getDocPost(
   }
 
   const { data, content } = matter(fileContent);
-  const processedContent = await remark().use(html).process(content);
+  const processedContent = await remark()
+    .use(html, { sanitize: false, allowDangerousHtml: true })
+    .process(content);
 
   return {
     frontmatter: data as DocFrontmatter,

@@ -30,10 +30,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files (only .env.example should be committed)
 .env*
-./.env*
-.env
+!.env.example
+
+# private root docs folder (keeps app/docs, content/docs, and lib/docs.ts intact)
+/docs/
 
 
 # vercel
@@ -42,12 +44,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# docs
-docs
-./docs
-/docs
-docs
 
 /app/generated/prisma
 
