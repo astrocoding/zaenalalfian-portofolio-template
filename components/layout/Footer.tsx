@@ -35,9 +35,9 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-surface border-t border-border-warm pt-16 pb-12 mt-auto text-ink">
       <Container size="wide">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-border-subtle">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-border-subtle">
           {/* Brand & Mission Column */}
-          <div className="md:col-span-2 space-y-4">
+          <div className="md:col-span-1 lg:col-span-2 space-y-4">
             <div className="flex items-center space-x-3">
               <Image
                 src="/zen.svg"
@@ -51,6 +51,7 @@ export const Footer: React.FC = () => {
             <p className="text-sm text-ink-muted leading-relaxed max-w-md font-serif italic">
               &quot;Simple is better than complex. Quiet design speaks louder than noise.&quot;
             </p>
+
             <p className="text-xs text-ink-muted leading-relaxed max-w-md">
               Senior Full-Stack Engineer, Frontend Architect, and Technical Writer building high-performance web products with clean code and minimalist design.
             </p>
@@ -59,102 +60,105 @@ export const Footer: React.FC = () => {
             <GithubContributionGraph />
           </div>
 
-          {/* Quick Navigation Links */}
-          <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-ink uppercase tracking-wider">
-              Navigation / 案内
-            </h4>
-            <ul className="space-y-2 text-sm font-medium text-ink-muted">
-              <li>
-                <Link href="/projects" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                  Projects <span className="text-[10px] text-primary/50 font-serif">/ 実績</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/blogs" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                  Blogs <span className="text-[10px] text-primary/50 font-serif">/ 記事</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/docs" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                  Documentation <span className="text-[10px] text-primary/50 font-serif">/ 文書</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/experiences" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                  Experiences <span className="text-[10px] text-primary/50 font-serif">/ 経歴</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/education" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                  Education <span className="text-[10px] text-primary/50 font-serif">/ 学歴</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                  About Me <span className="text-[10px] text-primary/50 font-serif">/ 概要</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* Navigation & Connect Wrapper Column for Tablet Responsive Layout */}
+          <div className="md:col-span-1 lg:col-span-2 flex flex-col space-y-10 lg:grid lg:grid-cols-2 lg:space-y-0 lg:gap-10">
+            {/* Quick Navigation Links */}
+            <div className="space-y-3">
+              <h4 className="font-serif font-bold text-sm text-ink uppercase tracking-wider">
+                Navigation / 案内
+              </h4>
+              <ul className="space-y-2 text-sm font-medium text-ink-muted">
+                <li>
+                  <Link href="/projects" className="hover:text-primary transition-colors inline-flex items-center gap-1">
+                    Projects <span className="text-[10px] text-primary/50 font-serif">/ 実績</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blogs" className="hover:text-primary transition-colors inline-flex items-center gap-1">
+                    Blogs <span className="text-[10px] text-primary/50 font-serif">/ 記事</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/docs" className="hover:text-primary transition-colors inline-flex items-center gap-1">
+                    Documentation <span className="text-[10px] text-primary/50 font-serif">/ 文書</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/experiences" className="hover:text-primary transition-colors inline-flex items-center gap-1">
+                    Experiences <span className="text-[10px] text-primary/50 font-serif">/ 経歴</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/education" className="hover:text-primary transition-colors inline-flex items-center gap-1">
+                    Education <span className="text-[10px] text-primary/50 font-serif">/ 学歴</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about" className="hover:text-primary transition-colors inline-flex items-center gap-1">
+                    About Me <span className="text-[10px] text-primary/50 font-serif">/ 概要</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          {/* Social & Contact */}
-          <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-ink uppercase tracking-wider">
-              Connect / 接続
-            </h4>
-            <div className="flex flex-col space-y-2 text-sm text-ink-muted">
-              <a
-                href="https://github.com/astrocoding"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors inline-flex items-center gap-2"
-              >
-                <GithubIcon className="w-4 h-4" />
-                <span>Github</span>
-                <span className="text-[10px] text-primary/50 font-serif">/ ギットハブ</span>
-                <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
-              </a>
-              <a
-                href="https://linkedin.com/in/zaenalalfian"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors inline-flex items-center gap-2"
-              >
-                <LinkedinIcon className="w-4 h-4" />
-                <span>LinkedIn</span>
-                <span className="text-[10px] text-primary/50 font-serif">/ リンクトイン</span>
-                <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
-              </a>
-              <a
-                href="https://instagram.com/zaenalalfian"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors inline-flex items-center gap-2"
-              >
-                <InstagramIcon className="w-4 h-4" />
-                <span>Instagram</span>
-                <span className="text-[10px] text-primary/50 font-serif">/ インスタグラム</span>
-                <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
-              </a>
-              <a
-                href="https://facebook.com/zaenalalfian"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors inline-flex items-center gap-2"
-              >
-                <FacebookIcon className="w-4 h-4" />
-                <span>Facebook</span>
-                <span className="text-[10px] text-primary/50 font-serif">/ フェイスブック</span>
-                <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
-              </a>
-              <a
-                href="mailto:zaenalalfian20@gmail.com"
-                className="hover:text-primary transition-colors inline-flex items-center gap-2 text-primary font-medium pt-1"
-              >
-                <Mail className="w-4 h-4" />
-                <span>zaenalalfian20@gmail.com</span>
-              </a>
+            {/* Social & Contact */}
+            <div className="space-y-3">
+              <h4 className="font-serif font-bold text-sm text-ink uppercase tracking-wider">
+                Connect / 接続
+              </h4>
+              <div className="flex flex-col space-y-2 text-sm text-ink-muted">
+                <a
+                  href="https://github.com/astrocoding"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-colors inline-flex items-center gap-2"
+                >
+                  <GithubIcon className="w-4 h-4" />
+                  <span>Github</span>
+                  <span className="text-[10px] text-primary/50 font-serif">/ ギットハブ</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
+                </a>
+                <a
+                  href="https://linkedin.com/in/zaenalalfian"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-colors inline-flex items-center gap-2"
+                >
+                  <LinkedinIcon className="w-4 h-4" />
+                  <span>LinkedIn</span>
+                  <span className="text-[10px] text-primary/50 font-serif">/ リンクトイン</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
+                </a>
+                <a
+                  href="https://instagram.com/zaenalalfian"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-colors inline-flex items-center gap-2"
+                >
+                  <InstagramIcon className="w-4 h-4" />
+                  <span>Instagram</span>
+                  <span className="text-[10px] text-primary/50 font-serif">/ インスタグラム</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
+                </a>
+                <a
+                  href="https://facebook.com/zaenalalfian"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-colors inline-flex items-center gap-2"
+                >
+                  <FacebookIcon className="w-4 h-4" />
+                  <span>Facebook</span>
+                  <span className="text-[10px] text-primary/50 font-serif">/ フェイスブック</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
+                </a>
+                <a
+                  href="mailto:zaenalalfian20@gmail.com"
+                  className="hover:text-primary transition-colors inline-flex items-center gap-2 text-primary font-medium pt-1"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>zaenalalfian20@gmail.com</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
