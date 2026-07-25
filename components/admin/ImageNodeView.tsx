@@ -9,13 +9,15 @@ export const ImageNodeView: React.FC<NodeViewProps> = (props) => {
   const { src, alt, width = "100%", alignment = "center" } = node.attrs;
 
   const [isResizing, setIsResizing] = React.useState(false);
+  const [prevWidthProp, setPrevWidthProp] = React.useState<string>(width);
   const [currentWidth, setCurrentWidth] = React.useState<string>(width);
   const imageRef = React.useRef<HTMLImageElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
+  if (width !== prevWidthProp) {
+    setPrevWidthProp(width);
     setCurrentWidth(width);
-  }, [width]);
+  }
 
   const handleAlign = (newAlign: "left" | "center" | "right") => {
     updateAttributes({ alignment: newAlign });
@@ -52,7 +54,7 @@ export const ImageNodeView: React.FC<NodeViewProps> = (props) => {
 
     const onMouseMove = (moveEvent: MouseEvent) => {
       const deltaX = moveEvent.clientX - startX;
-      let newWidthPx = startWidthPx + deltaX;
+      const newWidthPx = startWidthPx + deltaX;
       let newPct = Math.round((newWidthPx / parentWidthPx) * 100);
       if (newPct < 15) newPct = 15;
       if (newPct > 100) newPct = 100;
@@ -86,15 +88,14 @@ export const ImageNodeView: React.FC<NodeViewProps> = (props) => {
   return (
     <NodeViewWrapper className="my-6">
       <div ref={containerRef} className={`w-full flex ${alignClass} group relative`}>
+        {/* Outer Image Node Wrapper (NO overflow-hidden here, enabling floating toolbar to float freely without clipping!) */}
         <div
-          className={`relative inline-block rounded-xl overflow-hidden border-2 transition-all ${
-            selected ? "border-primary ring-4 ring-primary/20 shadow-lg" : "border-transparent"
-          }`}
+          className="relative inline-block max-w-full"
           style={{ width: currentWidth, maxWidth: "100%" }}
         >
           {/* High-Contrast Floating Controls Overlay */}
           <div
-            className={`absolute top-3 left-1/2 -translate-x-1/2 bg-paper/95 backdrop-blur-md text-ink px-3.5 py-1.5 rounded-xl shadow-2xl border border-border-warm flex items-center space-x-2.5 z-40 transition-all ${
+            className={`absolute top-4 left-1/2 -translate-x-1/2 bg-paper/95 backdrop-blur-md text-ink px-3 py-1.5 rounded-xl shadow-xl border border-border-warm flex items-center space-x-2 z-20 transition-all ${
               selected
                 ? "opacity-100 scale-100"
                 : "opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto"
@@ -173,18 +174,25 @@ export const ImageNodeView: React.FC<NodeViewProps> = (props) => {
             </button>
           </div>
 
-          {/* Actual Image Element */}
-          <img
-            ref={imageRef}
-            src={src}
-            alt={alt || ""}
-            className="w-full h-auto object-cover rounded-lg block"
-          />
+          {/* Actual Image Box with rounded corners and selection ring */}
+          <div
+            className={`relative rounded-xl overflow-hidden border-2 transition-all ${
+              selected ? "border-primary ring-4 ring-primary/20 shadow-lg" : "border-transparent"
+            }`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              ref={imageRef}
+              src={src}
+              alt={alt || ""}
+              className="w-full h-auto object-cover rounded-lg block"
+            />
+          </div>
 
           {/* Resize Handle Dragging Dot */}
           <div
             onMouseDown={handleMouseDown}
-            className={`absolute bottom-2 right-2 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center cursor-se-resize shadow-lg hover:scale-125 transition-transform z-40 ${
+            className={`absolute bottom-2 right-2 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center cursor-se-resize shadow-lg hover:scale-125 transition-transform z-30 ${
               selected || isResizing ? "opacity-100" : "opacity-0 group-hover:opacity-100"
             }`}
             title="Drag to resize image width"

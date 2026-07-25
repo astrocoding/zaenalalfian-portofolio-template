@@ -57,6 +57,12 @@ export const TiptapBlogEditor: React.FC<TiptapBlogEditorProps> = ({
 
   const lastContentRef = React.useRef<string>(content);
 
+  const [prevContentProp, setPrevContentProp] = React.useState(content);
+  if (content !== prevContentProp) {
+    setPrevContentProp(content);
+    setRawMarkdown(content);
+  }
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -93,8 +99,9 @@ export const TiptapBlogEditor: React.FC<TiptapBlogEditorProps> = ({
     ],
     content: content,
     onUpdate: ({ editor }) => {
-      const markdownOutput = (editor.storage as any).markdown
-        ? (editor.storage as any).markdown.getMarkdown()
+      const storage = editor.storage as { markdown?: { getMarkdown: () => string } };
+      const markdownOutput = storage.markdown
+        ? storage.markdown.getMarkdown()
         : editor.getHTML();
       lastContentRef.current = markdownOutput;
       setRawMarkdown(markdownOutput);
@@ -108,10 +115,6 @@ export const TiptapBlogEditor: React.FC<TiptapBlogEditorProps> = ({
       lastContentRef.current = content;
       if (content) {
         editor.commands.setContent(content);
-        const md = (editor.storage as any).markdown
-          ? (editor.storage as any).markdown.getMarkdown()
-          : content;
-        setRawMarkdown(md);
       }
     }
   }, [editor, content]);
@@ -156,9 +159,9 @@ export const TiptapBlogEditor: React.FC<TiptapBlogEditorProps> = ({
     editor.chain().focus().setImage({
       src: imageUrl,
       alt: imageAlt,
-      width: imageWidth,
+      width: imageWidth as unknown as number,
       alignment: imageAlign,
-    } as any).run();
+    } as unknown as { src: string; alt?: string; width?: number; alignment?: string }).run();
 
     setImageUrl("");
     setImageAlt("");
@@ -505,6 +508,7 @@ export const TiptapBlogEditor: React.FC<TiptapBlogEditorProps> = ({
                     ) : imageUrl ? (
                       <div className="flex flex-col items-center justify-center space-y-2">
                         <div className="relative w-32 h-20 rounded-lg overflow-hidden border border-border-subtle shadow-sm">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={imageUrl}
                             alt="Uploaded preview"

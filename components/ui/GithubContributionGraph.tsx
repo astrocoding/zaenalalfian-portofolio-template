@@ -27,16 +27,14 @@ const LEVEL_COLORS: Record<number, string> = {
 export const GithubContributionGraph: React.FC<{ username?: string }> = ({
   username: propUsername,
 }) => {
-  const [username, setUsername] = React.useState<string>(propUsername || "astrocoding");
+  const [fetchedUsername, setFetchedUsername] = React.useState<string | null>(null);
+  const username = propUsername || fetchedUsername || "astrocoding";
   const [data, setData] = React.useState<ContributionDay[]>([]);
   const [totalCount, setTotalCount] = React.useState<number>(FALLBACK_2026_TOTAL);
 
-  // Dynamically load username from User table database via /api/profile API
+  // Dynamically load username from User table database via /api/profile API when prop is omitted
   React.useEffect(() => {
-    if (propUsername) {
-      setUsername(propUsername);
-      return;
-    }
+    if (propUsername) return;
 
     let isMounted = true;
     async function loadDynamicUsername() {
@@ -45,7 +43,7 @@ export const GithubContributionGraph: React.FC<{ username?: string }> = ({
         if (res.ok) {
           const json = await res.json();
           if (isMounted && json?.username) {
-            setUsername(json.username);
+            setFetchedUsername(json.username);
           }
         }
       } catch (err) {

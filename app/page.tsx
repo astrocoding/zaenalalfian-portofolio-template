@@ -56,6 +56,7 @@ export default async function HomePage() {
           slug: b.slug,
           category: b.category,
           description: b.description,
+          thumbnail: b.thumbnail,
           publishedAt: b.publishedAt ? new Date(b.publishedAt).toISOString().split("T")[0] : "",
         }))
       : undefined;

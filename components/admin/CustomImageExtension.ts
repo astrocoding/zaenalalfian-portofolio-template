@@ -110,7 +110,10 @@ export const CustomImageExtension = BaseImage.extend({
   addStorage() {
     return {
       markdown: {
-        serialize(state: any, node: any) {
+        serialize(
+          state: { esc: (s: string) => string; write: (s: string) => void; closeBlock: (n: unknown) => void },
+          node: { attrs: Record<string, string> }
+        ) {
           const { src, alt, title, alignment = "center", width = "100%" } = node.attrs;
           if (!src) return;
           const altStr = alt ? ` alt="${state.esc(alt)}"` : "";

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { SectionWrapper } from "../ui/SectionWrapper";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
-import { ArrowRight, Clock, Calendar, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, Calendar } from "lucide-react";
 
 export interface BlogItem {
   id: string;
@@ -17,6 +17,7 @@ export interface BlogItem {
   description: string;
   publishedAt: string;
   readingTime?: string;
+  thumbnail?: string | null;
   bgGradient?: string;
   illustration?: "castle" | "fox" | "fuji" | "pagoda";
 }

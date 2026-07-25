@@ -10,6 +10,7 @@ export interface BlogHeaderProps {
   publishedAt: string;
   readingTime: string;
   description: string;
+  thumbnail?: string;
 }
 
 export const BlogHeader: React.FC<BlogHeaderProps> = ({
@@ -18,6 +19,7 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
   publishedAt,
   readingTime,
   description,
+  thumbnail,
 }) => {
   return (
     <div className="space-y-6 pb-4 border-b border-border-warm">
@@ -52,6 +54,20 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
         <p className="text-lg text-ink-muted leading-relaxed font-serif italic max-w-3xl border-l-2 border-primary/40 pl-4 py-1">
           &quot;{description}&quot;
         </p>
+
+        {thumbnail &&
+          (thumbnail.startsWith("/upload/") ||
+            thumbnail.startsWith("http") ||
+            thumbnail.startsWith("/")) && (
+            <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden border border-border-warm my-6 shadow-md">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={thumbnail}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
 
         <div className="flex items-center space-x-3 pt-2">
           <Image

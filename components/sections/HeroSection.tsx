@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, CheckCircle2, FileText } from "lucide-react";
+import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
 import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
 import { Container } from "../ui/Container";

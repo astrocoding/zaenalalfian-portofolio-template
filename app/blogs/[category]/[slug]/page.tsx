@@ -74,6 +74,7 @@ export default async function BlogDetailPage({
             publishedAt={post.frontmatter.publishedAt}
             readingTime={post.readingTime}
             description={post.frontmatter.description}
+            thumbnail={post.frontmatter.thumbnail}
           />
 
           {/* Article Body */}

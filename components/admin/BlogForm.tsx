@@ -7,6 +7,7 @@ import { Save, AlertCircle } from "lucide-react";
 import { createBlogAction, updateBlogAction } from "@/app/actions/admin";
 import { slugify } from "@/lib/utils";
 import { TiptapBlogEditor } from "./TiptapBlogEditor";
+import { ImageUploader } from "./ImageUploader";
 
 export interface BlogData {
   id?: string;
@@ -35,6 +36,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
     category: initialData?.category || "architecture",
     description: initialData?.description || "",
     content: initialData?.content || "# Article Title\n\nWrite article content here...",
+    thumbnail: initialData?.thumbnail || "",
     keywords: initialData?.keywords ? initialData.keywords.join(", ") : "Next.js, Architecture",
   });
 
@@ -141,6 +143,18 @@ export const BlogForm: React.FC<BlogFormProps> = ({ initialData, isEdit = false 
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           placeholder="Short summary for search results & cards..."
           className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+        />
+      </div>
+
+      <div className="space-y-1.5">
+        <ImageUploader
+          value={formData.thumbnail ? [formData.thumbnail] : []}
+          onChange={(newUrls) =>
+            setFormData((prev) => ({ ...prev, thumbnail: newUrls[0] || "" }))
+          }
+          maxFiles={1}
+          label="Article Cover / Thumbnail Image / サムネイル"
+          sublabel="Saved to /public/upload/img as WebP format"
         />
       </div>
 
