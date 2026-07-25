@@ -6,21 +6,38 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { AdminPagination } from "@/components/admin/AdminPagination";
 import { Plus, Edit, Trash2, ArrowLeft, ExternalLink, Code2 } from "lucide-react";
 import { deleteProjectAction } from "@/app/actions/admin";
 
-export default async function AdminProjectsPage() {
+export interface AdminProjectsPageProps {
+  searchParams?: Promise<{ page?: string }>;
+}
+
+const PAGE_SIZE = 10;
+
+export default async function AdminProjectsPage({ searchParams }: AdminProjectsPageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
+
   let projects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
+  let totalItems = 0;
+
   try {
+    totalItems = await prisma.project.count();
     projects = await prisma.project.findMany({
       orderBy: { createdAt: "desc" },
+      skip: (currentPage - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
     });
   } catch (e) {
     console.warn("Error fetching projects:", e);
   }
+
+  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
 
   return (
     <div className="space-y-6">
@@ -150,6 +167,15 @@ export default async function AdminProjectsPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Interactive Pagination */}
+        <AdminPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          pageSize={PAGE_SIZE}
+          baseUrl="/admin/projects"
+        />
       </div>
     </div>
   );

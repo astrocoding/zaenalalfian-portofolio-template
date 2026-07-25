@@ -6,21 +6,38 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { AdminPagination } from "@/components/admin/AdminPagination";
 import { Plus, Edit, Trash2, ArrowLeft, ExternalLink } from "lucide-react";
 import { deleteSkillsetAction } from "@/app/actions/admin";
 
-export default async function AdminSkillsetsPage() {
+export interface AdminSkillsetsPageProps {
+  searchParams?: Promise<{ page?: string }>;
+}
+
+const PAGE_SIZE = 10;
+
+export default async function AdminSkillsetsPage({ searchParams }: AdminSkillsetsPageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
+
   let skillsets: Awaited<ReturnType<typeof prisma.skillset.findMany>> = [];
+  let totalItems = 0;
+
   try {
+    totalItems = await prisma.skillset.count();
     skillsets = await prisma.skillset.findMany({
       orderBy: [{ categoryOrder: "asc" }, { category: "asc" }, { createdAt: "asc" }],
+      skip: (currentPage - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
     });
   } catch (e) {
     console.warn("Error fetching skillsets:", e);
   }
+
+  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
 
   return (
     <div className="space-y-6">
@@ -134,6 +151,15 @@ export default async function AdminSkillsetsPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Interactive Pagination */}
+        <AdminPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          pageSize={PAGE_SIZE}
+          baseUrl="/admin/skillsets"
+        />
       </div>
     </div>
   );

@@ -6,21 +6,38 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { AdminPagination } from "@/components/admin/AdminPagination";
 import { UserPlus, Edit, Trash2, ArrowLeft } from "lucide-react";
 import { deleteUserAction } from "@/app/actions/admin";
 
-export default async function AdminUsersPage() {
+export interface AdminUsersPageProps {
+  searchParams?: Promise<{ page?: string }>;
+}
+
+const PAGE_SIZE = 10;
+
+export default async function AdminUsersPage({ searchParams }: AdminUsersPageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
+
   let users: Awaited<ReturnType<typeof prisma.user.findMany>> = [];
+  let totalItems = 0;
+
   try {
+    totalItems = await prisma.user.count();
     users = await prisma.user.findMany({
       orderBy: { createdAt: "desc" },
+      skip: (currentPage - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
     });
   } catch (e) {
     console.warn("Error fetching users:", e);
   }
+
+  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
 
   return (
     <div className="space-y-6">
@@ -108,7 +125,7 @@ export default async function AdminUsersPage() {
                           </button>
                         </Link>
 
-                        {users.length > 1 && (
+                        {totalItems > 1 && (
                           <form
                             action={async () => {
                               "use server";
@@ -132,6 +149,15 @@ export default async function AdminUsersPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Interactive Pagination */}
+        <AdminPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          pageSize={PAGE_SIZE}
+          baseUrl="/admin/users"
+        />
       </div>
     </div>
   );

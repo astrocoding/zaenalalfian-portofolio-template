@@ -6,21 +6,38 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { AdminPagination } from "@/components/admin/AdminPagination";
 import { Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
 import { deleteExperienceAction } from "@/app/actions/admin";
 
-export default async function AdminExperiencesPage() {
+export interface AdminExperiencesPageProps {
+  searchParams?: Promise<{ page?: string }>;
+}
+
+const PAGE_SIZE = 10;
+
+export default async function AdminExperiencesPage({ searchParams }: AdminExperiencesPageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
+
   let experiences: Awaited<ReturnType<typeof prisma.experience.findMany>> = [];
+  let totalItems = 0;
+
   try {
+    totalItems = await prisma.experience.count();
     experiences = await prisma.experience.findMany({
       orderBy: { order: "asc" },
+      skip: (currentPage - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
     });
   } catch (e) {
     console.warn("Error fetching experiences:", e);
   }
+
+  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
 
   return (
     <div className="space-y-6">
@@ -131,6 +148,15 @@ export default async function AdminExperiencesPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Interactive Pagination */}
+        <AdminPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          pageSize={PAGE_SIZE}
+          baseUrl="/admin/experiences"
+        />
       </div>
     </div>
   );
