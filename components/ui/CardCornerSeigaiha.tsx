@@ -42,7 +42,7 @@ export const CardCornerSeigaiha: React.FC<CardCornerSeigaihaProps> = ({
 }) => {
   return (
     <div
-      className={`absolute bottom-0 right-0 w-[170px] sm:w-[190px] h-[135px] sm:h-[150px] pointer-events-none z-0 overflow-hidden select-none ${className}`}
+      className={`absolute -bottom-6 sm:-bottom-7 right-0 w-[170px] sm:w-[190px] h-[135px] sm:h-[150px] pointer-events-none z-0 overflow-hidden select-none ${className}`}
     >
       <svg
         viewBox="-40 -40 280 220"
