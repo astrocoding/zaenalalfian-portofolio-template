@@ -23,7 +23,10 @@ const getSectionForPath = (path: string) => {
   if (path.startsWith("/about")) return "about";
   if (path.startsWith("/projects")) return "projects";
   if (path.startsWith("/blogs")) return "blogs";
-  return "home";
+  if (path.startsWith("/experience")) return "experience";
+  if (path.startsWith("/docs")) return "docs";
+  if (path === "/") return "home";
+  return "";
 };
 
 const useIsomorphicLayoutEffect =
@@ -32,10 +35,9 @@ const useIsomorphicLayoutEffect =
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
-  const isSubPage = pathname !== "/";
 
   // Initial state matches SSR output deterministically to avoid hydration mismatches
-  const [scrolled, setScrolled] = React.useState<boolean>(isSubPage);
+  const [scrolled, setScrolled] = React.useState<boolean>(false);
 
   const [prevPathname, setPrevPathname] = React.useState(pathname);
   const [activeSection, setActiveSection] = React.useState<string>(() =>
@@ -46,16 +48,14 @@ export const Navbar: React.FC = () => {
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
     setIsOpen(false);
-    if (pathname !== "/") {
-      setActiveSection(getSectionForPath(pathname));
-      setScrolled(true);
-    }
+    setActiveSection(getSectionForPath(pathname));
+    setScrolled(false);
   }
 
-  // Handle Navbar Background Scroll State before browser paint on mount and scroll
+  // Handle Navbar Background Scroll State before browser paint on mount and scroll across all pages
   useIsomorphicLayoutEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20 || isSubPage);
+      setScrolled(window.scrollY > 20);
     };
 
     // Execute immediately on mount
@@ -63,7 +63,7 @@ export const Navbar: React.FC = () => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname, isSubPage]);
+  }, [pathname]);
 
   // Event-driven smooth scroll handler ONLY on explicit user link clicks
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
