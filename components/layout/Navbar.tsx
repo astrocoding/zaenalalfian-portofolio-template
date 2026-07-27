@@ -63,16 +63,19 @@ export const Navbar: React.FC = () => {
           setScrolled(scrollY > 20);
 
           if (pathname === "/") {
-            if (scrollY < 250) {
+            if (scrollY < 180) {
               setActiveSection("home");
             } else {
               let current = "home";
+              const anchorY = 70; // Precise 70px viewport anchor line (5px below 65px header)
+
               for (const id of sectionIds) {
                 const el = document.getElementById(id);
                 if (el) {
-                  const top = el.getBoundingClientRect().top;
-                  if (top <= 180) {
+                  const rect = el.getBoundingClientRect();
+                  if (rect.top <= anchorY && rect.bottom > anchorY) {
                     current = id;
+                    break;
                   }
                 }
               }
@@ -90,18 +93,31 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
-  // Event-driven smooth scroll handler ONLY on explicit user link clicks
+  // Event-driven smooth scroll handler ONLY on explicit user link clicks (Mobile & Desktop)
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    setIsOpen(false);
+
     if (pathname === "/") {
       if (href === "/" || href === "/#home" || href === "/#hero") {
         e.preventDefault();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (href.startsWith("/#")) {
-        const sectionId = href.replace("/#", "");
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }, 50);
+      } else if (href.includes("#")) {
+        const sectionId = href.split("#")[1];
         const targetEl = document.getElementById(sectionId);
         if (targetEl) {
           e.preventDefault();
-          targetEl.scrollIntoView({ behavior: "smooth" });
+          setTimeout(() => {
+            const headerOffset = 65; // Exact 65px scrolled header height
+            const elementPosition = targetEl.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth",
+            });
+          }, 50);
         }
       }
     }
@@ -216,10 +232,7 @@ export const Navbar: React.FC = () => {
                     <Link
                       key={item.href}
                       href={item.href}
-                      onClick={(e) => {
-                        setIsOpen(false);
-                        handleNavClick(e, item.href);
-                      }}
+                      onClick={(e) => handleNavClick(e, item.href)}
                       className={`flex items-center justify-between py-3 px-3.5 rounded-md font-medium transition-colors ${
                         isActive ? "bg-primary/10 text-primary font-bold" : "text-ink hover:bg-[#f6e0ce]/40"
                       }`}
@@ -234,10 +247,7 @@ export const Navbar: React.FC = () => {
               <div className="pt-4 border-t border-border-subtle flex flex-col space-y-3">
                 <Link
                   href="/#contact"
-                  onClick={(e) => {
-                    setIsOpen(false);
-                    handleNavClick(e, "/#contact");
-                  }}
+                  onClick={(e) => handleNavClick(e, "/#contact")}
                   className="w-full py-3 px-4 bg-primary text-white text-center font-medium rounded-md text-sm shadow-xs flex items-center justify-center space-x-2"
                 >
                   <span>Get in Touch</span>

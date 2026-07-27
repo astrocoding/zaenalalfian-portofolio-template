@@ -3,7 +3,6 @@
 import * as React from "react";
 import Link from "next/link";
 import { SectionWrapper } from "../ui/SectionWrapper";
-import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 import { ArrowRight, FolderGit2 } from "lucide-react";
 
@@ -48,13 +47,22 @@ const fallbackProjects: ProjectItem[] = [
     thumbnail: "",
     techstack: ["Next.js 16", "MDX", "gray-matter", "TailwindCSS v4", "TypeScript"],
   },
+  {
+    id: "proj-4",
+    title: "LibrarySkill Learning Portal",
+    slug: "library-skill-learning-portal",
+    category: "EdTech Platform",
+    description:
+      "Modern full-stack learning platform with interactive skill courses, role-based access control, and seamless progress tracking.",
+    thumbnail: "",
+    techstack: ["Next.js 16", "PostgreSQL", "Prisma ORM", "NextAuth.js", "TailwindCSS"],
+  },
 ];
 
-const ProjectCardThumbnail: React.FC<{ thumbnail: string; title: string; category: string; slug: string }> = ({
+const ProjectCardThumbnail: React.FC<{ thumbnail: string; title: string; category: string }> = ({
   thumbnail,
   title,
   category,
-  slug,
 }) => {
   const [imageError, setImageError] = React.useState(false);
 
@@ -65,40 +73,30 @@ const ProjectCardThumbnail: React.FC<{ thumbnail: string; title: string; categor
     !imageError;
 
   return (
-    <Link href={`/projects/${slug}`} className="block relative w-full h-full group/img overflow-hidden rounded-lg">
-      <div className="h-full w-full bg-[#f6e0ce]/30 border border-border-subtle rounded-lg flex flex-col items-center justify-center relative overflow-hidden">
-        {isCustomImage ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={thumbnail}
-            alt={title}
-            onError={() => setImageError(true)}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
-          />
-        ) : (
-          <div className="flex flex-col items-center justify-center p-4 text-center">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-              <FolderGit2 className="w-6 h-6" />
-            </div>
-            <span className="text-xs font-mono font-medium text-ink-muted">
-              {category}
-            </span>
+    <div className="relative w-full h-full overflow-hidden">
+      {isCustomImage ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={thumbnail}
+          alt={title}
+          onError={() => setImageError(true)}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center bg-[#f6e0ce]/30">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
+            <FolderGit2 className="w-6 h-6" />
           </div>
-        )}
-
-        {/* --- HOVER EXPLORE OVERLAY ON IMAGE --- */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover/img:opacity-100 transition-all duration-300 flex items-center justify-center p-4 z-20 backdrop-blur-[2px]">
-          <span className="inline-flex items-center space-x-2 bg-primary text-white text-xs font-mono font-semibold px-4 py-2.5 rounded-xl shadow-xl transform translate-y-2 group-hover/img:translate-y-0 transition-all duration-300 border border-amber-200/30">
-            <span>Explore Case Study</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+          <span className="text-xs font-mono font-medium text-ink-muted">
+            {category}
           </span>
         </div>
-      </div>
-    </Link>
+      )}
+    </div>
   );
 };
 
-export const JapaneseScrollProjectCard: React.FC<{
+export const BoxyProjectCard: React.FC<{
   project: ProjectItem;
   index: number;
   className?: string;
@@ -106,110 +104,84 @@ export const JapaneseScrollProjectCard: React.FC<{
   const kanjiNumbers = ["一", "二", "三", "四", "五", "六"];
   const kanjiNum = kanjiNumbers[index % kanjiNumbers.length] || "一";
 
+  // Limit techstack badges on image to max 3 items, showing "+N more" badge if overflow
+  const maxVisibleTech = 3;
+  const visibleTech = project.techstack.slice(0, maxVisibleTech);
+  const remainingTechCount = project.techstack.length - maxVisibleTech;
+
   return (
-    <div className={`group relative flex flex-col items-center w-full h-auto transition-all duration-300 px-2 sm:px-3 ${className}`}>
-      {/* --- TOP WOODEN SCROLL ROLLER BAR (JIKUGI HEADER) --- */}
-      <div className="relative z-30 w-full flex items-center">
-        {/* Left Dark Wood Knob (Vertically centered) */}
-        <div className="absolute -left-3.5 sm:-left-4 top-1/2 -translate-y-1/2 w-4 sm:w-4.5 h-9 sm:h-[38px] bg-[#1c1917] rounded-l-md border-r-2 border-[#3c3633] shadow-md flex items-center justify-center z-40">
-          <div className="w-1 h-5 bg-[#3c3633] rounded-sm" />
-        </div>
+    <div
+      className={`group relative bg-surface border border-border-subtle hover:border-primary hover:-translate-y-1.5 rounded-2xl transition-all duration-300 flex flex-col overflow-hidden w-full ${className}`}
+    >
+      {/* --- TOP THUMBNAIL IMAGE WITH TECH BADGES OVERLAY --- */}
+      <Link href={`/projects/${project.slug}`} className="block relative w-full h-40 sm:h-44 overflow-hidden bg-[#f6e0ce]/30 shrink-0 rounded-t-2xl">
+        <ProjectCardThumbnail
+          thumbnail={project.thumbnail}
+          title={project.title}
+          category={project.category}
+        />
 
-        {/* Center Vermilion Red Banner */}
-        <div className="w-full h-8 bg-gradient-to-r from-[#993b3d] via-[#b04749] to-[#993b3d] px-3.5 sm:px-4 flex items-center justify-between shadow-md relative overflow-hidden border-t border-x border-[#7e2d2f] rounded-none">
-          {/* Subtle Japanese Stripe Pattern Overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.08)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.08)_50%,rgba(255,255,255,0.08)_75%,transparent_75%,transparent)] bg-[length:12px_12px] opacity-40 pointer-events-none" />
-
-          <span className="font-serif text-xs font-bold text-white tracking-wider relative z-10 truncate">
-            {project.category}
-          </span>
-          <span className="font-serif text-xs font-extrabold text-amber-200/90 relative z-10 shrink-0 ml-2">
+        {/* Kanji Number Badge Top-Right */}
+        <div className="absolute top-3 right-3 z-20 pointer-events-none">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md text-amber-200 font-serif text-xs font-bold border border-amber-200/30 shadow-xs">
             其の{kanjiNum}
           </span>
         </div>
 
-        {/* Right Dark Wood Knob (Vertically centered) */}
-        <div className="absolute -right-3.5 sm:-right-4 top-1/2 -translate-y-1/2 w-4 sm:w-4.5 h-9 sm:h-[38px] bg-[#1c1917] rounded-r-md border-l-2 border-[#3c3633] shadow-md flex items-center justify-center z-40">
-          <div className="w-1 h-5 bg-[#3c3633] rounded-sm" />
+        {/* Tech Badges Overlaid at Bottom-Left of Image (Single Row Max, "+N more" fallback) */}
+        <div className="absolute bottom-3 left-3 right-3 z-20 flex items-center gap-1.5 overflow-hidden pointer-events-none">
+          {visibleTech.map((tech) => (
+            <span
+              key={tech}
+              className="inline-block px-2.5 py-1 rounded-md bg-white/95 backdrop-blur-md text-ink text-[11px] font-mono font-medium border border-border-subtle shadow-xs truncate max-w-[100px]"
+            >
+              {tech}
+            </span>
+          ))}
+          {remainingTechCount > 0 && (
+            <span className="inline-block px-2 py-1 rounded-md bg-primary/90 backdrop-blur-md text-white text-[11px] font-mono font-semibold shadow-xs shrink-0">
+              +{remainingTechCount} more
+            </span>
+          )}
         </div>
-      </div>
+      </Link>
 
-      {/* --- JAPANESE SCROLL PARCHMENT PAPER BODY (UNROLLS DOWNWARD ON HOVER) --- */}
-      <div className="relative w-[calc(100%-0.75rem)] sm:w-[calc(100%-1rem)] bg-surface border-x-2 border-[#ebd9c8] shadow-card flex flex-col pt-3 pb-1 sm:pb-1.5 px-4 sm:px-5 z-10 transition-all duration-500 ease-out group-hover:shadow-2xl overflow-hidden">
-        {/* Subtle Traditional Paper Background Pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(#b04749_0.5px,transparent_0.5px)] [background-size:16px_16px] opacity-[0.03] pointer-events-none" />
-
-        {/* --- HERO THUMBNAIL ARTWORK WITH HOVER OVERLAY --- */}
-        <div className="relative w-full h-40 sm:h-44 my-0.5 shrink-0">
-          <ProjectCardThumbnail
-            thumbnail={project.thumbnail}
-            title={project.title}
-            category={project.category}
-            slug={project.slug}
-          />
-        </div>
-
-        {/* --- ALWAYS VISIBLE HEADER DETAILS --- */}
-        <div className="mt-2">
-          <div className="flex items-center justify-between border-b border-border-subtle pb-1 mb-1.5">
-            <span className="text-[11px] font-mono font-semibold text-primary uppercase tracking-wider">
+      {/* --- CARD CONTENT BODY --- */}
+      <div className="p-4 sm:p-4.5 flex flex-col flex-1 justify-between space-y-3">
+        <div className="space-y-1.5">
+          {/* Category */}
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-mono font-semibold text-primary uppercase tracking-wider truncate mr-2">
               {project.category}
             </span>
-            <span className="font-serif text-xs font-bold text-primary">実績作品</span>
+            <span className="font-serif text-xs font-bold text-primary shrink-0">実績作品</span>
           </div>
 
+          {/* Title (Truncated to 1 line with ellipsis if exceeds) */}
           <Link href={`/projects/${project.slug}`} className="group/title block">
-            <h3 className="text-base sm:text-lg font-serif font-bold text-ink group-hover/title:text-primary transition-colors leading-snug">
+            <h3 className="text-base font-serif font-bold text-ink group-hover/title:text-primary transition-colors leading-snug truncate" title={project.title}>
               {project.title}
             </h3>
           </Link>
+
+          {/* Description (Truncated to exactly 2 lines) */}
+          <p className="text-xs text-ink-muted leading-relaxed line-clamp-2">
+            {project.description}
+          </p>
         </div>
 
-        {/* --- UNROLLING SCROLL EXTENSION CONTENT (Expands Top to Bottom on Hover) --- */}
-        <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-700 ease-in-out overflow-hidden">
-          <div className="min-h-0 overflow-hidden space-y-3 pt-2 pb-3 px-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <p className="text-xs sm:text-sm text-ink-muted leading-relaxed line-clamp-3">
-              {project.description}
-            </p>
+        {/* --- VIEW PROJECT BUTTON (Boxy, No Border, Font-Mono, Diagonal Stripes & Amber Colors) --- */}
+        <Link href={`/projects/${project.slug}`} className="block w-full pt-1">
+          <div className="relative w-full py-2.5 px-3.5 rounded-md bg-gradient-to-r from-[#993b3d] via-[#b04749] to-[#993b3d] shadow-2xs hover:shadow-md flex items-center justify-center space-x-2 text-amber-200 group-hover:brightness-105 transition-all duration-300 overflow-hidden">
+            {/* Subtle Diagonal Stripe Pattern Overlay */}
+            <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.08)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.08)_50%,rgba(255,255,255,0.08)_75%,transparent_75%,transparent)] bg-[length:12px_12px] opacity-40 pointer-events-none" />
 
-            {/* Tech Stack Badges */}
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {project.techstack.map((tech) => (
-                <Badge key={tech} variant="tech" size="sm">
-                  {tech}
-                </Badge>
-              ))}
-            </div>
+            <span className="font-mono text-xs font-semibold uppercase tracking-wider relative z-10 text-amber-200">
+              View Project
+            </span>
+            <ArrowRight className="w-3.5 h-3.5 relative z-10 text-amber-200 transform group-hover:translate-x-1 transition-transform" />
           </div>
-        </div>
-      </div>
-
-      {/* --- BOTTOM WOODEN SCROLL ROLLER BAR (JIKUGI FOOTER WITH COLOR UNROLL ANIMATION) --- */}
-      <div className="relative z-30 w-full flex items-center">
-        {/* Left Bottom Dark Wood Knob (Static constant cap) */}
-        <div className="absolute -left-3.5 sm:-left-4 top-1/2 -translate-y-1/2 w-4 sm:w-4.5 h-9 sm:h-[38px] bg-[#1c1917] rounded-l-md border-r-2 border-[#3c3633] shadow-md flex items-center justify-center z-40">
-          <div className="w-1 h-5 bg-[#3c3633] rounded-sm" />
-        </div>
-
-        {/* Center Bottom Roller Bar (Unrolls from Red to Dark Wood on hover) */}
-        <div className="w-full h-8 shadow-md relative overflow-hidden border-b border-x rounded-none transition-colors duration-700 ease-in-out border-[#7e2d2f] group-hover:border-[#1c1917]">
-          {/* Bare Dark Wood Roller Core (Revealed when red paper unrolls off) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1c1917] via-[#2d2724] to-[#1c1917] flex items-center justify-center">
-            <div className="w-full h-1 bg-[#3c3633]/60 shadow-inner" />
-          </div>
-
-          {/* Red Vermilion Paper Layer (Static state: covers bar; Hover state: unwinds & fades to reveal dark wood) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#993b3d] via-[#b04749] to-[#993b3d] px-3.5 sm:px-4 flex items-center justify-center opacity-100 group-hover:opacity-0 transition-all duration-700 ease-in-out">
-            {/* Subtle Japanese Stripe Pattern Overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.08)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.08)_50%,rgba(255,255,255,0.08)_75%,transparent_75%,transparent)] bg-[length:12px_12px] opacity-40 pointer-events-none group-hover:translate-y-full transition-transform duration-700 ease-in-out" />
-            <div className="w-full h-0.5 bg-amber-200/40 relative z-10 shadow-inner rounded-full" />
-          </div>
-        </div>
-
-        {/* Right Bottom Dark Wood Knob (Static constant cap) */}
-        <div className="absolute -right-3.5 sm:-right-4 top-1/2 -translate-y-1/2 w-4 sm:w-4.5 h-9 sm:h-[38px] bg-[#1c1917] rounded-r-md border-l-2 border-[#3c3633] shadow-md flex items-center justify-center z-40">
-          <div className="w-1 h-5 bg-[#3c3633] rounded-sm" />
-        </div>
+        </Link>
       </div>
     </div>
   );
@@ -218,6 +190,16 @@ export const JapaneseScrollProjectCard: React.FC<{
 export const FeaturedProjectsSection: React.FC<{ projects?: ProjectItem[] }> = ({
   projects = fallbackProjects,
 }) => {
+  // Ensure 4 items exist for symmetrical 4-column compact layout
+  const displayProjects = React.useMemo(() => {
+    const list = [...projects];
+    while (list.length < 4) {
+      const fallback = fallbackProjects[list.length % fallbackProjects.length];
+      list.push({ ...fallback, id: `${fallback.id}-extra-${list.length}` });
+    }
+    return list.slice(0, 4);
+  }, [projects]);
+
   return (
     <SectionWrapper
       id="projects"
@@ -226,15 +208,17 @@ export const FeaturedProjectsSection: React.FC<{ projects?: ProjectItem[] }> = (
       sectionDescription="Production web applications, architectural platforms, and technical open-source contributions."
       headerAlign="center"
       bgVariant="paper"
+      containerSize="wide"
       className="pt-10 sm:pt-14 pb-16 sm:pb-24"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 items-start">
-        {projects.map((project, index) => (
-          <JapaneseScrollProjectCard
+      {/* --- CAROUSEL TRACK (Native Touch Swipe on Mobile/Tablet, 4-Col Grid on Desktop) --- */}
+      <div className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-4 sm:gap-5 pb-6 pt-2 items-stretch">
+        {displayProjects.map((project, index) => (
+          <BoxyProjectCard
             key={project.id}
             project={project}
             index={index}
-            className={index >= 2 ? "hidden lg:flex" : undefined}
+            className="w-[85vw] sm:w-[calc(50%-10px)] lg:w-auto shrink-0 snap-start lg:shrink"
           />
         ))}
       </div>
@@ -246,7 +230,7 @@ export const FeaturedProjectsSection: React.FC<{ projects?: ProjectItem[] }> = (
           <Button
             variant="outline"
             size="sm"
-            className="rounded-xl px-5 py-2.5 text-xs font-mono font-semibold border-border-warm bg-surface hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 shadow-sm"
+            className="rounded-xl px-5 py-2.5 text-xs font-mono font-semibold border-border-warm bg-surface hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
             icon={<ArrowRight className="w-3.5 h-3.5" />}
           >
             Show More Projects
