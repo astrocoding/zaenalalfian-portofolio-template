@@ -1,7 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, ArrowUpRight, Flame } from "lucide-react";
+import { ArrowUpRight, Flame } from "lucide-react";
 import { Container } from "../ui/Container";
 import { GithubContributionGraph } from "../ui/GithubContributionGraph";
 import { prisma } from "@/lib/prisma";
@@ -223,16 +223,6 @@ export const Footer: React.FC<FooterProps> = async ({
                   <FacebookIcon className="w-4 h-4" />
                   <span>Facebook</span>
                   <span className="text-[10px] text-primary font-serif font-medium">/ フェイスブック</span>
-                  <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
-                </a>
-                <a
-                  href={`mailto:${gmailAddress}`}
-                  className="hover:text-primary transition-colors inline-flex items-center gap-2"
-                  suppressHydrationWarning
-                >
-                  <Mail className="w-4 h-4 text-primary" />
-                  <span>Email</span>
-                  <span className="text-[10px] text-primary font-serif font-medium">/ 電子メール</span>
                   <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
                 </a>
               </div>

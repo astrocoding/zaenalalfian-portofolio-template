@@ -122,8 +122,70 @@ export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({ className
           <SeigaihaFan cx={-80} cy={80} />
           <SeigaihaFan cx={160} cy={80} />
         </pattern>
-        <rect x="0" y="0" width="100%" height="100%" fill="url(#seigaiha-hero-pattern)" />
+      <rect x="0" y="0" width="100%" height="100%" fill="url(#seigaiha-hero-pattern)" />
       </svg>
+    </div>
+  );
+};
+
+const DesktopArchitectureCard: React.FC<{ name: string; role: string; status: string }> = ({ name, role, status }) => {
+  const [isDesktop, setIsDesktop] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    setIsDesktop(mediaQuery.matches);
+
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
+
+  if (!isDesktop) return null;
+
+  return (
+    <div className="hidden lg:block lg:col-span-5 relative pt-4 sm:pt-6 lg:pt-14 animate-float">
+      {/* Japanese Minimalist Frame Container */}
+      <div className="relative mx-auto max-w-md bg-surface border border-border-warm rounded-2xl p-5 sm:p-6 shadow-xl hover:shadow-2xl transition-shadow duration-500 overflow-hidden">
+        {/* Top Red Japanese Hanko Stamp Motif */}
+        <div className="absolute top-4 right-4 w-9 h-9 border-2 border-primary/40 rounded flex items-center justify-center text-primary font-serif font-bold text-xs select-none opacity-80 rotate-12">
+          印
+        </div>
+
+        {/* Code Snippet Box Header */}
+        <div className="flex items-center space-x-2 pb-3 mb-3 border-b border-border-subtle">
+          <div className="w-2.5 h-2.5 rounded-full bg-rose-400" />
+          <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+          <span className="text-xs font-mono text-ink-muted ml-2">architecture.ts</span>
+        </div>
+
+        {/* Mock Code Block */}
+        <div className="space-y-1.5 font-mono text-xs text-ink leading-relaxed">
+          <p className="text-primary font-semibold">{`// Personal Philosophy`}</p>
+          <p>
+            <span className="text-purple-600">const</span>{" "}developer = &#123;
+          </p>
+          <p className="pl-4">
+            name: <span className="text-emerald-700">&quot;{name}&quot;</span>,
+          </p>
+          <p className="pl-4">
+            role: <span className="text-emerald-700">&quot;{role}&quot;</span>,
+          </p>
+          <p className="pl-4">
+            status: <span className="text-amber-700">&quot;{status}&quot;</span>
+          </p>
+          <p>&#125;;</p>
+        </div>
+
+        {/* Japanese Aesthetic Card Footer */}
+        <div className="mt-5 pt-3 border-t border-border-subtle flex items-center justify-between text-xs text-ink-muted">
+          <div className="flex items-center space-x-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <span>Connected</span>
+          </div>
+          <span className="font-serif text-primary font-semibold italic text-xs">美と技術の融合</span>
+        </div>
+      </div>
     </div>
   );
 };
@@ -269,51 +331,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
             </div>
           </div>
 
-          {/* Right Visual Card Component (Hardware-accelerated CSS Float Animation) */}
-          <div className="lg:col-span-5 relative pt-4 sm:pt-6 lg:pt-14 animate-float">
-            {/* Japanese Minimalist Frame Container */}
-            <div className="relative mx-auto max-w-md bg-surface border border-border-warm rounded-2xl p-5 sm:p-6 shadow-xl hover:shadow-2xl transition-shadow duration-500 overflow-hidden">
-              {/* Top Red Japanese Hanko Stamp Motif */}
-              <div className="absolute top-4 right-4 w-9 h-9 border-2 border-primary/40 rounded flex items-center justify-center text-primary font-serif font-bold text-xs select-none opacity-80 rotate-12">
-                印
-              </div>
-
-              {/* Code Snippet Box Header */}
-              <div className="flex items-center space-x-2 pb-3 mb-3 border-b border-border-subtle">
-                <div className="w-2.5 h-2.5 rounded-full bg-rose-400" />
-                <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                <span className="text-xs font-mono text-ink-muted ml-2">architecture.ts</span>
-              </div>
-
-              {/* Mock Code Block */}
-              <div className="space-y-1.5 font-mono text-xs text-ink leading-relaxed">
-                <p className="text-primary font-semibold">{`// Personal Philosophy`}</p>
-                <p>
-                  <span className="text-purple-600">const</span>{" "}developer = &#123;
-                </p>
-                <p className="pl-4">
-                  name: <span className="text-emerald-700">&quot;{name}&quot;</span>,
-                </p>
-                <p className="pl-4">
-                  role: <span className="text-emerald-700">&quot;{role}&quot;</span>,
-                </p>
-                <p className="pl-4">
-                  status: <span className="text-amber-700">&quot;{status}&quot;</span>
-                </p>
-                <p>&#125;;</p>
-              </div>
-
-              {/* Japanese Aesthetic Card Footer */}
-              <div className="mt-5 pt-3 border-t border-border-subtle flex items-center justify-between text-xs text-ink-muted">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Connected</span>
-                </div>
-                <span className="font-serif text-primary font-semibold italic text-xs">美と技術の融合</span>
-              </div>
-            </div>
-          </div>
+          {/* Right Visual Card Component (Desktop Only - Unmounted on Mobile/Tablet for Performance Optimization) */}
+          <DesktopArchitectureCard name={name} role={role} status={status} />
         </div>
       </Container>
 

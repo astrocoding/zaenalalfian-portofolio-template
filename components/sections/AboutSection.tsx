@@ -82,7 +82,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
     <SectionWrapper id="about" bgVariant="surface" className="pt-10 sm:pt-14 pb-16 sm:pb-24 relative overflow-hidden">
       {/* Subtle Japanese Vertical Watermark Accent ("生き甲斐") matching surface bg */}
       <div
-        className="hidden md:block absolute top-1/2 -translate-y-1/2 left-3 sm:left-6 lg:left-8 xl:left-12 2xl:left-20 font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-[0.2em] whitespace-nowrap select-none pointer-events-none z-0 leading-none text-[var(--color-watermark-surface)] opacity-75"
+        className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-3 sm:left-6 lg:left-8 xl:left-12 2xl:left-20 font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-[0.2em] whitespace-nowrap select-none pointer-events-none z-0 leading-none text-[var(--color-watermark-surface)] opacity-75"
         style={{ writingMode: "vertical-rl", textOrientation: "upright" }}
         aria-hidden="true"
       >
