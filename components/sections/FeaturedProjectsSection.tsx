@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { SectionWrapper } from "../ui/SectionWrapper";
 import { Button } from "../ui/Button";
+import { CardCornerSeigaiha } from "../ui/CardCornerSeigaiha";
 import { ArrowRight, FolderGit2 } from "lucide-react";
 
 export interface ProjectItem {
@@ -113,8 +114,11 @@ export const BoxyProjectCard: React.FC<{
     <div
       className={`group relative bg-surface border border-border-subtle hover:border-primary hover:-translate-y-1.5 rounded-2xl transition-all duration-300 flex flex-col overflow-hidden w-full ${className}`}
     >
+      {/* Bottom-right Japanese Seigaiha wave accent - matching white card background */}
+      <CardCornerSeigaiha cardBgColor="#ffffff" />
+
       {/* --- TOP THUMBNAIL IMAGE WITH TECH BADGES OVERLAY --- */}
-      <Link href={`/projects/${project.slug}`} className="block relative w-full h-40 sm:h-44 overflow-hidden bg-[#f6e0ce]/30 shrink-0 rounded-t-2xl">
+      <Link href={`/projects/${project.slug}`} className="block relative z-10 w-full h-40 sm:h-44 overflow-hidden bg-[#f6e0ce]/30 shrink-0 rounded-t-2xl">
         <ProjectCardThumbnail
           thumbnail={project.thumbnail}
           title={project.title}
@@ -147,7 +151,7 @@ export const BoxyProjectCard: React.FC<{
       </Link>
 
       {/* --- CARD CONTENT BODY --- */}
-      <div className="p-4 sm:p-4.5 flex flex-col flex-1 justify-between space-y-3">
+      <div className="relative z-10 p-4 sm:p-4.5 flex flex-col flex-1 justify-between space-y-3">
         <div className="space-y-1.5">
           {/* Category */}
           <div className="flex items-center justify-between">
