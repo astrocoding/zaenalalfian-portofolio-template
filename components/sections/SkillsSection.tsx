@@ -154,7 +154,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
                     </div>
                     <h3 className="text-lg font-bold font-serif text-ink">{category.title}</h3>
                   </div>
-                  <span className="font-serif text-xs text-primary/50 font-semibold uppercase">
+                  <span className="font-serif text-xs text-primary/80 font-semibold uppercase">
                     {category.kanji || meta.kanji}
                   </span>
                 </div>

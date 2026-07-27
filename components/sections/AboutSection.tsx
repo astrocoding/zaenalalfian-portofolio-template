@@ -93,7 +93,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
         {/* Left Column: Title + Bio Copy + CTA Button */}
         <div className="lg:col-span-5 space-y-6">
           <div className="space-y-2">
-            <span className="font-serif text-primary/60 tracking-widest text-xs font-semibold uppercase block">
+            <span className="font-serif text-primary/80 tracking-widest text-xs font-semibold uppercase block">
               自己紹介 • ABOUT ME
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-serif text-ink tracking-tight leading-tight">

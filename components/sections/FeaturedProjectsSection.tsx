@@ -25,7 +25,7 @@ const fallbackProjects: ProjectItem[] = [
     category: "Full-Stack Web App",
     description:
       "Enterprise Next.js 16 app with Server Components, PostgreSQL, and Prisma ORM for high-throughput cloud infrastructure management.",
-    thumbnail: "/projects/zenith.jpg",
+    thumbnail: "",
     techstack: ["Next.js 16", "React 19", "PostgreSQL", "Prisma 7", "TailwindCSS"],
   },
   {
@@ -35,7 +35,7 @@ const fallbackProjects: ProjectItem[] = [
     category: "Design System & UI Library",
     description:
       "Japanese minimalist editorial design system for scalable web applications featuring soft warm palettes and accessible micro-interactions.",
-    thumbnail: "/projects/kaizen.jpg",
+    thumbnail: "",
     techstack: ["React 19", "TypeScript", "TailwindCSS v4", "Framer Motion", "Storybook"],
   },
   {
@@ -45,7 +45,7 @@ const fallbackProjects: ProjectItem[] = [
     category: "Documentation Platform",
     description:
       "High-speed MDX-powered documentation platform with dynamic TOC, instant search, and code highlight optimizations.",
-    thumbnail: "/projects/shuri.jpg",
+    thumbnail: "",
     techstack: ["Next.js 16", "MDX", "gray-matter", "TailwindCSS v4", "TypeScript"],
   },
 ];
@@ -155,7 +155,7 @@ export const JapaneseScrollProjectCard: React.FC<{
             <span className="text-[11px] font-mono font-semibold text-primary uppercase tracking-wider">
               {project.category}
             </span>
-            <span className="font-serif text-xs font-bold text-primary/60">実績作品</span>
+            <span className="font-serif text-xs font-bold text-primary/80">実績作品</span>
           </div>
 
           <Link href={`/projects/${project.slug}`} className="group/title block">

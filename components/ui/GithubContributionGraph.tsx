@@ -170,7 +170,7 @@ export const GithubContributionGraph: React.FC<{ username?: string }> = ({
           href={`https://github.com/${username}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[11px] hover:text-primary transition-colors text-ink-muted/80 underline decoration-border-warm"
+          className="text-[11px] hover:text-primary transition-colors text-ink-muted font-medium underline decoration-border-warm"
         >
           @{username}
         </a>
@@ -194,7 +194,7 @@ export const GithubContributionGraph: React.FC<{ username?: string }> = ({
 
           <div className="flex gap-2 w-full">
             {/* Day of week labels */}
-            <div className="flex flex-col justify-between text-[9px] font-mono text-ink-muted/70 pr-1 py-0.5 select-none h-[81px] shrink-0">
+            <div className="flex flex-col justify-between text-[9.5px] font-mono text-ink-muted font-medium pr-1 py-0.5 select-none h-[81px] shrink-0">
               <span>Mon</span>
               <span>Wed</span>
               <span>Fri</span>

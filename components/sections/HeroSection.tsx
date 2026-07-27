@@ -329,7 +329,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   <span>Connected</span>
                 </div>
-                <span className="font-serif text-primary/60 italic text-xs">美と技術の融合</span>
+                <span className="font-serif text-primary/80 italic text-xs">美と技術の融合</span>
               </div>
             </div>
           </motion.div>
