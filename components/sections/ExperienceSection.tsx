@@ -56,6 +56,7 @@ export const ExperienceSection: React.FC<{ experiences?: ExperienceItem[] }> = (
       sectionTitle="Professional Journey"
       sectionDescription="A history of leading software development, architecture decisions, and engineering execution."
       bgVariant="surface"
+      className="pt-10 sm:pt-14 pb-16 sm:pb-24"
     >
       <div className="relative pl-6 sm:pl-8 border-l-2 border-border-warm space-y-12">
         {displayList.map((exp, idx) => (

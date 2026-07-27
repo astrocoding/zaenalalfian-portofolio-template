@@ -222,7 +222,7 @@ export const FeaturedProjectsSection: React.FC<{ projects?: ProjectItem[] }> = (
     <SectionWrapper
       id="projects"
       kanjiSubtitle="主要実績"
-      sectionTitle="Featured Engineering Projects"
+      sectionTitle="Featured Projects"
       sectionDescription="Production web applications, architectural platforms, and technical open-source contributions."
       headerAlign="center"
       bgVariant="paper"

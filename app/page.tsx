@@ -17,6 +17,10 @@ export default async function HomePage() {
   let dbBlogs: Awaited<ReturnType<typeof prisma.blog.findMany>> = [];
   let dbExperiences: Awaited<ReturnType<typeof prisma.experience.findMany>> = [];
   let dbSkillsets: Awaited<ReturnType<typeof prisma.skillset.findMany>> = [];
+  let dbAbout: Awaited<ReturnType<typeof prisma.about.findFirst>> = null;
+  let dbAdminUser: (Awaited<ReturnType<typeof prisma.user.findFirst>> & {
+    contact?: Awaited<ReturnType<typeof prisma.contact.findFirst>> | null;
+  }) | null = null;
 
   try {
     dbProjects = await prisma.project.findMany({
@@ -32,6 +36,18 @@ export default async function HomePage() {
     });
     dbSkillsets = await prisma.skillset.findMany({
       orderBy: [{ categoryOrder: "asc" }, { createdAt: "asc" }],
+    });
+    dbAbout = await prisma.about.findFirst({
+      include: {
+        cards: {
+          orderBy: { order: "asc" },
+        },
+      },
+    });
+    dbAdminUser = await prisma.user.findFirst({
+      where: { role: "ADMIN" },
+      include: { contact: true },
+      orderBy: { createdAt: "asc" },
     });
   } catch {
     // Graceful fallback to static seed items when database is empty
@@ -112,13 +128,35 @@ export default async function HomePage() {
 
   return (
     <MainLayout>
-      <HeroSection />
-      <AboutSection />
+      <HeroSection
+        userData={
+          dbAdminUser
+            ? {
+                name: dbAdminUser.name,
+                position: dbAdminUser.position,
+                activity: dbAdminUser.activity,
+              }
+            : undefined
+        }
+      />
+      <AboutSection aboutData={dbAbout} />
       <SkillsSection skillCategories={skillCategories} />
       <ExperienceSection experiences={experiences} />
       <FeaturedProjectsSection projects={projects} />
       <LatestBlogsSection blogs={blogs} />
-      <ContactSection />
+      <ContactSection
+        contactData={
+          dbAdminUser
+            ? {
+                name: dbAdminUser.name,
+                position: dbAdminUser.position,
+                gmail: dbAdminUser.contact?.gmail,
+                location: dbAdminUser.location,
+                availability: dbAdminUser.availability,
+              }
+            : undefined
+        }
+      />
     </MainLayout>
   );
 }

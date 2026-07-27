@@ -124,7 +124,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
       sectionTitle="Technical Skillset"
       sectionDescription="Comprehensive toolset honed across years of full-stack engineering and product deployment."
       bgVariant="paper"
-      className="relative overflow-hidden"
+      className="pt-10 sm:pt-14 pb-16 sm:pb-24 relative overflow-hidden"
     >
       {/* Subtle Japanese Watermark Accent ("技術スキル") matching paper bg (#fef0de) */}
       <div

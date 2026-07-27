@@ -2,6 +2,7 @@ import * as React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { prisma } from "@/lib/prisma";
 import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
@@ -22,28 +23,73 @@ export const metadata: Metadata = {
   ],
 };
 
-const philosophyPillars = [
+const defaultPhilosophyPillars = [
   {
-    number: "01",
+    badge: "01",
     title: "Ma (間) — Intentional Space",
-    description:
+    subtitle:
       "Codebases and user interfaces thrive when clutter is removed. By honoring negative space and clean domain boundaries, software becomes easier to reason about, maintain, and scale.",
   },
   {
-    number: "02",
+    badge: "02",
     title: "Wabi-Sabi (侘寂) — Elegant Simplicity",
-    description:
+    subtitle:
       "Perfection in software isn't achieved when there's nothing more to add, but when there's nothing left to take away. Simple, type-safe architecture beats complex abstractions every time.",
   },
   {
-    number: "03",
+    badge: "03",
     title: "Shokunin (職人) — Technical Craftsmanship",
-    description:
+    subtitle:
       "Approaching software development as a lifelong craft. Every database index, API payload, and UI component is executed with meticulous care for performance and accessibility.",
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  let aboutData = null;
+  let adminUser = null;
+
+  try {
+    aboutData = await prisma.about.findFirst({
+      include: {
+        cards: {
+          orderBy: { order: "asc" },
+        },
+      },
+    });
+    adminUser = await prisma.user.findFirst({
+      where: { role: "ADMIN" },
+      orderBy: { createdAt: "asc" },
+    });
+  } catch (e) {
+    console.warn("Failed to fetch About/User record from database:", e);
+  }
+
+  const userName = adminUser?.name || "Zaenal Alfian";
+  const userPosition = adminUser?.position || "Full-Stack Engineer";
+  const userLocation = adminUser?.location || "Indonesia (Remote Worldwide)";
+  const userExperience = adminUser?.experience || "6+ Years Engineering";
+  const userAvailability = adminUser?.availability || "Available";
+
+  const title = aboutData?.title || "Behind the Architecture";
+  const subtitle = aboutData?.subtitle || "Bridging Design Vision & Technical Execution";
+  const excerpt =
+    aboutData?.excerpt ||
+    "I am Zaenal Alfian, a Senior Full-Stack Engineer and Frontend Architect with over 6 years of experience building mission-critical web applications, enterprise design systems, and high-performance serverless backends.";
+
+  const rawDescription =
+    aboutData?.description ||
+    "My journey in software development is rooted in a passion for craftsmanship. Over the past 6+ years, I have architected web platforms that serve millions of requests, led engineering teams in adopting modern frameworks like Next.js 16 and React 19, and built domain-driven design systems from scratch.\n\nMy philosophy is heavily influenced by traditional Japanese minimalism (*Wabi-Sabi* & *Ma*) — eliminating unnecessary clutter to let core function and performance shine. Every line of code, database query, and UI component is crafted with intentionality.\n\nWhether designing micro-frontends, optimizing PostgreSQL query access with Prisma 7, or fine-tuning Core Web Vitals to 99/100 scores, I focus on delivering long-term architectural longevity and delightful user experiences.";
+
+  const paragraphs: string[] = rawDescription
+    .split("\n")
+    .map((p: string) => p.trim())
+    .filter(Boolean);
+
+  const cards =
+    aboutData?.cards && aboutData.cards.length > 0
+      ? aboutData.cards
+      : defaultPhilosophyPillars;
+
   return (
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper">
@@ -54,10 +100,10 @@ export default function AboutPage() {
               自己紹介 • BIOGRAPHY &amp; PHILOSOPHY
             </span>
             <h1 className="text-4xl sm:text-5xl font-serif font-bold text-ink tracking-tight">
-              Behind the Architecture
+              {title}
             </h1>
             <p className="text-lg text-ink-muted leading-relaxed font-sans max-w-3xl">
-              I am <strong className="text-ink">Zaenal Alfian</strong>, a Senior Full-Stack Engineer and Frontend Architect with over 6 years of experience building mission-critical web applications, enterprise design systems, and high-performance serverless backends.
+              {excerpt}
             </p>
           </div>
 
@@ -65,21 +111,15 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-7 space-y-6 text-ink-muted leading-relaxed font-sans text-base">
               <h2 className="text-2xl font-serif font-bold text-ink">
-                Bridging Design Vision &amp; Technical Execution
+                {subtitle}
               </h2>
-              <p>
-                My journey in software development is rooted in a passion for craftsmanship. Over the past 6+ years, I have architected web platforms that serve millions of requests, led engineering teams in adopting modern frameworks like Next.js 16 and React 19, and built domain-driven design systems from scratch.
-              </p>
-              <p>
-                My philosophy is heavily influenced by traditional Japanese minimalism (*Wabi-Sabi* &amp; *Ma*) — eliminating unnecessary clutter to let core function and performance shine. Every line of code, database query, and UI component is crafted with intentionality.
-              </p>
-              <p>
-                Whether designing micro-frontends, optimizing PostgreSQL query access with Prisma 7, or fine-tuning Core Web Vitals to 99/100 scores, I focus on delivering long-term architectural longevity and delightful user experiences.
-              </p>
+              {paragraphs.map((paragraph: string, index: number) => (
+                <p key={index}>{paragraph}</p>
+              ))}
             </div>
 
             {/* Quick Stats Card */}
-            <div className="lg:col-span-5 bg-surface border border-border-warm rounded-2xl p-6 sm:p-8 space-y-6 shadow-card">
+            <div className="lg:col-span-5 bg-surface border border-border-warm rounded-2xl p-5 sm:p-6 space-y-5 shadow-card w-full max-w-[420px] lg:justify-self-end">
               <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
                 <Image
                   src="/zen.svg"
@@ -89,28 +129,25 @@ export default function AboutPage() {
                   className="w-10 h-10 object-contain"
                 />
                 <div>
-                  <h3 className="font-serif font-bold text-base text-ink">Zaenal Alfian</h3>
-                  <p className="text-xs font-mono text-ink-muted">Full-Stack Engineer</p>
+                  <h3 className="font-serif font-bold text-base text-ink">{userName}</h3>
+                  <p className="text-xs font-mono text-ink-muted">{userPosition}</p>
                 </div>
               </div>
 
               <div className="space-y-3 text-xs font-mono">
-                <div className="flex justify-between py-1.5 border-b border-border-subtle">
-                  <span className="text-ink-muted">Location:</span>
-                  <span className="text-ink font-bold">Indonesia (Remote Worldwide)</span>
+                <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">
+                  <span className="text-ink-muted shrink-0">Location:</span>
+                  <span className="text-ink font-bold text-right">{userLocation}</span>
                 </div>
-                <div className="flex justify-between py-1.5 border-b border-border-subtle">
-                  <span className="text-ink-muted">Experience:</span>
-                  <span className="text-ink font-bold">6+ Years Engineering</span>
+                <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">
+                  <span className="text-ink-muted shrink-0">Experience:</span>
+                  <span className="text-primary font-bold text-right">{userExperience}</span>
                 </div>
-                <div className="flex justify-between py-1.5 border-b border-border-subtle">
-                  <span className="text-ink-muted">Core Focus:</span>
-                  <span className="text-primary font-bold">Next.js 16, React 19, PostgreSQL</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-border-subtle">
-                  <span className="text-ink-muted">Availability:</span>
-                  <span className="text-emerald-600 font-bold flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Available
+                <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">
+                  <span className="text-ink-muted shrink-0">Availability:</span>
+                  <span className="text-emerald-600 font-bold flex items-center gap-1.5 text-right shrink-0">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                    <span>{userAvailability}</span>
                   </span>
                 </div>
               </div>
@@ -137,14 +174,16 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {philosophyPillars.map((pillar) => (
-                <Card key={pillar.number} hoverEffect className="bg-surface p-6 space-y-3">
-                  <span className="text-2xl font-serif font-bold text-primary/40 block">
-                    {pillar.number}
-                  </span>
+              {cards.map((pillar: { id?: string; badge?: string | null; title: string; subtitle: string }, idx: number) => (
+                <Card key={pillar.id || idx} hoverEffect className="bg-surface p-6 space-y-3">
+                  {pillar.badge && (
+                    <span className="text-2xl font-serif font-bold text-primary/40 block">
+                      {pillar.badge}
+                    </span>
+                  )}
                   <h3 className="text-lg font-serif font-bold text-ink">{pillar.title}</h3>
                   <p className="text-xs text-ink-muted leading-relaxed font-sans">
-                    {pillar.description}
+                    {pillar.subtitle}
                   </p>
                 </Card>
               ))}

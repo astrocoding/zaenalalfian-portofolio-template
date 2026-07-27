@@ -128,7 +128,18 @@ export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({ className
   );
 };
 
-export const HeroSection: React.FC = () => {
+export interface HeroSectionProps {
+  userData?: {
+    name?: string | null;
+    position?: string | null;
+    activity?: string | null;
+  } | null;
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
+  const name = userData?.name || "Zaenal Alfian";
+  const role = userData?.position || "Full-Stack Engineer";
+  const status = userData?.activity || "Building Great Products";
   const [gitStats, setGitStats] = React.useState<{ val: number; decimals: number; suffix: string }>({
     val: 6.7,
     decimals: 1,
@@ -301,13 +312,13 @@ export const HeroSection: React.FC = () => {
                   <span className="text-purple-600">const</span>{" "}developer = &#123;
                 </p>
                 <p className="pl-4">
-                  name: <span className="text-emerald-700">&quot;Zaenal Alfian&quot;</span>,
+                  name: <span className="text-emerald-700">&quot;{name}&quot;</span>,
                 </p>
                 <p className="pl-4">
-                  role: <span className="text-emerald-700">&quot;Full-Stack Engineer&quot;</span>,
+                  role: <span className="text-emerald-700">&quot;{role}&quot;</span>,
                 </p>
                 <p className="pl-4">
-                  status: <span className="text-amber-700">&quot;Building Great Products&quot;</span>
+                  status: <span className="text-amber-700">&quot;{status}&quot;</span>
                 </p>
                 <p>&#125;;</p>
               </div>

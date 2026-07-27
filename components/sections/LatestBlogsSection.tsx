@@ -330,7 +330,7 @@ export const LatestBlogsSection: React.FC<{ blogs?: BlogItem[] }> = ({
       sectionTitle="Latest Technical Insights"
       sectionDescription="Articles on modern frontend engineering, system design, performance, and editorial UI craftsmanship."
       bgVariant="surface"
-      className="relative overflow-hidden"
+      className="pt-10 sm:pt-14 pb-16 sm:pb-24 relative overflow-hidden"
     >
       {/* Subtle Japanese Watermark Accent ("最新記事") matching surface bg (#ffffff) */}
       <div

@@ -6,7 +6,23 @@ import { Card } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { Mail, MapPin, Send, CheckCircle2, Sparkles } from "lucide-react";
 
-export const ContactSection: React.FC = () => {
+export interface ContactSectionProps {
+  contactData?: {
+    name?: string | null;
+    position?: string | null;
+    gmail?: string | null;
+    location?: string | null;
+    availability?: string | null;
+  } | null;
+}
+
+export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) => {
+  const name = contactData?.name || "Zaenal Alfian";
+  const position = contactData?.position || "Full-Stack Engineer";
+  const gmail = contactData?.gmail || "zaenalalfian20@gmail.com";
+  const location = contactData?.location || "Karawang, Indonesia / Remote";
+  const availability = contactData?.availability || "Accepting Projects & Roles";
+
   const [submitted, setSubmitted] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [formData, setFormData] = React.useState({
@@ -34,6 +50,7 @@ export const ContactSection: React.FC = () => {
       sectionTitle="Let's Build Something Great!"
       sectionDescription="Open for senior engineering leadership, frontend architecture consulting, and high-impact web product development."
       bgVariant="paper"
+      className="pt-10 sm:pt-14 pb-16 sm:pb-24"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         {/* Left Information Column */}
@@ -44,8 +61,8 @@ export const ContactSection: React.FC = () => {
                 印
               </div>
               <div>
-                <h3 className="font-serif font-bold text-lg text-ink">Zaenal Alfian</h3>
-                <p className="text-xs font-mono text-ink-muted">Full-Stack Engineer</p>
+                <h3 className="font-serif font-bold text-lg text-ink">{name}</h3>
+                <p className="text-xs font-mono text-ink-muted">{position}</p>
               </div>
             </div>
 
@@ -55,10 +72,10 @@ export const ContactSection: React.FC = () => {
                 <div>
                   <span className="text-xs font-mono text-ink-muted block uppercase">Direct Email</span>
                   <a
-                    href="mailto:zaenalalfian20@gmail.com"
+                    href={`mailto:${gmail}`}
                     className="text-[#b34c53] font-medium hover:text-primary transition-colors text-base"
                   >
-                    zaenalalfian20@gmail.com
+                    {gmail}
                   </a>
                 </div>
               </div>
@@ -67,7 +84,7 @@ export const ContactSection: React.FC = () => {
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs font-mono text-ink-muted block uppercase">Location</span>
-                  <span className="text-ink font-medium">Karawang, Indonesia / Remote</span>
+                  <span className="text-ink font-medium">{location}</span>
                 </div>
               </div>
 
@@ -77,7 +94,7 @@ export const ContactSection: React.FC = () => {
                   <span className="text-xs font-mono text-ink-muted block uppercase">Availability</span>
                   <span className="text-emerald-700 font-medium flex items-center gap-1.5 mt-0.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    Accepting Projects &amp; Roles
+                    {availability}
                   </span>
                 </div>
               </div>
