@@ -30,6 +30,27 @@ async function main() {
   console.log(`- Username: ${admin.username}`);
   console.log(`- Role: ${admin.role}`);
 
+  console.log("\nSeeding contact information...");
+  const contact = await prisma.contact.upsert({
+    where: { userId: admin.id },
+    update: {
+      gmail: "zaenalalfian20@gmail.com",
+      github: "https://github.com/astrocoding",
+      linkedin: "https://www.linkedin.com/in/zaenal-alfian/",
+      instagram: "https://www.instagram.com/zenovasi/",
+      facebook: "https://www.facebook.com/zaenal.alfian.2025/",
+    },
+    create: {
+      userId: admin.id,
+      gmail: "zaenalalfian20@gmail.com",
+      github: "https://github.com/astrocoding",
+      linkedin: "https://www.linkedin.com/in/zaenal-alfian/",
+      instagram: "https://www.instagram.com/zenovasi/",
+      facebook: "https://www.facebook.com/zaenal.alfian.2025/",
+    },
+  });
+  console.log("- Created/Updated Contact record for admin user:", contact.gmail);
+
   console.log("\nSeeding initial experiences...");
 
   const experiencesData = [

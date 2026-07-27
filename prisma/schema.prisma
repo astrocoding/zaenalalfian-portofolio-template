@@ -16,14 +16,24 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  username  String   @unique
-  email     String   @unique
-  password  String
-  role      Role     @default(ADMIN)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(cuid())
+  name         String
+  username     String   @unique
+  email        String   @unique
+  password     String
+  role         Role     @default(ADMIN)
+  position     String?
+  activity     String?
+  experience   String?
+  location     String?
+  availability String?
+  quotes       String?
+  bio          String?
+  resume       String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  about        About?
+  contact      Contact?
 }
 
 model Project {
@@ -96,4 +106,52 @@ model Skillset {
   updatedAt     DateTime @updatedAt @map("updated_at")
 
   @@map("skillsets")
+}
+
+model About {
+  id          String      @id @default(cuid())
+  userId      String      @unique @map("user_id")
+  title       String
+  subtitle    String
+  excerpt     String
+  description String
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cards       AboutCard[]
+
+  @@map("abouts")
+}
+
+model AboutCard {
+  id        String   @id @default(cuid())
+  aboutId   String   @map("about_id")
+  title     String
+  subtitle  String
+  badge     String?  @map("badge")
+  order     Int      @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  about     About    @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+
+  @@map("about_cards")
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  userId    String   @unique @map("user_id")
+  gmail     String?
+  whatsapp  String?
+  github    String?
+  linkedin  String?
+  instagram String?
+  facebook  String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("contacts")
 }
