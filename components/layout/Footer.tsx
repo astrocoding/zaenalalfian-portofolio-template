@@ -114,7 +114,7 @@ export const Footer: React.FC<FooterProps> = async ({
           <div className="md:col-span-1 lg:col-span-2 space-y-4">
             <div className="flex items-center space-x-3">
               <Image
-                src="/zen.svg"
+                src="/zen.svg?v=2"
                 alt="Zaenal Alfian Logo"
                 width={32}
                 height={32}

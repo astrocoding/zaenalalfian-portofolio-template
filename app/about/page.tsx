@@ -122,7 +122,7 @@ export default async function AboutPage() {
             <div className="lg:col-span-5 bg-surface border border-border-warm rounded-2xl p-5 sm:p-6 space-y-5 shadow-card w-full max-w-[420px] lg:justify-self-end">
               <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
                 <Image
-                  src="/zen.svg"
+                  src="/zen.svg?v=2"
                   alt="Zaenal Alfian Logo"
                   width={40}
                   height={40}

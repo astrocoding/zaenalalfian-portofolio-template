@@ -48,7 +48,7 @@ export default function AdminLoginPage() {
         {/* Header Branding */}
         <div className="text-center space-y-2">
           <Image
-            src="/zen.svg"
+            src="/zen.svg?v=2"
             alt="Zaenal Alfian Logo"
             width={48}
             height={48}

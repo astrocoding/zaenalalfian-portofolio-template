@@ -71,7 +71,7 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
 
         <div className="flex items-center space-x-3 pt-2">
           <Image
-            src="/zen.svg"
+            src="/zen.svg?v=2"
             alt="Zaenal Alfian Logo"
             width={36}
             height={36}

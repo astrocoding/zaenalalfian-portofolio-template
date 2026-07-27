@@ -136,7 +136,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Image
-              src="/zen.svg"
+              src="/zen.svg?v=2"
               alt="Zaenal Alfian Logo"
               width={34}
               height={34}
@@ -181,7 +181,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
         <div className="space-y-6">
           <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
             <Image
-              src="/zen.svg"
+              src="/zen.svg?v=2"
               alt="Zaenal Alfian Logo"
               width={36}
               height={36}

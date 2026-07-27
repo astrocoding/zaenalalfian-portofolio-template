@@ -132,7 +132,7 @@ export const Navbar: React.FC = () => {
             className="group flex items-center space-x-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md p-1"
           >
             <Image
-              src="/zen.svg"
+              src="/zen.svg?v=2"
               alt="Zaenal Alfian Logo"
               width={36}
               height={36}
