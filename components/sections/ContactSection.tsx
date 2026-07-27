@@ -74,8 +74,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) =
                   <a
                     href={`mailto:${gmail}`}
                     className="text-[#b34c53] font-medium hover:text-primary transition-colors text-base"
+                    suppressHydrationWarning
                   >
-                    {gmail}
+                    <span suppressHydrationWarning>{gmail}</span>
                   </a>
                 </div>
               </div>

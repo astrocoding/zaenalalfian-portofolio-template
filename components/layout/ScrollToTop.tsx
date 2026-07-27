@@ -8,11 +8,15 @@ export const ScrollToTop: React.FC = () => {
   const [isVisible, setIsVisible] = React.useState(false);
 
   React.useEffect(() => {
+    let ticking = false;
+
     const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsVisible(window.scrollY > 300);
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 

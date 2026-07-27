@@ -52,17 +52,42 @@ export const Navbar: React.FC = () => {
     setScrolled(false);
   }
 
-  // Handle Navbar Background Scroll State before browser paint on mount and scroll across all pages
+  // Optimized rAF-throttled scroll state & scroll spy listener (0ms forced reflow)
   useIsomorphicLayoutEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    let ticking = false;
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          setScrolled(scrollY > 20);
+
+          if (pathname === "/") {
+            if (scrollY < 250) {
+              setActiveSection("home");
+            } else {
+              let current = "home";
+              for (const id of sectionIds) {
+                const el = document.getElementById(id);
+                if (el) {
+                  const top = el.getBoundingClientRect().top;
+                  if (top <= 180) {
+                    current = id;
+                  }
+                }
+              }
+              setActiveSection(current);
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    // Execute immediately on mount
-    handleScroll();
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
   // Event-driven smooth scroll handler ONLY on explicit user link clicks
@@ -81,38 +106,6 @@ export const Navbar: React.FC = () => {
       }
     }
   };
-
-  // Synchronously compute and update active section based on user's actual scroll position
-  useIsomorphicLayoutEffect(() => {
-    if (pathname !== "/") return;
-
-    const handleScrollSpy = () => {
-      const scrollPosition = window.scrollY;
-
-      if (scrollPosition < 250) {
-        setActiveSection("home");
-        return;
-      }
-
-      let current = "home";
-      for (const id of sectionIds) {
-        const el = document.getElementById(id);
-        if (el) {
-          const top = el.getBoundingClientRect().top;
-          if (top <= 180) {
-            current = id;
-          }
-        }
-      }
-      setActiveSection(current);
-    };
-
-    // Execute immediately before paint on mount to prevent indicator jumping from "home"
-    handleScrollSpy();
-
-    window.addEventListener("scroll", handleScrollSpy, { passive: true });
-    return () => window.removeEventListener("scroll", handleScrollSpy);
-  }, [pathname]);
 
   return (
     <header
