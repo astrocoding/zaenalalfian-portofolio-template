@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+zaenal_alfian_private.pem
 
 # debug
 npm-debug.log*
