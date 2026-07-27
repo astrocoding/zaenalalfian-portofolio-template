@@ -148,13 +148,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
 
   React.useEffect(() => {
     let isMounted = true;
-    fetchGitHubAllTimeCommits("astrocoding").then((stats) => {
-      if (isMounted) {
-        setGitStats(stats.formattedDisplay);
-      }
-    });
+    const timer = setTimeout(() => {
+      fetchGitHubAllTimeCommits("astrocoding").then((stats) => {
+        if (isMounted) {
+          setGitStats(stats.formattedDisplay);
+        }
+      });
+    }, 2000);
     return () => {
       isMounted = false;
+      clearTimeout(timer);
     };
   }, []);
 
@@ -266,25 +269,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
             </div>
           </div>
 
-          {/* Right Visual Card Component (Floating Up-and-Down Animation) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 15 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              y: [0, -12, 0],
-            }}
-            transition={{
-              opacity: { duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] },
-              scale: { duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] },
-              y: {
-                repeat: Infinity,
-                duration: 4.5,
-                ease: "easeInOut",
-              },
-            }}
-            className="lg:col-span-5 relative pt-4 sm:pt-6 lg:pt-14"
-          >
+          {/* Right Visual Card Component (Hardware-accelerated CSS Float Animation) */}
+          <div className="lg:col-span-5 relative pt-4 sm:pt-6 lg:pt-14 animate-float">
             {/* Japanese Minimalist Frame Container */}
             <div className="relative mx-auto max-w-md bg-surface border border-border-warm rounded-2xl p-5 sm:p-6 shadow-xl hover:shadow-2xl transition-shadow duration-500 overflow-hidden">
               {/* Top Red Japanese Hanko Stamp Motif */}
@@ -327,7 +313,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
                 <span className="font-serif text-primary font-semibold italic text-xs">美と技術の融合</span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </Container>
 
