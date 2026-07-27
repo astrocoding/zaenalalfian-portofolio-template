@@ -53,7 +53,7 @@ export const SectionWrapper: React.FC<SectionWrapperProps> = ({
           )}
         >
           {kanjiSubtitle && (
-            <span className="font-serif text-primary/40 tracking-widest text-xs font-semibold uppercase block">
+            <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
               {kanjiSubtitle}
             </span>
           )}
