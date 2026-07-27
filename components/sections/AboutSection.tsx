@@ -128,7 +128,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
                   <div className="p-2 rounded-md bg-[#f6e0ce]/40 border border-[#ebd9c8]">
                     {val.icon}
                   </div>
-                  <span className="font-serif text-xs font-semibold text-primary uppercase">
+                  <span className="font-serif text-xs font-semibold text-primary/40 uppercase">
                     {val.kanji}
                   </span>
                 </div>
