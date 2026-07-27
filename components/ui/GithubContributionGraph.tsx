@@ -162,7 +162,7 @@ export const GithubContributionGraph: React.FC<{ username?: string }> = ({
     <div className="mt-5 pt-4 border-t border-border-subtle/80 w-full">
       {/* Header Info */}
       <div className="flex items-center justify-between text-xs font-mono text-ink-muted mb-2.5">
-        <span className="font-semibold text-ink flex items-center gap-1.5">
+        <span className="font-semibold text-ink flex items-center gap-1.5" suppressHydrationWarning>
           <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
           {totalCount.toLocaleString()} contributions in 2026
         </span>

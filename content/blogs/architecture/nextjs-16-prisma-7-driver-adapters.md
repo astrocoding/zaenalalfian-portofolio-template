@@ -4,7 +4,7 @@ slug: "nextjs-16-prisma-7-driver-adapters"
 category: "architecture"
 description: "A deep dive into setting up Prisma 7 SQL driver adapters with PostgreSQL, server components, and clean data access patterns."
 keywords: ["Next.js 16", "Prisma 7", "PostgreSQL", "Driver Adapters", "App Router"]
-thumbnail: "/blogs/nextjs-prisma.jpg"
+thumbnail: ""
 publishedAt: "2026-06-15"
 ---
 

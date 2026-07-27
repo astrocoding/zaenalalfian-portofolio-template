@@ -155,7 +155,7 @@ export const JapaneseScrollProjectCard: React.FC<{
             <span className="text-[11px] font-mono font-semibold text-primary uppercase tracking-wider">
               {project.category}
             </span>
-            <span className="font-serif text-xs font-bold text-primary/80">実績作品</span>
+            <span className="font-serif text-xs font-bold text-primary">実績作品</span>
           </div>
 
           <Link href={`/projects/${project.slug}`} className="group/title block">

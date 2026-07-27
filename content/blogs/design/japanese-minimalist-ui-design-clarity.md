@@ -4,7 +4,7 @@ slug: "japanese-minimalist-ui-design-clarity"
 category: "design"
 description: "How traditional Japanese spatial aesthetics (Ma) and muted rice paper color palettes improve user focus and reduce cognitive load."
 keywords: ["Japanese Design", "UI UX", "Minimalism", "Ma Aesthetic", "Design Systems"]
-thumbnail: "/blogs/japanese-design.jpg"
+thumbnail: ""
 publishedAt: "2026-05-28"
 ---
 

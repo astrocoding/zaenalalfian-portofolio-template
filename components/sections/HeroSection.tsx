@@ -63,7 +63,7 @@ const CounterNumber: React.FC<CounterNumberProps> = ({
     };
   }, [from, to, decimals, prefix, suffix, duration, delay]);
 
-  return <span className={className}>{displayValue}</span>;
+  return <span className={className} suppressHydrationWarning>{displayValue}</span>;
 };
 
 const SeigaihaFan: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
@@ -329,7 +329,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   <span>Connected</span>
                 </div>
-                <span className="font-serif text-primary/80 italic text-xs">美と技術の融合</span>
+                <span className="font-serif text-primary font-semibold italic text-xs">美と技術の融合</span>
               </div>
             </div>
           </motion.div>

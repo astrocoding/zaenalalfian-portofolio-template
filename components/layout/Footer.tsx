@@ -144,32 +144,32 @@ export const Footer: React.FC<FooterProps> = async ({
               <ul className="space-y-2 text-sm font-medium text-ink-muted">
                 <li>
                   <Link href="/projects" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                    Projects <span className="text-[10px] text-primary/80 font-serif">/ 実績</span>
+                    Projects <span className="text-[10px] text-primary font-serif font-medium">/ 実績</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/blogs" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                    Blogs <span className="text-[10px] text-primary/80 font-serif">/ 記事</span>
+                    Blogs <span className="text-[10px] text-primary font-serif font-medium">/ 記事</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/docs" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                    Documentation <span className="text-[10px] text-primary/80 font-serif">/ 文書</span>
+                    Documentation <span className="text-[10px] text-primary font-serif font-medium">/ 文書</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/experiences" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                    Experiences <span className="text-[10px] text-primary/80 font-serif">/ 経歴</span>
+                    Experiences <span className="text-[10px] text-primary font-serif font-medium">/ 経歴</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/education" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                    Education <span className="text-[10px] text-primary/80 font-serif">/ 学歴</span>
+                    Education <span className="text-[10px] text-primary font-serif font-medium">/ 学歴</span>
                   </Link>
                 </li>
                 <li>
                   <Link href="/about" className="hover:text-primary transition-colors inline-flex items-center gap-1">
-                    About Me <span className="text-[10px] text-primary/80 font-serif">/ 概要</span>
+                    About Me <span className="text-[10px] text-primary font-serif font-medium">/ 概要</span>
                   </Link>
                 </li>
               </ul>
@@ -189,7 +189,7 @@ export const Footer: React.FC<FooterProps> = async ({
                 >
                   <GithubIcon className="w-4 h-4" />
                   <span>Github</span>
-                  <span className="text-[10px] text-primary/80 font-serif">/ ギットハブ</span>
+                  <span className="text-[10px] text-primary font-serif font-medium">/ ギットハブ</span>
                   <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
                 </a>
                 <a
@@ -200,7 +200,7 @@ export const Footer: React.FC<FooterProps> = async ({
                 >
                   <LinkedinIcon className="w-4 h-4" />
                   <span>LinkedIn</span>
-                  <span className="text-[10px] text-primary/80 font-serif">/ リンクトイン</span>
+                  <span className="text-[10px] text-primary font-serif font-medium">/ リンクトイン</span>
                   <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
                 </a>
                 <a
@@ -211,7 +211,7 @@ export const Footer: React.FC<FooterProps> = async ({
                 >
                   <InstagramIcon className="w-4 h-4" />
                   <span>Instagram</span>
-                  <span className="text-[10px] text-primary/80 font-serif">/ インスタグラム</span>
+                  <span className="text-[10px] text-primary font-serif font-medium">/ インスタグラム</span>
                   <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
                 </a>
                 <a
@@ -222,7 +222,7 @@ export const Footer: React.FC<FooterProps> = async ({
                 >
                   <FacebookIcon className="w-4 h-4" />
                   <span>Facebook</span>
-                  <span className="text-[10px] text-primary/80 font-serif">/ フェイスブック</span>
+                  <span className="text-[10px] text-primary font-serif font-medium">/ フェイスブック</span>
                   <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
                 </a>
                 <a
@@ -248,7 +248,7 @@ export const Footer: React.FC<FooterProps> = async ({
               . All rights reserved.
             </span>
             <span className="text-border-warm">•</span>
-            <span className="font-serif text-primary/80">無の境地</span>
+            <span className="font-serif text-primary font-medium">無の境地</span>
           </div>
 
           <div className="flex items-center space-x-1 font-mono text-[11px]">
