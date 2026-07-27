@@ -227,11 +227,13 @@ export const Footer: React.FC<FooterProps> = async ({
                 </a>
                 <a
                   href={`mailto:${gmailAddress}`}
-                  className="hover:text-primary transition-colors inline-flex items-center gap-2 text-primary font-medium pt-1"
+                  className="hover:text-primary transition-colors inline-flex items-center gap-2"
                   suppressHydrationWarning
                 >
-                  <Mail className="w-4 h-4" />
-                  <span suppressHydrationWarning>{gmailAddress}</span>
+                  <Mail className="w-4 h-4 text-primary" />
+                  <span>Email</span>
+                  <span className="text-[10px] text-primary font-serif font-medium">/ 電子メール</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
                 </a>
               </div>
             </div>

@@ -5,7 +5,19 @@ import { verifyServerAttributionIntegrity } from "./lib/integrity.server";
 verifyServerAttributionIntegrity();
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  reactStrictMode: true,
+  poweredByHeader: false,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+  },
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "framer-motion",
+      "date-fns",
+      "@prisma/client",
+    ],
+  },
 };
 
 export default nextConfig;

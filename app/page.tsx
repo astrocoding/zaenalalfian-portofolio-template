@@ -1,14 +1,29 @@
+import dynamic from "next/dynamic";
 import { MainLayout } from "@/components/layout";
-import {
-  HeroSection,
-  AboutSection,
-  SkillsSection,
-  ExperienceSection,
-  FeaturedProjectsSection,
-  LatestBlogsSection,
-  ContactSection,
-} from "@/components/sections";
+import { HeroSection } from "@/components/sections/HeroSection";
 import { prisma } from "@/lib/prisma";
+
+// Lazy load below-the-fold sections for maximum mobile performance & code splitting
+const AboutSection = dynamic(() =>
+  import("@/components/sections/AboutSection").then((m) => m.AboutSection)
+);
+const SkillsSection = dynamic(() =>
+  import("@/components/sections/SkillsSection").then((m) => m.SkillsSection)
+);
+const ExperienceSection = dynamic(() =>
+  import("@/components/sections/ExperienceSection").then((m) => m.ExperienceSection)
+);
+const FeaturedProjectsSection = dynamic(() =>
+  import("@/components/sections/FeaturedProjectsSection").then(
+    (m) => m.FeaturedProjectsSection
+  )
+);
+const LatestBlogsSection = dynamic(() =>
+  import("@/components/sections/LatestBlogsSection").then((m) => m.LatestBlogsSection)
+);
+const ContactSection = dynamic(() =>
+  import("@/components/sections/ContactSection").then((m) => m.ContactSection)
+);
 
 export const revalidate = 60;
 

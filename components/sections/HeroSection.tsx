@@ -171,12 +171,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
       <Container size="wide" className="relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           {/* Main Hero Copy */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-7 space-y-4 sm:space-y-5"
-          >
+          <div className="lg:col-span-7 space-y-4 sm:space-y-5">
             {/* Status Pill Badge */}
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#f6e0ce]/60 border border-border-warm text-ink text-xs font-mono">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -269,7 +264,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
                 <div className="text-xs text-ink-muted font-mono mt-0.5">Git Commits</div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Visual Card Component (Floating Up-and-Down Animation) */}
           <motion.div

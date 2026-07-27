@@ -1,0 +1,6 @@
+# Target modern ES2022+ browsers to eliminate legacy polyfills (Array.prototype.at, flat, Object.hasOwn, etc.)
+chrome >= 100
+safari >= 15
+firefox >= 100
+edge >= 100
+not dead
