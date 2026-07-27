@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { Save, AlertCircle } from "lucide-react";
+import { Save, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { createUserAction, updateUserAction } from "@/app/actions/admin";
 
 export interface UserData {
@@ -23,12 +23,15 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const [formData, setFormData] = React.useState({
     name: initialData?.name || "",
     username: initialData?.username || "",
     email: initialData?.email || "",
     password: "",
+    confirmPassword: "",
     role: (initialData?.role as "ADMIN" | "USER") || "ADMIN",
   });
 
@@ -37,16 +40,38 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
     setLoading(true);
     setError(null);
 
-    let res;
-    if (isEdit && initialData?.id) {
-      res = await updateUserAction(initialData.id, formData);
-    } else {
-      if (!formData.password || formData.password.trim() === "") {
-        setError("Password is required for new users.");
+    // Validation check
+    if (!isEdit && (!formData.password || formData.password.trim() === "")) {
+      setError("Password is required for new users / パスワードは必須です。");
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password || formData.confirmPassword) {
+      if (formData.password !== formData.confirmPassword) {
+        setError("Password and Confirm Password do not match / パスワードが一致しません。");
         setLoading(false);
         return;
       }
-      res = await createUserAction(formData);
+    }
+
+    let res;
+    if (isEdit && initialData?.id) {
+      res = await updateUserAction(initialData.id, {
+        name: formData.name,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+      });
+    } else {
+      res = await createUserAction({
+        name: formData.name,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+      });
     }
 
     setLoading(false);
@@ -67,19 +92,20 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
         </div>
       )}
 
-      <div className="space-y-1.5">
-        <label className="text-xs font-mono font-medium text-ink">Full Name / 氏名 *</label>
-        <input
-          type="text"
-          required
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          placeholder="e.g. Zaenal Alfian"
-          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-        />
-      </div>
-
+      {/* Row 1: Full Name & Username */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="space-y-1.5">
+          <label className="text-xs font-mono font-medium text-ink">Full Name / 氏名 *</label>
+          <input
+            type="text"
+            required
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            placeholder="e.g. Zaenal Alfian"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+          />
+        </div>
+
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">Username / ユーザー名 *</label>
           <input
@@ -91,7 +117,10 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
             className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
+      </div>
 
+      {/* Row 2: Email Address & Role */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">Email Address / メール *</label>
           <input
@@ -100,22 +129,6 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             placeholder="e.g. admin@zaenalalfian.dev"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="space-y-1.5">
-          <label className="text-xs font-mono font-medium text-ink">
-            {isEdit ? "New Password (leave blank to keep current)" : "Password / パスワード *"}
-          </label>
-          <input
-            type="password"
-            required={!isEdit}
-            value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            placeholder="••••••••••••"
             className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
@@ -130,6 +143,57 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
             <option value="ADMIN">ADMIN (Full Access)</option>
             <option value="USER">USER (Read Access)</option>
           </select>
+        </div>
+      </div>
+
+      {/* Row 3: Password & Confirm Password */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="space-y-1.5">
+          <label className="text-xs font-mono font-medium text-ink">
+            {isEdit ? "New Password / パスワード (blank to keep)" : "Password / パスワード *"}
+          </label>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              required={!isEdit}
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              placeholder="••••••••••••"
+              className="w-full pl-3.5 pr-10 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink transition-colors cursor-pointer"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="text-xs font-mono font-medium text-ink">
+            {isEdit ? "Confirm New Password / 確認用パスワード" : "Confirm Password / パスワード再入力 *"}
+          </label>
+          <div className="relative">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              required={!isEdit || (formData.password.trim().length > 0)}
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+              placeholder="••••••••••••"
+              className="w-full pl-3.5 pr-10 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink transition-colors cursor-pointer"
+              aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+            >
+              {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
         </div>
       </div>
 

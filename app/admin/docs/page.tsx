@@ -7,7 +7,8 @@ import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { AdminPagination } from "@/components/admin/AdminPagination";
-import { Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
+import { DeleteButton } from "@/components/admin/DeleteButton";
+import { Plus, Edit, ArrowLeft } from "lucide-react";
 import { deleteDocAction } from "@/app/actions/admin";
 
 export interface AdminDocsPageProps {
@@ -111,20 +112,12 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
                           </button>
                         </Link>
 
-                        <form
-                          action={async () => {
-                            "use server";
-                            await deleteDocAction(doc.id);
-                          }}
-                        >
-                          <button
-                            type="submit"
-                            className="p-1.5 rounded bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer"
-                            title="Delete"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </form>
+                        <DeleteButton
+                          itemId={doc.id}
+                          itemName={doc.title}
+                          itemType="documentation guide"
+                          onDeleteAction={deleteDocAction}
+                        />
                       </div>
                     </td>
                   </tr>

@@ -7,7 +7,8 @@ import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { AdminPagination } from "@/components/admin/AdminPagination";
-import { Plus, Edit, Trash2, ArrowLeft, ExternalLink } from "lucide-react";
+import { DeleteButton } from "@/components/admin/DeleteButton";
+import { Plus, Edit, ArrowLeft, ExternalLink } from "lucide-react";
 import { deleteSkillsetAction } from "@/app/actions/admin";
 
 export interface AdminSkillsetsPageProps {
@@ -129,20 +130,13 @@ export default async function AdminSkillsetsPage({ searchParams }: AdminSkillset
                           </button>
                         </Link>
 
-                        <form
-                          action={async () => {
-                            "use server";
-                            await deleteSkillsetAction(skill.id);
-                          }}
-                        >
-                          <button
-                            type="submit"
-                            className="p-1.5 rounded bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer"
-                            title="Delete Skillset"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </form>
+                        <DeleteButton
+                          itemId={skill.id}
+                          itemName={`${skill.skillName} (${skill.category})`}
+                          itemType="skillset item"
+                          onDeleteAction={deleteSkillsetAction}
+                          buttonTitle="Delete Skillset"
+                        />
                       </div>
                     </td>
                   </tr>

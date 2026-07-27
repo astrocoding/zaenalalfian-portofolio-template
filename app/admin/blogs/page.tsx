@@ -7,7 +7,8 @@ import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { AdminPagination } from "@/components/admin/AdminPagination";
-import { Plus, Edit, Trash2, ArrowLeft, Calendar } from "lucide-react";
+import { DeleteButton } from "@/components/admin/DeleteButton";
+import { Plus, Edit, ArrowLeft, Calendar } from "lucide-react";
 import { deleteBlogAction } from "@/app/actions/admin";
 
 export interface AdminBlogsPageProps {
@@ -120,20 +121,12 @@ export default async function AdminBlogsPage({ searchParams }: AdminBlogsPagePro
                           </button>
                         </Link>
 
-                        <form
-                          action={async () => {
-                            "use server";
-                            await deleteBlogAction(blog.id);
-                          }}
-                        >
-                          <button
-                            type="submit"
-                            className="p-1.5 rounded bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer"
-                            title="Delete"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </form>
+                        <DeleteButton
+                          itemId={blog.id}
+                          itemName={blog.title}
+                          itemType="article"
+                          onDeleteAction={deleteBlogAction}
+                        />
                       </div>
                     </td>
                   </tr>

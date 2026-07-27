@@ -7,7 +7,8 @@ import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { AdminPagination } from "@/components/admin/AdminPagination";
-import { UserPlus, Edit, Trash2, ArrowLeft } from "lucide-react";
+import { DeleteButton } from "@/components/admin/DeleteButton";
+import { UserPlus, Edit, ArrowLeft } from "lucide-react";
 import { deleteUserAction } from "@/app/actions/admin";
 
 export interface AdminUsersPageProps {
@@ -126,20 +127,13 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
                         </Link>
 
                         {totalItems > 1 && (
-                          <form
-                            action={async () => {
-                              "use server";
-                              await deleteUserAction(usr.id);
-                            }}
-                          >
-                            <button
-                              type="submit"
-                              className="p-1.5 rounded bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer"
-                              title="Delete User"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </form>
+                          <DeleteButton
+                            itemId={usr.id}
+                            itemName={`${usr.name} (@${usr.username})`}
+                            itemType="admin user"
+                            onDeleteAction={deleteUserAction}
+                            buttonTitle="Delete User"
+                          />
                         )}
                       </div>
                     </td>

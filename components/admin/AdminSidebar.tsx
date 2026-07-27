@@ -18,6 +18,7 @@ import {
   ExternalLink,
   Menu,
   X,
+  UserCheck,
 } from "lucide-react";
 
 export interface AdminSidebarProps {
@@ -31,6 +32,7 @@ export interface AdminSidebarProps {
 
 const adminNavItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard, kanji: "概要" },
+  { label: "Profile & About", href: "/admin/profile", icon: UserCheck, kanji: "設定" },
   { label: "Projects", href: "/admin/projects", icon: FolderGit2, kanji: "実績" },
   { label: "Blogs", href: "/admin/blogs", icon: BookOpen, kanji: "記事" },
   { label: "Documentation", href: "/admin/docs", icon: FileCode, kanji: "文書" },

@@ -36,11 +36,17 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  jwt: {
-    secret: process.env.NEXTAUTH_SECRET || "zaenalalfian-portfolio-japanese-minimalist-secret-key-2026",
-  },
   pages: {
     signIn: "/admin/login",
+  },
+  logger: {
+    error(code, metadata) {
+      if (code === "JWT_SESSION_ERROR") {
+        // Gracefully handle invalid, stale or expired session token decryption
+        return;
+      }
+      console.error(`[next-auth][error][${code}]`, metadata);
+    },
   },
   providers: [
     CredentialsProvider({

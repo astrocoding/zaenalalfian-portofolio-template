@@ -7,7 +7,8 @@ import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { AdminPagination } from "@/components/admin/AdminPagination";
-import { Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
+import { DeleteButton } from "@/components/admin/DeleteButton";
+import { Plus, Edit, ArrowLeft } from "lucide-react";
 import { deleteExperienceAction } from "@/app/actions/admin";
 
 export interface AdminExperiencesPageProps {
@@ -126,20 +127,13 @@ export default async function AdminExperiencesPage({ searchParams }: AdminExperi
                           </button>
                         </Link>
 
-                        <form
-                          action={async () => {
-                            "use server";
-                            await deleteExperienceAction(exp.id);
-                          }}
-                        >
-                          <button
-                            type="submit"
-                            className="p-1.5 rounded bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer"
-                            title="Delete Experience"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </form>
+                        <DeleteButton
+                          itemId={exp.id}
+                          itemName={`${exp.role} at ${exp.company}`}
+                          itemType="experience record"
+                          onDeleteAction={deleteExperienceAction}
+                          buttonTitle="Delete Experience"
+                        />
                       </div>
                     </td>
                   </tr>
