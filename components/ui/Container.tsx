@@ -1,6 +1,7 @@
 import * as React from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { checkAttributionIntegrity } from "@/lib/integrity";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -18,6 +19,7 @@ export const Container: React.FC<ContainerProps> = ({
   children,
   ...props
 }) => {
+  checkAttributionIntegrity();
   const sizeStyles = {
     narrow: "max-w-4xl",
     default: "max-w-6xl",

@@ -1,5 +1,6 @@
 import { PrismaClient } from "@/app/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { verifyServerAttributionIntegrity } from "@/lib/integrity.server";
 
 interface RuntimeField {
   name?: string;
@@ -9,6 +10,9 @@ type PrismaClientInternal = PrismaClient & {
   user?: unknown;
   experience?: unknown;
   skillset?: unknown;
+  about?: unknown;
+  aboutCard?: unknown;
+  contact?: unknown;
   _runtimeDataModel?: {
     models?: {
       Project?: {
@@ -23,6 +27,7 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 const createPrismaClient = () => {
+  verifyServerAttributionIntegrity();
   const connectionString = process.env.DATABASE_URL;
   const adapter = new PrismaPg({ connectionString });
   return new PrismaClient({ adapter });
@@ -41,6 +46,9 @@ const getPrismaClient = (): PrismaClient => {
       !internalPrisma.user ||
       !internalPrisma.experience ||
       !internalPrisma.skillset ||
+      !internalPrisma.about ||
+      !internalPrisma.aboutCard ||
+      !internalPrisma.contact ||
       !hasImagesField
     ) {
       globalForPrisma.prisma = undefined;
