@@ -129,9 +129,11 @@ export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({ className
 };
 
 const DesktopArchitectureCard: React.FC<{ name: string; role: string; status: string }> = ({ name, role, status }) => {
+  const [mounted, setMounted] = React.useState<boolean>(false);
   const [isDesktop, setIsDesktop] = React.useState<boolean>(false);
 
   React.useEffect(() => {
+    setMounted(true);
     const mediaQuery = window.matchMedia("(min-width: 1024px)");
     setIsDesktop(mediaQuery.matches);
 
@@ -140,7 +142,7 @@ const DesktopArchitectureCard: React.FC<{ name: string; role: string; status: st
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
-  if (!isDesktop) return null;
+  if (!mounted || !isDesktop) return null;
 
   return (
     <div className="hidden lg:block lg:col-span-5 relative pt-4 sm:pt-6 lg:pt-14 animate-float">

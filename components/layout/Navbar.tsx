@@ -125,7 +125,6 @@ export const Navbar: React.FC = () => {
 
   return (
     <header
-      suppressHydrationWarning
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-white/95 backdrop-blur-md border-b border-border-subtle shadow-xs py-3.5"

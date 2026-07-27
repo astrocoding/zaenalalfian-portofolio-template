@@ -95,7 +95,7 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
                         <div>
                           <span className="font-bold text-ink block font-serif">{usr.name}</span>
                           <span className="text-[10px] font-mono text-ink-muted">
-                            Joined {new Date(usr.createdAt).toLocaleDateString()}
+                            Joined {new Date(usr.createdAt).toLocaleDateString("en-US")}
                           </span>
                         </div>
                       </div>

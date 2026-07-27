@@ -233,7 +233,7 @@ export const Footer: React.FC<FooterProps> = async ({
         {/* Bottom copyright line */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-ink-muted gap-4">
           <div className="flex items-center space-x-2">
-            <span suppressHydrationWarning>
+            <span>
               © {currentYear}{" - "}
               <Link href="/" className="font-bold text-secondary hover:text-primary transition-colors">
                 Zaenal Alfian
