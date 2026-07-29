@@ -13,6 +13,7 @@ export interface ExperienceData {
   period?: string;
   isCurrent?: boolean;
   description?: string;
+  accomplishments?: string[];
   skills?: string[];
   order?: number;
 }
@@ -33,6 +34,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
     period: initialData?.period || "2023 — Present",
     isCurrent: initialData?.isCurrent ?? true,
     description: initialData?.description || "",
+    accomplishmentsText: initialData?.accomplishments ? initialData.accomplishments.join("\n") : "",
     skills: initialData?.skills ? initialData.skills.join(", ") : "Next.js, TypeScript, PostgreSQL",
     order: initialData?.order || 1,
   });
@@ -47,10 +49,20 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
       .map((s: string) => s.trim())
       .filter((s: string) => s.length > 0);
 
+    const accomplishmentsArray = formData.accomplishmentsText
+      .split("\n")
+      .map((line: string) => line.trim())
+      .filter((line: string) => line.length > 0);
+
     const payload = {
-      ...formData,
-      order: Number(formData.order) || 1,
+      role: formData.role,
+      company: formData.company,
+      period: formData.period,
+      isCurrent: formData.isCurrent,
+      description: formData.description,
+      accomplishments: accomplishmentsArray,
       skills: skillsArray,
+      order: Number(formData.order) || 1,
     };
 
     let res;
@@ -143,7 +155,10 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
       </div>
 
       <div className="space-y-1.5">
-        <label className="text-xs font-mono font-medium text-ink">Skills Used (comma separated) *</label>
+        <div className="flex items-center justify-between">
+          <label className="text-xs font-mono font-medium text-ink">Skills Used (comma separated) *</label>
+          <span className="text-[10px] font-mono text-ink-muted">Badges preview</span>
+        </div>
         <input
           type="text"
           required
@@ -155,14 +170,28 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
       </div>
 
       <div className="space-y-1.5">
-        <label className="text-xs font-mono font-medium text-ink">Role Description & Key Achievements / 職務概要 *</label>
+        <label className="text-xs font-mono font-medium text-ink">Role Overview / 職務概要 *</label>
         <textarea
           required
-          rows={6}
+          rows={4}
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          placeholder="Describe main responsibilities, key achievements, system metrics..."
+          placeholder="Describe main responsibilities, team scope, and general overview..."
           className="w-full px-4 py-3 rounded-md border border-border-warm bg-paper text-ink text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
+        />
+      </div>
+
+      <div className="space-y-1.5">
+        <div className="flex items-center justify-between">
+          <label className="text-xs font-mono font-medium text-ink">Key Accomplishments &amp; Responsibilities (1 bullet point per line / Enter per item)</label>
+          <span className="text-[10px] font-mono text-ink-muted">Enter key achievements line by line</span>
+        </div>
+        <textarea
+          rows={5}
+          value={formData.accomplishmentsText}
+          onChange={(e) => setFormData({ ...formData, accomplishmentsText: e.target.value })}
+          placeholder={`Architected 3-tier enterprise ERP system using Node.js/Hapi, React, PostgreSQL & Redis (+150% performance speedup).\nDeveloped barcode-scanned employee attendance system integrated with payroll in Laravel (65% HR reconciliation time saved).\nLed end-to-end database modeling, Redis caching strategies, and REST API architectural standards.`}
+          className="w-full px-4 py-3 rounded-md border border-border-warm bg-paper text-ink text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y font-sans"
         />
       </div>
 

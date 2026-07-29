@@ -29,6 +29,7 @@ export interface AboutCardItem {
   title: string;
   subtitle: string;
   badge?: string | null;
+  icon?: string | null;
   order: number;
 }
 
@@ -56,6 +57,7 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
     title: "",
     subtitle: "",
     badge: "",
+    icon: "",
   });
 
   // Keep cards synced when initialCards prop updates from server revalidation
@@ -67,7 +69,7 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
 
   const handleOpenAddModal = () => {
     setEditingCard(null);
-    setFormData({ title: "", subtitle: "", badge: "" });
+    setFormData({ title: "", subtitle: "", badge: "", icon: "" });
     setIsModalOpen(true);
     setError(null);
   };
@@ -78,6 +80,7 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
       title: card.title,
       subtitle: card.subtitle,
       badge: card.badge || "",
+      icon: card.icon || "",
     });
     setIsModalOpen(true);
     setError(null);
@@ -86,7 +89,7 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingCard(null);
-    setFormData({ title: "", subtitle: "", badge: "" });
+    setFormData({ title: "", subtitle: "", badge: "", icon: "" });
   };
 
   const handleSaveCard = async (e: React.FormEvent) => {
@@ -177,10 +180,10 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
           </div>
           <div>
             <h2 className="font-serif font-bold text-base text-ink">
-              About Cards & Pillars Management / カード管理・順序変更
+              About Cards &amp; Pillars Management / カード管理・順序変更
             </h2>
             <p className="text-xs text-ink-muted font-sans">
-              Manage engineering principles & value cards displayed across /about and landing pages.
+              Manage engineering principles &amp; value cards displayed across /about and landing pages.
             </p>
           </div>
         </div>
@@ -228,11 +231,16 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
                 </div>
 
                 <div className="flex-1 min-w-0 space-y-1">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 flex-wrap gap-y-1">
                     {card.badge && (
                       <Badge variant="accent" size="sm">
                         {card.badge}
                       </Badge>
+                    )}
+                    {card.icon && (
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/10 text-primary font-bold">
+                        Icon: {card.icon}
+                      </span>
                     )}
                     <h3 className="font-serif font-bold text-sm text-ink truncate">{card.title}</h3>
                   </div>
@@ -344,6 +352,20 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
                     className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-mono font-medium text-ink">Icon Name (Lucide React)</label>
+                  <span className="text-[10px] font-mono text-ink-muted">Optional</span>
+                </div>
+                <input
+                  type="text"
+                  value={formData.icon}
+                  onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
+                  placeholder="e.g. Cpu, Zap, Layout, ShieldCheck, Code, Sparkles, Layers"
+                  className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
+                />
               </div>
 
               <div className="space-y-1.5">

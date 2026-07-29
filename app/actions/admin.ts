@@ -318,6 +318,7 @@ export async function createExperienceAction(data: {
   period: string;
   isCurrent?: boolean;
   description: string;
+  accomplishments?: string[];
   skills?: string[];
   order?: number;
 }) {
@@ -326,11 +327,14 @@ export async function createExperienceAction(data: {
       data: {
         ...data,
         isCurrent: Boolean(data.isCurrent),
+        accomplishments: data.accomplishments || [],
         skills: data.skills || [],
         order: data.order ?? 1,
       },
     });
     revalidatePath("/");
+    revalidatePath("/experiences");
+    revalidatePath("/admin/experiences");
     return { success: true, experience: newExperience };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to create experience record") };
@@ -345,6 +349,7 @@ export async function updateExperienceAction(
     period?: string;
     isCurrent?: boolean;
     description?: string;
+    accomplishments?: string[];
     skills?: string[];
     order?: number;
   }
@@ -358,6 +363,8 @@ export async function updateExperienceAction(
       },
     });
     revalidatePath("/");
+    revalidatePath("/experiences");
+    revalidatePath("/admin/experiences");
     return { success: true, experience: updated };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to update experience record") };
@@ -691,6 +698,7 @@ export async function createAboutCardAction(
     title: string;
     subtitle: string;
     badge?: string;
+    icon?: string;
     order?: number;
   }
 ) {
@@ -710,6 +718,7 @@ export async function createAboutCardAction(
         title: cardData.title.trim(),
         subtitle: cardData.subtitle.trim(),
         badge: cardData.badge ? cardData.badge.trim() : null,
+        icon: cardData.icon ? cardData.icon.trim() : null,
         order,
       },
     });
@@ -730,6 +739,7 @@ export async function updateAboutCardAction(
     title?: string;
     subtitle?: string;
     badge?: string;
+    icon?: string;
     order?: number;
   }
 ) {
@@ -738,12 +748,14 @@ export async function updateAboutCardAction(
       title?: string;
       subtitle?: string;
       badge?: string | null;
+      icon?: string | null;
       order?: number;
     } = {};
 
     if (cardData.title !== undefined) updatePayload.title = cardData.title.trim();
     if (cardData.subtitle !== undefined) updatePayload.subtitle = cardData.subtitle.trim();
     if (cardData.badge !== undefined) updatePayload.badge = cardData.badge ? cardData.badge.trim() : null;
+    if (cardData.icon !== undefined) updatePayload.icon = cardData.icon ? cardData.icon.trim() : null;
     if (cardData.order !== undefined) updatePayload.order = cardData.order;
 
     const updatedCard = await prisma.aboutCard.update({

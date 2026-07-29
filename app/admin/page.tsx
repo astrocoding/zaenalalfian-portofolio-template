@@ -19,6 +19,9 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminDashboardPage() {
   const session = await getServerSession(authOptions);
 
@@ -26,25 +29,31 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login");
   }
 
-  let projectCount = 0;
-  let blogCount = 0;
-  let docCount = 0;
-  let experienceCount = 0;
-  let educationCount = 0;
-  let skillsetCount = 0;
-  let userCount = 0;
+  const [
+    projectRes,
+    blogRes,
+    docRes,
+    experienceRes,
+    educationRes,
+    skillsetRes,
+    userRes,
+  ] = await Promise.allSettled([
+    prisma.project.count(),
+    prisma.blog.count(),
+    prisma.doc.count(),
+    prisma.experience.count(),
+    prisma.education.count(),
+    prisma.skillset.count(),
+    prisma.user.count(),
+  ]);
 
-  try {
-    projectCount = await prisma.project.count();
-    blogCount = await prisma.blog.count();
-    docCount = await prisma.doc.count();
-    experienceCount = await prisma.experience.count();
-    educationCount = await prisma.education.count();
-    skillsetCount = await prisma.skillset.count();
-    userCount = await prisma.user.count();
-  } catch (e) {
-    console.warn("Database query error on admin dashboard:", e);
-  }
+  const projectCount = projectRes.status === "fulfilled" ? projectRes.value : 0;
+  const blogCount = blogRes.status === "fulfilled" ? blogRes.value : 0;
+  const docCount = docRes.status === "fulfilled" ? docRes.value : 0;
+  const experienceCount = experienceRes.status === "fulfilled" ? experienceRes.value : 0;
+  const educationCount = educationRes.status === "fulfilled" ? educationRes.value : 0;
+  const skillsetCount = skillsetRes.status === "fulfilled" ? skillsetRes.value : 0;
+  const userCount = userRes.status === "fulfilled" ? userRes.value : 0;
 
   const metrics = [
     {
@@ -119,20 +128,10 @@ export default async function AdminDashboardPage() {
           </h1>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div>
           <Link href="/admin/projects/new">
             <Button variant="primary" size="sm" icon={<Plus className="w-3.5 h-3.5" />}>
               New Project
-            </Button>
-          </Link>
-          <Link href="/admin/experiences/new">
-            <Button variant="secondary" size="sm" icon={<Plus className="w-3.5 h-3.5" />}>
-              New Experience
-            </Button>
-          </Link>
-          <Link href="/admin/education/new">
-            <Button variant="outline" size="sm" icon={<Plus className="w-3.5 h-3.5" />}>
-              New Education
             </Button>
           </Link>
         </div>
