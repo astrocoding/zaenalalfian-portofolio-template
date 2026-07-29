@@ -58,12 +58,12 @@ export const ExperienceSection: React.FC<{ experiences?: ExperienceItem[] }> = (
       bgVariant="surface"
       className="pt-10 sm:pt-14 pb-16 sm:pb-24"
     >
-      <div className="relative pl-6 sm:pl-8 border-l-2 border-border-warm space-y-12">
+      <div className="relative pl-6 sm:pl-8 border-l-2 border-border-warm space-y-6 sm:space-y-7">
         {displayList.map((exp, idx) => (
           <div key={(exp.id || exp.role) + idx} className="relative group">
             {/* Timeline Japanese Seal Dot */}
-            <div className="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-surface border-2 border-primary group-hover:bg-primary transition-colors flex items-center justify-center">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary group-hover:bg-white transition-colors" />
+            <div className="absolute -left-[24px] sm:-left-[32px] -translate-x-1/2 top-6 w-5 h-5 rounded-full bg-surface border-2 border-primary group-hover:scale-110 transition-all flex items-center justify-center z-10 shadow-xs">
+              <div className="w-2 h-2 rounded-full bg-primary transition-colors" />
             </div>
 
             <div className="relative overflow-hidden bg-paper border border-border-warm rounded-xl p-6 hover:border-primary/40 transition-colors shadow-2xs">
@@ -91,7 +91,9 @@ export const ExperienceSection: React.FC<{ experiences?: ExperienceItem[] }> = (
                   </div>
                 </div>
 
-                <p className="text-sm text-ink-muted leading-relaxed font-sans">{exp.description}</p>
+                <p className="text-sm text-ink-muted leading-relaxed font-sans line-clamp-2" title={exp.description}>
+                  {exp.description}
+                </p>
 
                 <div className="flex flex-wrap gap-2 pt-2">
                   {exp.skills.map((tech) => (
