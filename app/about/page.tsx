@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight, Mail } from "lucide-react";
+import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "About & Engineering Philosophy | Zaenal Alfian",
@@ -18,9 +19,28 @@ export const metadata: Metadata = {
     "About Engineer",
     "Full-Stack Architect",
     "Japanese Minimalist Design",
-    "Next.js 16",
+    "Next.js",
     "TypeScript",
   ],
+  alternates: {
+    canonical: buildCanonical("/about"),
+  },
+  openGraph: {
+    type: "website",
+    url: buildCanonical("/about"),
+    title: "About & Engineering Philosophy | Zaenal Alfian",
+    description:
+      "Senior Full-Stack Engineer & Frontend Architect — 6+ years building scalable web platforms with Japanese minimalist precision.",
+    images: [{ url: DEFAULT_OG_IMAGE(), width: 1200, height: 630, alt: "Zaenal Alfian About" }],
+    siteName: "Zaenal Alfian Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About & Engineering Philosophy | Zaenal Alfian",
+    description: "Senior Full-Stack Engineer & Frontend Architect — building scalable systems with minimalist precision.",
+    images: [DEFAULT_OG_IMAGE()],
+    creator: "@zaenalalfian",
+  },
 };
 
 const defaultPhilosophyPillars = [

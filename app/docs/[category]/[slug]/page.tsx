@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { DocHeader } from "@/components/docs/DocHeader";
 import { MarkdownRenderer } from "@/components/blog/MarkdownRenderer";
 import { getDocPost, getAllDocs } from "@/lib/docs";
+import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -29,14 +30,31 @@ export async function generateMetadata({
     return { title: "Document Not Found" };
   }
 
+  const canonicalUrl = buildCanonical(
+    `/docs/${resolvedParams.category}/${resolvedParams.slug}`
+  );
+
   return {
     title: `${doc.frontmatter.title} — Documentation | Zaenal Alfian`,
     description: doc.frontmatter.description,
-    keywords: [doc.frontmatter.category, "Documentation", "Technical Reference"],
+    keywords: [doc.frontmatter.category, "Documentation", "Technical Reference", "Zaenal Alfian"],
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: doc.frontmatter.title,
       description: doc.frontmatter.description,
       type: "article",
+      url: canonicalUrl,
+      images: [{ url: DEFAULT_OG_IMAGE(), width: 1200, height: 630, alt: doc.frontmatter.title }],
+      siteName: "Zaenal Alfian Portfolio",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: doc.frontmatter.title,
+      description: doc.frontmatter.description,
+      images: [DEFAULT_OG_IMAGE()],
+      creator: "@zaenalalfian",
     },
   };
 }

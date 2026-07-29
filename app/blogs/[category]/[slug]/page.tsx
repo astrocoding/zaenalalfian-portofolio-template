@@ -5,6 +5,7 @@ import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
 import { BlogHeader, MarkdownRenderer, RelatedArticles } from "@/components/blog";
 import { getBlogPost, getAllBlogPosts, getRelatedPosts } from "@/lib/blogs";
+import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -28,20 +29,41 @@ export async function generateMetadata({
     return { title: "Article Not Found" };
   }
 
+  const canonicalUrl = buildCanonical(
+    `/blogs/${resolvedParams.category}/${resolvedParams.slug}`
+  );
+  const ogImage = post.frontmatter.thumbnail || DEFAULT_OG_IMAGE();
+
   return {
     title: `${post.frontmatter.title} — Technical Blog | Zaenal Alfian`,
     description: post.frontmatter.description,
     keywords: post.frontmatter.keywords || [post.frontmatter.category, "Software Architecture"],
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: post.frontmatter.title,
       description: post.frontmatter.description,
       type: "article",
+      url: canonicalUrl,
       publishedTime: post.frontmatter.publishedAt,
+      authors: ["Zaenal Alfian"],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.frontmatter.title,
+        },
+      ],
+      siteName: "Zaenal Alfian Portfolio",
     },
     twitter: {
       card: "summary_large_image",
       title: post.frontmatter.title,
       description: post.frontmatter.description,
+      images: [ogImage],
+      creator: "@zaenalalfian",
     },
   };
 }

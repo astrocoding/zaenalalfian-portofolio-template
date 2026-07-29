@@ -1,7 +1,9 @@
 import dynamic from "next/dynamic";
+import { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { prisma } from "@/lib/prisma";
+import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 // Lazy load below-the-fold sections for maximum mobile performance & code splitting
 const AboutSection = dynamic(() =>
@@ -26,6 +28,57 @@ const ContactSection = dynamic(() =>
 );
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "Zaenal Alfian — Senior Full-Stack Engineer & Product Architect",
+  description:
+    "Personal portfolio of Zaenal Alfian — Senior Full-Stack Engineer & Frontend Architect specializing in Next.js, React, TypeScript, PostgreSQL, and Japanese minimalist design.",
+  keywords: [
+    "Zaenal Alfian",
+    "Full-Stack Engineer",
+    "Frontend Architect",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "PostgreSQL",
+    "Prisma",
+    "Software Engineer Indonesia",
+    "Japanese Minimalist Design",
+  ],
+  alternates: {
+    canonical: buildCanonical("/"),
+  },
+  openGraph: {
+    type: "website",
+    url: buildCanonical("/"),
+    title: "Zaenal Alfian — Senior Full-Stack Engineer & Product Architect",
+    description:
+      "Personal portfolio of Zaenal Alfian — crafting scalable systems with minimalist precision. Next.js, React 19, TypeScript, Prisma.",
+    images: [
+      {
+        url: DEFAULT_OG_IMAGE(),
+        width: 1200,
+        height: 630,
+        alt: "Zaenal Alfian — Senior Full-Stack Engineer",
+      },
+    ],
+    siteName: "Zaenal Alfian Portfolio",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zaenal Alfian — Senior Full-Stack Engineer & Product Architect",
+    description:
+      "Crafting scalable systems with minimalist precision. Next.js, React 19, TypeScript, Prisma.",
+    images: [DEFAULT_OG_IMAGE()],
+    creator: "@zaenalalfian",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
+};
 
 export default async function HomePage() {
   let dbProjects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];

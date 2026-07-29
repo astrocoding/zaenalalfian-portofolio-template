@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Newsreader, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { getSiteUrl } from "@/lib/seo";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -25,7 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
   preload: false,
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zaenalalfian.dev";
+const baseUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

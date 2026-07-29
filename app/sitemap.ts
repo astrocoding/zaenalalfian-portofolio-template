@@ -2,35 +2,78 @@ import { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/lib/blogs";
 import { getAllDocs } from "@/lib/docs";
 import { prisma } from "@/lib/prisma";
+import { getSiteUrl } from "@/lib/seo";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zaenalalfian.dev";
+  const baseUrl = getSiteUrl();
 
-  // Base static routes
-  const staticPaths = ["", "/projects", "/blogs", "/docs", "/about", "/experiences", "/education"];
-  const routes: MetadataRoute.Sitemap = staticPaths.map((path) => ({
-    url: `${baseUrl}${path}`,
-    lastModified: new Date(),
-    changeFrequency: path === "" ? "weekly" : "monthly",
-    priority: path === "" ? 1.0 : 0.8,
-  }));
+  // Static routes with priority per specification
+  const staticRoutes: MetadataRoute.Sitemap = [
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/blogs`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/experiences`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/education`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/projects`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/docs`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+  ];
 
-  // Projects dynamic routes
+  const routes: MetadataRoute.Sitemap = [...staticRoutes];
+
+  // Projects dynamic routes — priority 0.9, updatedAt from DB
   try {
-    const projects = await prisma.project.findMany({ select: { slug: true, updatedAt: true } });
+    const projects = await prisma.project.findMany({
+      select: { slug: true, updatedAt: true },
+      orderBy: { createdAt: "desc" },
+    });
     projects.forEach((proj) => {
       routes.push({
         url: `${baseUrl}/projects/${proj.slug}`,
-        lastModified: proj.updatedAt || new Date(),
+        lastModified: proj.updatedAt ?? new Date(),
         changeFrequency: "monthly",
-        priority: 0.8,
+        priority: 0.9,
       });
     });
   } catch {
-    // Database query fallback
+    // DB unavailable at build time — skip dynamic project routes
   }
 
-  // Blog dynamic routes
+  // Blog dynamic routes — priority 0.9 (published posts from filesystem)
   try {
     const blogPosts = await getAllBlogPosts();
     blogPosts.forEach((post) => {
@@ -38,14 +81,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${baseUrl}/blogs/${post.frontmatter.category.toLowerCase()}/${post.frontmatter.slug}`,
         lastModified: new Date(post.frontmatter.publishedAt),
         changeFrequency: "monthly",
-        priority: 0.8,
+        priority: 0.9,
       });
     });
   } catch {
-    // Ignore error
+    // Content directory unavailable — skip
   }
 
-  // Docs dynamic routes
+  // Docs dynamic routes — priority 0.8
   try {
     const docs = await getAllDocs();
     docs.forEach((doc) => {
@@ -53,11 +96,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${baseUrl}/docs/${doc.frontmatter.category.toLowerCase()}/${doc.frontmatter.slug}`,
         lastModified: new Date(),
         changeFrequency: "monthly",
-        priority: 0.7,
+        priority: 0.8,
       });
     });
   } catch {
-    // Ignore error
+    // Content directory unavailable — skip
   }
 
   return routes;

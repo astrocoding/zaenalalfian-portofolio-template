@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { TimelineCardList, TimelineCardItem } from "@/components/ui/TimelineCardList";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
+import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Education & Academic Qualifications | Zaenal Alfian",
@@ -18,6 +19,25 @@ export const metadata: Metadata = {
     "Academic Background",
     "Zaenal Alfian",
   ],
+  alternates: {
+    canonical: buildCanonical("/education"),
+  },
+  openGraph: {
+    type: "website",
+    url: buildCanonical("/education"),
+    title: "Education & Academic Qualifications | Zaenal Alfian",
+    description:
+      "Bachelor of Computer Science and software engineering training background of Zaenal Alfian.",
+    images: [{ url: DEFAULT_OG_IMAGE(), width: 1200, height: 630, alt: "Zaenal Alfian Education" }],
+    siteName: "Zaenal Alfian Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Education & Academic Qualifications | Zaenal Alfian",
+    description: "Computer science degree and software engineering background of Zaenal Alfian.",
+    images: [DEFAULT_OG_IMAGE()],
+    creator: "@zaenalalfian",
+  },
 };
 
 const educationItems: TimelineCardItem[] = [

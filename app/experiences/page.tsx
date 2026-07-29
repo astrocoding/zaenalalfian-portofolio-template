@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { TimelineCardList, TimelineCardItem } from "@/components/ui/TimelineCardList";
 import { Button } from "@/components/ui/Button";
 import { Mail } from "lucide-react";
+import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Professional Experiences & Career Journey | Zaenal Alfian",
@@ -18,6 +19,25 @@ export const metadata: Metadata = {
     "Work History",
     "Zaenal Alfian",
   ],
+  alternates: {
+    canonical: buildCanonical("/experiences"),
+  },
+  openGraph: {
+    type: "website",
+    url: buildCanonical("/experiences"),
+    title: "Professional Experiences & Career Journey | Zaenal Alfian",
+    description:
+      "6+ years of professional experience as Lead & Full-Stack Developer, building enterprise platforms and design systems.",
+    images: [{ url: DEFAULT_OG_IMAGE(), width: 1200, height: 630, alt: "Zaenal Alfian Career" }],
+    siteName: "Zaenal Alfian Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Professional Experiences & Career Journey | Zaenal Alfian",
+    description: "6+ years of experience as Lead & Full-Stack Developer building enterprise platforms.",
+    images: [DEFAULT_OG_IMAGE()],
+    creator: "@zaenalalfian",
+  },
 };
 
 const experienceItems: TimelineCardItem[] = [

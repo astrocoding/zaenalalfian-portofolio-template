@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { FeaturedProjectsSection } from "@/components/sections";
 import { prisma } from "@/lib/prisma";
+import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -10,6 +11,25 @@ export const metadata: Metadata = {
   title: "Featured Projects & Portfolio | Zaenal Alfian",
   description:
     "A showcase of production web applications, architectural platforms, design systems, and technical open-source software.",
+  keywords: ["Portfolio", "Web Applications", "Full-Stack Projects", "Next.js", "Zaenal Alfian"],
+  alternates: {
+    canonical: buildCanonical("/projects"),
+  },
+  openGraph: {
+    type: "website",
+    url: buildCanonical("/projects"),
+    title: "Featured Projects & Portfolio | Zaenal Alfian",
+    description: "Production web applications, architectural platforms, and design systems by Zaenal Alfian.",
+    images: [{ url: DEFAULT_OG_IMAGE(), width: 1200, height: 630, alt: "Zaenal Alfian Projects" }],
+    siteName: "Zaenal Alfian Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Featured Projects & Portfolio | Zaenal Alfian",
+    description: "Production web apps and architectural platforms by Zaenal Alfian.",
+    images: [DEFAULT_OG_IMAGE()],
+    creator: "@zaenalalfian",
+  },
 };
 
 export default async function ProjectsPage() {

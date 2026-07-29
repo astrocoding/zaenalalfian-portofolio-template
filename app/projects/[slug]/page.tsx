@@ -5,6 +5,7 @@ import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
 import { ProjectHeader, ProjectGallery, ProjectCaseStudy } from "@/components/project";
 import { prisma } from "@/lib/prisma";
+import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -37,14 +38,37 @@ export async function generateMetadata({
     return { title: "Project Not Found" };
   }
 
+  const canonicalUrl = buildCanonical(`/projects/${resolvedParams.slug}`);
+  const ogImage = project.thumbnail || DEFAULT_OG_IMAGE();
+
   return {
     title: `${project.title} — Case Study | Zaenal Alfian`,
     description: project.description,
     keywords: [project.category, ...project.techstack, "Case Study", "Full-Stack Architecture"],
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: project.title,
       description: project.description,
       type: "article",
+      url: canonicalUrl,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: project.title,
+        },
+      ],
+      siteName: "Zaenal Alfian Portfolio",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.description,
+      images: [ogImage],
+      creator: "@zaenalalfian",
     },
   };
 }
