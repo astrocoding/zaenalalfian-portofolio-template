@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
-import { FeaturedProjectsSection } from "@/components/sections";
+import { Container } from "@/components/ui/Container";
+import { ProjectsPageLayout } from "@/components/project/ProjectsPageLayout";
 import { prisma } from "@/lib/prisma";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
@@ -58,7 +59,9 @@ export default async function ProjectsPage() {
   return (
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper min-h-screen">
-        <FeaturedProjectsSection projects={projects} />
+        <Container size="wide">
+          <ProjectsPageLayout projects={projects} />
+        </Container>
       </div>
     </MainLayout>
   );
