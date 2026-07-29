@@ -7,7 +7,7 @@ import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, Mail, FileText } from "lucide-react";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -89,6 +89,7 @@ export default async function AboutPage() {
   const userLocation = adminUser?.location || "Indonesia (Remote Worldwide)";
   const userExperience = adminUser?.experience || "6+ Years Engineering";
   const userAvailability = adminUser?.availability || "Available";
+  const resumeUrl = adminUser?.resume?.trim();
 
   const title = aboutData?.title || "Behind the Architecture";
   const subtitle = aboutData?.subtitle || "Bridging Design Vision & Technical Execution";
@@ -173,11 +174,24 @@ export default async function AboutPage() {
               </div>
 
               <div className="pt-2">
-                <Link href="/#contact" className="w-full">
-                  <Button variant="primary" size="md" className="w-full justify-center" icon={<Mail className="w-4 h-4" />}>
-                    Get in Touch
-                  </Button>
-                </Link>
+                {resumeUrl ? (
+                  <a
+                    href={resumeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full block"
+                  >
+                    <Button variant="primary" size="md" className="w-full justify-center" icon={<FileText className="w-4 h-4" />}>
+                      Get My Resume
+                    </Button>
+                  </a>
+                ) : (
+                  <Link href="/#contact" className="w-full block">
+                    <Button variant="primary" size="md" className="w-full justify-center" icon={<FileText className="w-4 h-4" />}>
+                      Get My Resume
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
