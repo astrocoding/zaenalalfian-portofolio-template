@@ -161,7 +161,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {category.skills.map((skill) => {
+                  {category.skills.slice(0, 5).map((skill) => {
                     const skillName = typeof skill === "string" ? skill : skill.skillName;
                     const skillKey = typeof skill === "string" ? skill : skill.id || skill.skillName;
 
@@ -171,6 +171,11 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
                       </Badge>
                     );
                   })}
+                  {category.skills.length > 5 && (
+                    <Badge variant="ghost" size="md" className="font-mono text-xs font-bold text-primary/90 bg-primary/10 border border-primary/20 hover:bg-primary/15 transition-colors select-none">
+                      +{category.skills.length - 5} more
+                    </Badge>
+                  )}
                 </div>
               </div>
             </Card>

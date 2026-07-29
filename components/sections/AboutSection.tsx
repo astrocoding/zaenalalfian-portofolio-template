@@ -5,13 +5,36 @@ import Link from "next/link";
 import { SectionWrapper } from "../ui/SectionWrapper";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui/Card";
 import { Button } from "../ui/Button";
-import { ArrowRight, Cpu, Layout, ShieldCheck, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  Cpu,
+  Layout,
+  ShieldCheck,
+  Zap,
+  Code,
+  Sparkles,
+  Layers,
+  Compass,
+  Terminal,
+  Wrench,
+  GraduationCap,
+  Award,
+  BookOpen,
+  FileText,
+  Database,
+  Globe,
+  Server,
+  Lock,
+  Workflow,
+  LucideIcon,
+} from "lucide-react";
 
 export interface AboutCardData {
   id?: string;
   title: string;
   subtitle: string;
   badge?: string | null;
+  icon?: string | null;
 }
 
 export interface AboutSectionProps {
@@ -22,6 +45,28 @@ export interface AboutSectionProps {
     cards?: AboutCardData[];
   } | null;
 }
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  Cpu,
+  Zap,
+  Layout,
+  ShieldCheck,
+  Code,
+  Sparkles,
+  Layers,
+  Compass,
+  Terminal,
+  Wrench,
+  GraduationCap,
+  Award,
+  BookOpen,
+  FileText,
+  Database,
+  Globe,
+  Server,
+  Lock,
+  Workflow,
+};
 
 const defaultCoreValues: { icon: React.ReactNode; title: string; kanji: string; description: string }[] = [
   {
@@ -54,7 +99,13 @@ const defaultCoreValues: { icon: React.ReactNode; title: string; kanji: string; 
   },
 ];
 
-const getIconForBadge = (badge?: string | null, index: number = 0) => {
+const renderCardIcon = (iconName?: string | null, badge?: string | null, index: number = 0) => {
+  if (iconName && iconName.trim() !== "") {
+    const trimmed = iconName.trim();
+    const MatchedIcon = ICON_MAP[trimmed] || ICON_MAP[trimmed.charAt(0).toUpperCase() + trimmed.slice(1)];
+    if (MatchedIcon) return <MatchedIcon className="w-5 h-5 text-primary" />;
+  }
+
   if (badge === "建築" || index === 0) return <Cpu className="w-5 h-5 text-primary" />;
   if (badge === "高速" || index === 1) return <Zap className="w-5 h-5 text-primary" />;
   if (badge === "美学" || index === 2) return <Layout className="w-5 h-5 text-primary" />;
@@ -71,7 +122,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
   const cardsList =
     aboutData?.cards && aboutData.cards.length > 0
       ? aboutData.cards.slice(0, 4).map((card, idx) => ({
-          icon: getIconForBadge(card.badge, idx),
+          icon: renderCardIcon(card.icon, card.badge, idx),
           title: card.title,
           kanji: card.badge || `0${idx + 1}`,
           description: card.subtitle,
