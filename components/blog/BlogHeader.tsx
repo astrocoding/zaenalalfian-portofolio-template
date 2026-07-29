@@ -44,7 +44,7 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
             <Clock className="w-3.5 h-3.5" />
             {readingTime}
           </span>
-          <span className="font-serif text-xs text-primary/50 font-semibold">記事の詳細</span>
+          <span className="font-serif text-xs text-primary font-medium">記事の詳細</span>
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink leading-tight">
@@ -60,11 +60,13 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
             thumbnail.startsWith("http") ||
             thumbnail.startsWith("/")) && (
             <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden border border-border-warm my-6 shadow-md">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={thumbnail}
                 alt={title}
-                className="w-full h-full object-cover"
+                fill
+                priority
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 800px"
+                className="object-cover"
               />
             </div>
           )}

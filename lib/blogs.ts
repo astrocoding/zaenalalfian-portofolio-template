@@ -31,6 +31,20 @@ export function calculateReadingTime(text: string): string {
   return `${minutes} min read`;
 }
 
+export function optimizeHtmlImages(htmlContent: string): string {
+  if (!htmlContent) return "";
+  return htmlContent.replace(/<img\s+([^>]*)\/?>/gi, (match, attributes) => {
+    let newAttrs = attributes;
+    if (!/loading=["']/i.test(newAttrs)) {
+      newAttrs += ' loading="lazy"';
+    }
+    if (!/decoding=["']/i.test(newAttrs)) {
+      newAttrs += ' decoding="async"';
+    }
+    return `<img ${newAttrs} />`;
+  });
+}
+
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
   const postsMap = new Map<string, BlogPost>();
 
@@ -48,7 +62,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
             const { data, content } = matter(fileContent);
 
             const processedContent = await remark().use(html, { sanitize: false, allowDangerousHtml: true }).process(content);
-            const htmlContent = processedContent.toString();
+            const htmlContent = optimizeHtmlImages(processedContent.toString());
             const frontmatter = data as BlogFrontmatter;
 
             postsMap.set(frontmatter.slug, {
@@ -84,7 +98,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
             : new Date().toISOString().split("T")[0],
         },
         content: blog.content,
-        htmlContent: processedContent.toString(),
+        htmlContent: optimizeHtmlImages(processedContent.toString()),
         readingTime: calculateReadingTime(blog.content),
       });
     }
@@ -125,7 +139,7 @@ export async function getBlogPost(
             : new Date().toISOString().split("T")[0],
         },
         content: dbBlog.content,
-        htmlContent: processedContent.toString(),
+        htmlContent: optimizeHtmlImages(processedContent.toString()),
         readingTime: calculateReadingTime(dbBlog.content),
       };
     }
@@ -153,7 +167,7 @@ export async function getBlogPost(
     return {
       frontmatter: data as BlogFrontmatter,
       content,
-      htmlContent: processedContent.toString(),
+      htmlContent: optimizeHtmlImages(processedContent.toString()),
       readingTime: calculateReadingTime(content),
     };
   }
@@ -165,7 +179,7 @@ export async function getBlogPost(
   return {
     frontmatter: data as BlogFrontmatter,
     content,
-    htmlContent: processedContent.toString(),
+    htmlContent: optimizeHtmlImages(processedContent.toString()),
     readingTime: calculateReadingTime(content),
   };
 }

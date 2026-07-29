@@ -16,8 +16,8 @@ export const RelatedArticles: React.FC<RelatedArticlesProps> = ({ posts }) => {
   return (
     <div className="pt-12 border-t border-border-warm space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-2xl font-bold font-serif text-ink">Related Articles / 関連記事</h3>
-        <span className="font-serif text-xs text-primary/50 font-semibold">同カテゴリ</span>
+        <h2 className="text-2xl font-bold font-serif text-ink">Related Articles / 関連記事</h2>
+        <span className="font-serif text-xs text-primary font-medium">同カテゴリ</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

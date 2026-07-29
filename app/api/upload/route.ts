@@ -36,10 +36,10 @@ export async function POST(req: Request) {
       const filename = `${typePrefix}-${randomCode}.webp`;
       const filePath = path.join(uploadDir, filename);
 
-      // Compress and convert image to WebP using sharp
+      // Compress and convert image to WebP using sharp with optimized size and effort
       await sharp(buffer)
-        .resize({ width: 1920, withoutEnlargement: true })
-        .webp({ quality: 80 })
+        .resize({ width: 1200, withoutEnlargement: true })
+        .webp({ quality: 78, effort: 6 })
         .toFile(filePath);
 
       uploadedUrls.push(`/upload/img/${filename}`);

@@ -138,9 +138,9 @@ export const Footer: React.FC<FooterProps> = async ({
           <div className="md:col-span-1 lg:col-span-2 flex flex-col space-y-10 lg:grid lg:grid-cols-2 lg:space-y-0 lg:gap-10">
             {/* Quick Navigation Links */}
             <div className="space-y-3">
-              <h4 className="font-serif font-bold text-sm text-ink uppercase tracking-wider">
+              <h2 className="font-serif font-bold text-sm text-ink uppercase tracking-wider">
                 Navigation / 案内
-              </h4>
+              </h2>
               <ul className="space-y-2 text-sm font-medium text-ink-muted">
                 <li>
                   <Link href="/projects" className="hover:text-primary transition-colors inline-flex items-center gap-1">
@@ -177,9 +177,9 @@ export const Footer: React.FC<FooterProps> = async ({
 
             {/* Social & Contact */}
             <div className="space-y-3">
-              <h4 className="font-serif font-bold text-sm text-ink uppercase tracking-wider">
+              <h2 className="font-serif font-bold text-sm text-ink uppercase tracking-wider">
                 Connect / 接続
-              </h4>
+              </h2>
               <div className="flex flex-col space-y-2 text-sm text-ink-muted">
                 <a
                   href={githubUrl}
