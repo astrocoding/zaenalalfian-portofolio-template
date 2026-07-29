@@ -179,6 +179,7 @@ export interface HeroSectionProps {
     name?: string | null;
     position?: string | null;
     activity?: string | null;
+    resume?: string | null;
   } | null;
 }
 
@@ -186,6 +187,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
   const name = userData?.name || "Zaenal Alfian";
   const role = userData?.position || "Full-Stack Engineer";
   const status = userData?.activity || "Building Great Products";
+  const resumeUrl = userData?.resume?.trim();
   const [gitStats, setGitStats] = React.useState<{ val: number; decimals: number; suffix: string }>({
     val: 6.7,
     decimals: 1,
@@ -256,34 +258,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
 
             {/* Call to Action Buttons */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Link
-                href="/#projects"
-                onClick={(e) => {
-                  const el = document.getElementById("projects");
-                  if (el) {
-                    e.preventDefault();
-                    el.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-              >
+              <Link href="/projects">
                 <Button variant="primary" size="md" icon={<ArrowRight className="w-4 h-4" />}>
                   Explore Work
                 </Button>
               </Link>
-              <Link
-                href="/#contact"
-                onClick={(e) => {
-                  const el = document.getElementById("contact");
-                  if (el) {
-                    e.preventDefault();
-                    el.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-              >
-                <Button variant="secondary" size="md" icon={<FileText className="w-4 h-4 text-primary" />}>
-                  Get My Resume
-                </Button>
-              </Link>
+              {resumeUrl ? (
+                <a
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button variant="secondary" size="md" icon={<FileText className="w-4 h-4 text-primary" />}>
+                    Get My Resume
+                  </Button>
+                </a>
+              ) : (
+                <Link
+                  href="/#contact"
+                  onClick={(e) => {
+                    const el = document.getElementById("contact");
+                    if (el) {
+                      e.preventDefault();
+                      el.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                >
+                  <Button variant="secondary" size="md" icon={<FileText className="w-4 h-4 text-primary" />}>
+                    Get My Resume
+                  </Button>
+                </Link>
+              )}
             </div>
 
             {/* Key Metrics Strip (Visible in single screen fold) */}

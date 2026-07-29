@@ -197,6 +197,7 @@ export default async function HomePage() {
                 name: dbAdminUser.name,
                 position: dbAdminUser.position,
                 activity: dbAdminUser.activity,
+                resume: dbAdminUser.resume,
               }
             : undefined
         }
