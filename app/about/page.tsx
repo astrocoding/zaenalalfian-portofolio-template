@@ -30,14 +30,14 @@ export const metadata: Metadata = {
     url: buildCanonical("/about"),
     title: "About & Engineering Philosophy | Zaenal Alfian",
     description:
-      "Senior Full-Stack Engineer & Frontend Architect — 6+ years building scalable web platforms with Japanese minimalist precision.",
+      "Senior Full-Stack Engineer & Frontend Architect — 6+ years building scalable web platforms with optimized precision.",
     images: [{ url: DEFAULT_OG_IMAGE(), width: 1200, height: 630, alt: "Zaenal Alfian About" }],
     siteName: "Zaenal Alfian Portfolio",
   },
   twitter: {
     card: "summary_large_image",
     title: "About & Engineering Philosophy | Zaenal Alfian",
-    description: "Senior Full-Stack Engineer & Frontend Architect — building scalable systems with minimalist precision.",
+    description: "Senior Full-Stack Engineer & Frontend Architect — building scalable systems with optimized precision.",
     images: [DEFAULT_OG_IMAGE()],
     creator: "@zaenalalfian",
   },

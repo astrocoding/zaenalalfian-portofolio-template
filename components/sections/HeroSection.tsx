@@ -236,7 +236,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
                 <div className="h-px w-12 bg-primary/30" />
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink leading-[1.14] tracking-tight">
-                Crafting Scalable Systems with <span className="text-primary italic">Minimalist</span> Precision.
+                Crafting Scalable Systems with <span className="text-primary italic">Optimized</span> Precision.
               </h1>
             </div>
 

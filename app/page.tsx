@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     url: buildCanonical("/"),
     title: "Zaenal Alfian — Senior Full-Stack Engineer & Product Architect",
     description:
-      "Personal portfolio of Zaenal Alfian — crafting scalable systems with minimalist precision. Next.js, React 19, TypeScript, Prisma.",
+      "Personal portfolio of Zaenal Alfian — crafting scalable systems with optimized precision. Next.js, React 19, TypeScript, Prisma.",
     images: [
       {
         url: DEFAULT_OG_IMAGE(),
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Zaenal Alfian — Senior Full-Stack Engineer & Product Architect",
     description:
-      "Crafting scalable systems with minimalist precision. Next.js, React 19, TypeScript, Prisma.",
+      "Crafting scalable systems with optimized precision. Next.js, React 19, TypeScript, Prisma.",
     images: [DEFAULT_OG_IMAGE()],
     creator: "@zaenalalfian",
   },
