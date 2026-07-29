@@ -2,7 +2,7 @@ import * as React from "react";
 import { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
-import { LatestBlogsSection } from "@/components/sections";
+import { BlogsPageLayout } from "@/components/blog/BlogsPageLayout";
 import { getAllBlogPosts } from "@/lib/blogs";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
@@ -51,7 +51,7 @@ export default async function BlogsPage() {
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper min-h-screen">
         <Container size="wide">
-          <LatestBlogsSection blogs={formattedBlogs} />
+          <BlogsPageLayout blogs={formattedBlogs} />
         </Container>
       </div>
     </MainLayout>
