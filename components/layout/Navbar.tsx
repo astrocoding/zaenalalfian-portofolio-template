@@ -17,7 +17,15 @@ const navItems = [
   { label: "Contact", href: "/#contact", id: "contact", kanji: "連絡" },
 ];
 
-const sectionIds = ["about", "experience", "projects", "blogs", "contact"];
+const observedSectionIds = ["about", "skills", "experience", "projects", "blogs", "contact"];
+const sectionToNavMap: Record<string, string> = {
+  about: "about",
+  skills: "about",
+  experience: "experience",
+  projects: "projects",
+  blogs: "blogs",
+  contact: "contact",
+};
 
 const getSectionForPath = (path: string) => {
   if (path.startsWith("/about")) return "about";
@@ -61,6 +69,17 @@ export const Navbar: React.FC = () => {
     setScrolled(false);
   }
 
+  const isProgrammaticScrollRef = React.useRef(false);
+  const scrollEndTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const unlockScrollSpy = React.useCallback(() => {
+    isProgrammaticScrollRef.current = false;
+    if (scrollEndTimerRef.current) {
+      clearTimeout(scrollEndTimerRef.current);
+      scrollEndTimerRef.current = null;
+    }
+  }, []);
+
   // Optimized rAF-throttled scroll state & scroll spy listener (0ms forced reflow)
   useIsomorphicLayoutEffect(() => {
     let ticking = false;
@@ -71,24 +90,24 @@ export const Navbar: React.FC = () => {
           const scrollY = window.scrollY;
           setScrolled(scrollY > 20);
 
-          if (pathname === "/") {
+          if (pathname === "/" && !isProgrammaticScrollRef.current) {
             if (scrollY < 180) {
-              setActiveSection("home");
+              setActiveSection((prev) => (prev !== "home" ? "home" : prev));
             } else {
               let current = "home";
               const anchorY = 70; // Precise 70px viewport anchor line (5px below 65px header)
 
-              for (const id of sectionIds) {
+              for (const id of observedSectionIds) {
                 const el = document.getElementById(id);
                 if (el) {
                   const rect = el.getBoundingClientRect();
                   if (rect.top <= anchorY && rect.bottom > anchorY) {
-                    current = id;
+                    current = sectionToNavMap[id] || id;
                     break;
                   }
                 }
               }
-              setActiveSection(current);
+              setActiveSection((prev) => (prev !== current ? current : prev));
             }
           }
           ticking = false;
@@ -97,10 +116,22 @@ export const Navbar: React.FC = () => {
       }
     };
 
+    const handleScrollEnd = () => {
+      if (isProgrammaticScrollRef.current) {
+        unlockScrollSpy();
+        onScroll();
+      }
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [pathname]);
+    window.addEventListener("scrollend", handleScrollEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scrollend", handleScrollEnd);
+    };
+  }, [pathname, unlockScrollSpy]);
 
   // Event-driven smooth scroll handler ONLY on explicit user link clicks (Mobile & Desktop)
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -109,24 +140,31 @@ export const Navbar: React.FC = () => {
     if (pathname === "/") {
       if (href === "/" || href === "/#home" || href === "/#hero") {
         e.preventDefault();
-        setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }, 50);
+        isProgrammaticScrollRef.current = true;
+        setActiveSection("home");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
+        scrollEndTimerRef.current = setTimeout(unlockScrollSpy, 1000);
       } else if (href.includes("#")) {
         const sectionId = href.split("#")[1];
         const targetEl = document.getElementById(sectionId);
         if (targetEl) {
           e.preventDefault();
-          setTimeout(() => {
-            const headerOffset = 65; // Exact 65px scrolled header height
-            const elementPosition = targetEl.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+          isProgrammaticScrollRef.current = true;
+          setActiveSection(sectionId);
 
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: "smooth",
-            });
-          }, 50);
+          const headerOffset = 65; // Exact 65px scrolled header height
+          const elementPosition = targetEl.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+
+          if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
+          scrollEndTimerRef.current = setTimeout(unlockScrollSpy, 1000);
         }
       }
     }
@@ -183,7 +221,7 @@ export const Navbar: React.FC = () => {
                   }`}
                 >
                   <span>{item.label}</span>
-                  <span className="text-[10px] text-primary/40 font-serif opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[10px] text-primary/70 font-serif font-normal">
                     {item.kanji}
                   </span>
                   {mounted && isActive && (
@@ -226,6 +264,7 @@ export const Navbar: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            key="mobile-nav-drawer"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}

@@ -74,7 +74,7 @@ export const BoxyProjectCard: React.FC<{
 
   return (
     <div
-      className={`group relative bg-surface border border-border-subtle hover:border-primary hover:-translate-y-1.5 rounded-2xl transition-all duration-300 flex flex-col overflow-hidden w-full ${className}`}
+      className={`group relative bg-surface border border-border-subtle hover:border-primary hover:-translate-y-1.5 rounded-2xl transition-transform duration-300 transform-gpu flex flex-col overflow-hidden w-full ${className}`}
     >
       {/* Bottom-right Japanese Seigaiha wave accent - matching white card background */}
       <CardCornerSeigaiha cardBgColor="#ffffff" />
@@ -89,7 +89,7 @@ export const BoxyProjectCard: React.FC<{
 
         {/* Kanji Number Badge Top-Right */}
         <div className="absolute top-3 right-3 z-20 pointer-events-none">
-          <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md text-amber-200 font-serif text-xs font-bold border border-amber-200/30 shadow-xs">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-black/80 text-amber-200 font-serif text-xs font-bold border border-amber-200/30 shadow-xs">
             其の{kanjiNum}
           </span>
         </div>
@@ -99,13 +99,13 @@ export const BoxyProjectCard: React.FC<{
           {visibleTech.map((tech) => (
             <span
               key={tech}
-              className="inline-block px-2.5 py-1 rounded-md bg-white/95 backdrop-blur-md text-ink text-[11px] font-mono font-medium border border-border-subtle shadow-xs truncate max-w-[100px]"
+              className="inline-block px-2.5 py-1 rounded-md bg-white/95 text-ink text-[11px] font-mono font-medium border border-border-subtle shadow-xs truncate max-w-[100px]"
             >
               {tech}
             </span>
           ))}
           {remainingTechCount > 0 && (
-            <span className="inline-block px-2 py-1 rounded-md bg-primary/90 backdrop-blur-md text-white text-[11px] font-mono font-semibold shadow-xs shrink-0">
+            <span className="inline-block px-2 py-1 rounded-md bg-primary text-white text-[11px] font-mono font-semibold shadow-xs shrink-0">
               +{remainingTechCount} more
             </span>
           )}

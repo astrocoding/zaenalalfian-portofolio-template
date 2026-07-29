@@ -163,6 +163,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
         <AnimatePresence>
           {isOpen && (
             <motion.div
+              key="admin-sidebar-drawer"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}

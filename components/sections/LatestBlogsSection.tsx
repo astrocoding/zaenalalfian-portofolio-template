@@ -63,6 +63,7 @@ const BlogCardThumbnail: React.FC<{
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 400px"
           decoding="async"
+          loading="lazy"
           onError={() => setImageError(true)}
           className="object-cover"
         />
@@ -89,12 +90,12 @@ export const BlogCard: React.FC<{
 
   return (
     <div
-      className={`group/blog group relative flex flex-col justify-between w-full hover:-translate-y-1.5 transition-all duration-300 ${className}`}
+      className={`group/blog group relative flex flex-col justify-between w-full transform-gpu hover:-translate-y-1.5 transition-transform duration-200 ease-out ${className}`}
     >
       {/* --- TOP THUMBNAIL IMAGE (IMAGE ONLY HAS ROUNDED-2XL BORDER RADIUS) --- */}
       <Link
         href={`/blogs/${blog.category.toLowerCase()}/${blog.slug}`}
-        className="block relative w-full h-44 sm:h-48 overflow-hidden bg-[#f6e0ce]/30 shrink-0 rounded-2xl border border-border-subtle group-hover/blog:border-primary transition-all"
+        className="block relative w-full h-44 sm:h-48 overflow-hidden bg-[#f6e0ce]/30 shrink-0 rounded-2xl border border-border-subtle group-hover/blog:border-primary transition-colors duration-200"
       >
         <BlogCardThumbnail
           thumbnail={blog.thumbnail}

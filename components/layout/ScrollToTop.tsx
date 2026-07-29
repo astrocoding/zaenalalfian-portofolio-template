@@ -37,6 +37,7 @@ export const ScrollToTop: React.FC = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.button
+          key="scroll-to-top-btn"
           type="button"
           onClick={scrollToTop}
           initial={{ opacity: 0, scale: 0.8, y: 12 }}
