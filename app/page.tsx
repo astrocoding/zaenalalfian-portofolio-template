@@ -93,11 +93,11 @@ export default async function HomePage() {
   try {
     dbProjects = await prisma.project.findMany({
       orderBy: { createdAt: "desc" },
-      take: 6,
+      take: 4,
     });
     dbBlogs = await prisma.blog.findMany({
       orderBy: { publishedAt: "desc" },
-      take: 6,
+      take: 3,
     });
     dbExperiences = await prisma.experience.findMany({
       orderBy: { order: "asc" },

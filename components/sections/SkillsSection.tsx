@@ -112,10 +112,11 @@ const DEFAULT_SKILL_CATEGORIES: SkillCategoryGroup[] = [
 export const SkillsSection: React.FC<SkillsSectionProps> = ({
   skillCategories: propsCategories,
 }) => {
-  const categoriesToRender =
+  const categoriesToRender = (
     propsCategories && propsCategories.length > 0
       ? propsCategories
-      : DEFAULT_SKILL_CATEGORIES;
+      : DEFAULT_SKILL_CATEGORIES
+  ).slice(0, 4);
 
   return (
     <SectionWrapper

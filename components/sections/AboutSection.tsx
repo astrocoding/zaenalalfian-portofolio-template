@@ -70,13 +70,13 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
 
   const cardsList =
     aboutData?.cards && aboutData.cards.length > 0
-      ? aboutData.cards.slice(0, 6).map((card, idx) => ({
-        icon: getIconForBadge(card.badge, idx),
-        title: card.title,
-        kanji: card.badge || `0${idx + 1}`,
-        description: card.subtitle,
-      }))
-      : defaultCoreValues;
+      ? aboutData.cards.slice(0, 4).map((card, idx) => ({
+          icon: getIconForBadge(card.badge, idx),
+          title: card.title,
+          kanji: card.badge || `0${idx + 1}`,
+          description: card.subtitle,
+        }))
+      : defaultCoreValues.slice(0, 4);
 
   return (
     <SectionWrapper id="about" bgVariant="surface" className="pt-10 sm:pt-14 pb-16 sm:pb-24 relative overflow-hidden">

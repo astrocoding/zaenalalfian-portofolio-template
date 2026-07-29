@@ -179,7 +179,7 @@ export const FeaturedProjectsSection: React.FC<{ projects?: ProjectItem[] }> = (
       ) : (
         <>
           <div className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-4 sm:gap-5 pb-6 pt-2 items-stretch">
-            {projects.map((project, index) => (
+            {projects.slice(0, 4).map((project, index) => (
               <BoxyProjectCard
                 key={project.id}
                 project={project}

@@ -174,7 +174,7 @@ export const LatestBlogsSection: React.FC<{ blogs?: BlogItem[] }> = ({
       ) : (
         <>
           <div className="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-6 sm:gap-8 lg:gap-10 pb-6 pt-2 items-stretch">
-            {blogs.map((blog) => (
+            {blogs.slice(0, 3).map((blog) => (
               <BlogCard
                 key={blog.id}
                 blog={blog}

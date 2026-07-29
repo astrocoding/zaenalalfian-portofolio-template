@@ -47,7 +47,9 @@ const fallbackExperiences: ExperienceItem[] = [
 export const ExperienceSection: React.FC<{ experiences?: ExperienceItem[] }> = ({
   experiences = fallbackExperiences,
 }) => {
-  const displayList = experiences.length > 0 ? experiences : fallbackExperiences;
+  const displayList = (
+    experiences.length > 0 ? experiences : fallbackExperiences
+  ).slice(0, 3);
 
   return (
     <SectionWrapper
