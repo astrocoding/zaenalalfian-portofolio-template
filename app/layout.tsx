@@ -1,79 +1,38 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Plus_Jakarta_Sans, Newsreader, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getSiteUrl } from "@/lib/seo";
 
-/**
- * Primary UI font — variable font covers all weights (200–800).
- * display:block = browser waits for font before showing text.
- * For local fonts this wait is ~20-50ms (disk read), imperceptible.
- * preload:true = <link rel="preload"> injected in <head> so font
- * is fetched immediately when HTML is parsed, before CSS processing.
- */
-const plusJakarta = localFont({
-  src: [
-    {
-      path: "./fonts/PlusJakartaSans-VariableFont_wght.ttf",
-      style: "normal",
-    },
-    {
-      path: "./fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf",
-      style: "italic",
-    },
-  ],
+const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
-  display: "block",
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
+  display: "swap",
   preload: true,
-  fallback: ["system-ui", "-apple-system", "sans-serif"],
 });
 
-/**
- * Serif display font — used for headings & kanji.
- * display:block + preload:true = heading font ready before first render.
- * Prevents fallback Georgia showing on headings during hard refresh.
- */
-const newsreader = localFont({
-  src: [
-    {
-      path: "./fonts/Newsreader-VariableFont_opsz,wght.ttf",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Newsreader-Italic-VariableFont_opsz,wght.ttf",
-      style: "italic",
-    },
-  ],
+const newsreader = Newsreader({
   variable: "--font-newsreader",
-  display: "block",
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
+  display: "swap",
   preload: true,
-  fallback: ["Georgia", "serif"],
 });
 
-/**
- * Monospace font — used for code blocks & architecture card.
- * display:block = no FOUT. Local load is fast enough that
- * the brief invisible-text period (~30ms) is imperceptible.
- */
-const jetbrainsMono = localFont({
-  src: [
-    {
-      path: "./fonts/JetBrainsMono-VariableFont_wght.ttf",
-      style: "normal",
-    },
-    {
-      path: "./fonts/JetBrainsMono-Italic-VariableFont_wght.ttf",
-      style: "italic",
-    },
-  ],
+const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",
-  display: "block",
-  preload: false,
-  fallback: ["Menlo", "Monaco", "Consolas", "monospace"],
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
+  display: "swap",
+  preload: true,
 });
-
 
 const baseUrl = getSiteUrl();
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
