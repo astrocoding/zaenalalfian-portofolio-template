@@ -27,6 +27,7 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
     ? new Date(createdAt).toLocaleDateString("en-US", {
         month: "long",
         year: "numeric",
+        timeZone: "UTC",
       })
     : "2026";
 

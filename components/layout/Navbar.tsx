@@ -32,7 +32,16 @@ const getSectionForPath = (path: string) => {
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
 
+const emptySubscribe = () => () => {};
+const useIsMounted = () =>
+  React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+
 export const Navbar: React.FC = () => {
+  const mounted = useIsMounted();
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
 
@@ -177,7 +186,7 @@ export const Navbar: React.FC = () => {
                   <span className="text-[10px] text-primary/40 font-serif opacity-0 group-hover:opacity-100 transition-opacity">
                     {item.kanji}
                   </span>
-                  {isActive && (
+                  {mounted && isActive && (
                     <motion.div
                       layoutId="activeNavIndicator"
                       className="absolute bottom-0 left-3 right-3 h-0.5 bg-primary rounded-full"

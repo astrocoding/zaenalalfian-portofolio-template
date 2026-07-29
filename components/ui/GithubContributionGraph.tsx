@@ -24,9 +24,23 @@ const LEVEL_COLORS: Record<number, string> = {
   4: "bg-[#6e1a1c] border border-[#541214]",       // Level 4: Deep imperial crimson (--color-primary-dark)
 };
 
+const MONTH_NAMES = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+const emptySubscribe = () => () => {};
+const useIsMounted = () =>
+  React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+
 export const GithubContributionGraph: React.FC<{ username?: string }> = ({
   username: propUsername,
 }) => {
+  const mounted = useIsMounted();
   const [fetchedUsername, setFetchedUsername] = React.useState<string | null>(null);
   const username = propUsername || fetchedUsername || "astrocoding";
   const [data, setData] = React.useState<ContributionDay[]>([]);
@@ -34,7 +48,7 @@ export const GithubContributionGraph: React.FC<{ username?: string }> = ({
 
   // Dynamically load username from User table database via /api/profile API when prop is omitted
   React.useEffect(() => {
-    if (propUsername) return;
+    if (!mounted || propUsername) return;
 
     let isMounted = true;
     async function loadDynamicUsername() {
@@ -55,9 +69,11 @@ export const GithubContributionGraph: React.FC<{ username?: string }> = ({
     return () => {
       isMounted = false;
     };
-  }, [propUsername]);
+  }, [mounted, propUsername]);
 
   React.useEffect(() => {
+    if (!mounted) return;
+
     let isMounted = true;
     async function fetchContributions() {
       try {
@@ -84,21 +100,18 @@ export const GithubContributionGraph: React.FC<{ username?: string }> = ({
     return () => {
       isMounted = false;
     };
-  }, [username]);
+  }, [mounted, username]);
 
   // Generate fallback 2026 dataset if live data is pending/offline
   const displayDays = React.useMemo(() => {
     if (data.length > 0) return data;
 
     const days: ContributionDay[] = [];
-    const startDate = new Date(2026, 0, 1);
     for (let i = 0; i < 365; i++) {
-      const d = new Date(startDate);
-      d.setDate(startDate.getDate() + i);
+      const d = new Date(Date.UTC(2026, 0, 1 + i));
       const dateStr = d.toISOString().split("T")[0];
 
       // Deterministic level distribution matching user's active history (Jan-July active)
-      // Eliminates SSR hydration mismatch caused by Math.random()
       const hasContrib = i < 205;
       const count = hasContrib ? ((i * 37 + 17) % 85) + 1 : 0;
       let level = 0;
@@ -115,8 +128,8 @@ export const GithubContributionGraph: React.FC<{ username?: string }> = ({
   // Align starting weekday (Mon-based)
   const paddedDays = React.useMemo(() => {
     if (displayDays.length === 0) return [];
-    const firstDate = new Date(displayDays[0].date);
-    const jsDay = firstDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+    const firstDate = new Date(`${displayDays[0].date}T00:00:00Z`);
+    const jsDay = firstDate.getUTCDay(); // 0=Sun, 1=Mon, ..., 6=Sat
     const padCount = (jsDay + 6) % 7; // Mon=0, ..., Sun=6
 
     const padding: (ContributionDay | null)[] = Array(padCount).fill(null);
@@ -146,10 +159,10 @@ export const GithubContributionGraph: React.FC<{ username?: string }> = ({
     weeks.forEach((week, colIdx) => {
       const firstRealDay = week.find((d) => d !== null);
       if (firstRealDay) {
-        const monthNum = new Date(firstRealDay.date).getMonth();
-        if (monthNum !== lastMonth) {
-          const monthName = new Date(firstRealDay.date).toLocaleDateString("en-US", { month: "short" });
-          labels.push({ name: monthName, colIndex: colIdx });
+        const parts = firstRealDay.date.split("-");
+        const monthNum = parseInt(parts[1], 10) - 1;
+        if (monthNum !== lastMonth && monthNum >= 0 && monthNum < 12) {
+          labels.push({ name: MONTH_NAMES[monthNum], colIndex: colIdx });
           lastMonth = monthNum;
         }
       }
