@@ -9,6 +9,7 @@ interface RuntimeField {
 type PrismaClientInternal = PrismaClient & {
   user?: unknown;
   experience?: unknown;
+  education?: unknown;
   skillset?: unknown;
   about?: unknown;
   aboutCard?: unknown;
@@ -45,6 +46,7 @@ const getPrismaClient = (): PrismaClient => {
     if (
       !internalPrisma.user ||
       !internalPrisma.experience ||
+      !internalPrisma.education ||
       !internalPrisma.skillset ||
       !internalPrisma.about ||
       !internalPrisma.aboutCard ||

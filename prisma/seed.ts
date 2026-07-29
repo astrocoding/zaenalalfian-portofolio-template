@@ -151,6 +151,78 @@ async function main() {
       console.log(`- Created skillset: ${item.skillName} (${item.category})`);
     }
   }
+
+  console.log("\nSeeding initial education records...");
+
+  const educationData = [
+    {
+      title: "Bachelor of Computer Science (S.Kom.)",
+      organization: "STMIK Rosma",
+      location: "Indonesia",
+      period: "2021 — 2025",
+      statusBadge: "卒業 • Graduated",
+      grades: "GPA 3.83 / 4.00",
+      educationLevel: "Bachelor Degree",
+      description:
+        "Specialized in Software Engineering, Database Systems Architecture, Distributed Web Applications, and Algorithm Optimization. Graduated with Honors (Cum Laude). Conducted final thesis research on high-performance web systems and microservices optimization.",
+      highlights: [
+        "Graduated with Academic Distinction (Cum Laude)",
+        "Published Capstone Project on High-Performance Web System Architecture",
+        "Active Leader in Computer Science & Software Engineering Student Guild",
+      ],
+      courses: [
+        "Software Engineering",
+        "Database Systems & Design",
+        "Web Technologies & Frameworks",
+        "Data Structures & Algorithms",
+        "Distributed Systems",
+        "Object-Oriented Design (OOD)",
+      ],
+      order: 1,
+    },
+    {
+      title: "Vocational High School Diploma (RPL)",
+      organization: "Vocational High School (SMK)",
+      location: "Karawang, Indonesia",
+      period: "2017 — 2020",
+      statusBadge: "卒業 • Graduated",
+      grades: "Rank 3 / 120",
+      educationLevel: "Vocational High School",
+      description:
+        "Intensive 3-year technical vocational curriculum focused on practical software engineering fundamentals. Mastered client-server web programming, relational database management (MySQL), and modern web user interface development.",
+      highlights: [
+        "Ranked Top 3 Academic Graduate in Software Engineering Department",
+        "Built Full-Stack Web Application for Vocational Final Project",
+        "Completed Industrial Software Engineering Internship",
+      ],
+      courses: [
+        "Web Programming (HTML/CSS/JS)",
+        "PHP & MySQL Database Management",
+        "Object-Oriented Programming (OOP)",
+        "System Analysis & Design",
+        "Software Testing Basics",
+      ],
+      order: 2,
+    },
+  ];
+
+  for (const edu of educationData) {
+    const existing = await prisma.education.findFirst({
+      where: { title: edu.title, organization: edu.organization },
+    });
+
+    if (!existing) {
+      await prisma.education.create({ data: edu });
+      console.log(`- Created education: ${edu.title} at ${edu.organization}`);
+    } else {
+      await prisma.education.update({
+        where: { id: existing.id },
+        data: edu,
+      });
+      console.log(`- Updated education: ${edu.title} at ${edu.organization}`);
+    }
+  }
+
 }
 
 main()

@@ -12,6 +12,7 @@ import {
   FileCode,
   Users,
   Briefcase,
+  GraduationCap,
   Plus,
   ArrowRight,
   Database,
@@ -29,6 +30,7 @@ export default async function AdminDashboardPage() {
   let blogCount = 0;
   let docCount = 0;
   let experienceCount = 0;
+  let educationCount = 0;
   let skillsetCount = 0;
   let userCount = 0;
 
@@ -37,6 +39,7 @@ export default async function AdminDashboardPage() {
     blogCount = await prisma.blog.count();
     docCount = await prisma.doc.count();
     experienceCount = await prisma.experience.count();
+    educationCount = await prisma.education.count();
     skillsetCount = await prisma.skillset.count();
     userCount = await prisma.user.count();
   } catch (e) {
@@ -75,6 +78,14 @@ export default async function AdminDashboardPage() {
       href: "/admin/experiences",
       newHref: "/admin/experiences/new",
       icon: Briefcase,
+    },
+    {
+      title: "Academic Education",
+      count: educationCount,
+      kanji: "学歴",
+      href: "/admin/education",
+      newHref: "/admin/education/new",
+      icon: GraduationCap,
     },
     {
       title: "Technical Skillsets",
@@ -119,11 +130,16 @@ export default async function AdminDashboardPage() {
               New Experience
             </Button>
           </Link>
+          <Link href="/admin/education/new">
+            <Button variant="outline" size="sm" icon={<Plus className="w-3.5 h-3.5" />}>
+              New Education
+            </Button>
+          </Link>
         </div>
       </div>
 
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {metrics.map((item) => {
           const Icon = item.icon;
           return (

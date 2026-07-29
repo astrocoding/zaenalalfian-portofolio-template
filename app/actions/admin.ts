@@ -794,3 +794,141 @@ export async function reorderAboutCardsAction(items: { id: string; order: number
   }
 }
 
+// ==================== EDUCATION ACTIONS ====================
+
+export async function createEducationAction(data: {
+  title: string;
+  organization: string;
+  location: string;
+  period: string;
+  statusBadge?: string;
+  grades?: string;
+  educationLevel?: string;
+  description: string;
+  highlights?: string[];
+  courses?: string[];
+  order?: number;
+}) {
+  try {
+    let order = data.order;
+    if (order === undefined) {
+      const highestOrder = await prisma.education.findFirst({
+        orderBy: { order: "desc" },
+      });
+      order = (highestOrder?.order || 0) + 1;
+    }
+
+    const newEducation = await prisma.education.create({
+      data: {
+        title: data.title.trim(),
+        organization: data.organization.trim(),
+        location: data.location.trim(),
+        period: data.period.trim(),
+        statusBadge: data.statusBadge ? data.statusBadge.trim() : null,
+        grades: data.grades ? data.grades.trim() : null,
+        educationLevel: data.educationLevel ? data.educationLevel.trim() : null,
+        description: data.description.trim(),
+        highlights: data.highlights || [],
+        courses: data.courses || [],
+        order,
+      },
+    });
+
+    revalidatePath("/education");
+    revalidatePath("/admin/education");
+
+    return { success: true, education: newEducation };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to create education entry") };
+  }
+}
+
+export async function updateEducationAction(
+  id: string,
+  data: {
+    title?: string;
+    organization?: string;
+    location?: string;
+    period?: string;
+    statusBadge?: string;
+    grades?: string;
+    educationLevel?: string;
+    description?: string;
+    highlights?: string[];
+    courses?: string[];
+    order?: number;
+  }
+) {
+  try {
+    const updatePayload: {
+      title?: string;
+      organization?: string;
+      location?: string;
+      period?: string;
+      statusBadge?: string | null;
+      grades?: string | null;
+      educationLevel?: string | null;
+      description?: string;
+      highlights?: string[];
+      courses?: string[];
+      order?: number;
+    } = {};
+
+    if (data.title !== undefined) updatePayload.title = data.title.trim();
+    if (data.organization !== undefined) updatePayload.organization = data.organization.trim();
+    if (data.location !== undefined) updatePayload.location = data.location.trim();
+    if (data.period !== undefined) updatePayload.period = data.period.trim();
+    if (data.statusBadge !== undefined) updatePayload.statusBadge = data.statusBadge ? data.statusBadge.trim() : null;
+    if (data.grades !== undefined) updatePayload.grades = data.grades ? data.grades.trim() : null;
+    if (data.educationLevel !== undefined) updatePayload.educationLevel = data.educationLevel ? data.educationLevel.trim() : null;
+    if (data.description !== undefined) updatePayload.description = data.description.trim();
+    if (data.highlights !== undefined) updatePayload.highlights = data.highlights;
+    if (data.courses !== undefined) updatePayload.courses = data.courses;
+    if (data.order !== undefined) updatePayload.order = data.order;
+
+    const updated = await prisma.education.update({
+      where: { id },
+      data: updatePayload,
+    });
+
+    revalidatePath("/education");
+    revalidatePath("/admin/education");
+
+    return { success: true, education: updated };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to update education entry") };
+  }
+}
+
+export async function deleteEducationAction(id: string) {
+  try {
+    await prisma.education.delete({ where: { id } });
+    revalidatePath("/education");
+    revalidatePath("/admin/education");
+    return { success: true };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to delete education entry") };
+  }
+}
+
+export async function reorderEducationsAction(items: { id: string; order: number }[]) {
+  try {
+    await prisma.$transaction(
+      items.map((item) =>
+        prisma.education.update({
+          where: { id: item.id },
+          data: { order: item.order },
+        })
+      )
+    );
+
+    revalidatePath("/education");
+    revalidatePath("/admin/education");
+
+    return { success: true };
+  } catch (error: unknown) {
+    return { success: false, error: getErrorMessage(error, "Failed to reorder education entries") };
+  }
+}
+
+

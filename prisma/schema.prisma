@@ -155,3 +155,23 @@ model Contact {
 
   @@map("contacts")
 }
+
+model Education {
+  id             String   @id @default(cuid())
+  title          String
+  organization   String
+  location       String
+  period         String
+  statusBadge    String?  @map("status_badge")
+  grades         String?
+  educationLevel String?  @map("education_level")
+  description    String
+  highlights     String[] @default([])
+  courses        String[] @default([])
+  order          Int      @default(1)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("educations")
+}
+

@@ -7,6 +7,7 @@ import { TimelineCardList, TimelineCardItem } from "@/components/ui/TimelineCard
 import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "Education & Academic Qualifications | Zaenal Alfian",
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
   },
 };
 
-const educationItems: TimelineCardItem[] = [
+const defaultEducationItems: TimelineCardItem[] = [
   {
     title: "Bachelor of Computer Science (S.Kom.)",
     organization: "University / Higher Education Institute",
@@ -89,7 +90,32 @@ const educationItems: TimelineCardItem[] = [
   },
 ];
 
-export default function EducationPage() {
+export default async function EducationPage() {
+  let educationItems: TimelineCardItem[] = defaultEducationItems;
+
+  try {
+    const dbEducations = await prisma.education.findMany({
+      orderBy: { order: "asc" },
+    });
+
+    if (dbEducations.length > 0) {
+      educationItems = dbEducations.map((item) => ({
+        title: item.title,
+        organization: item.organization,
+        location: item.location,
+        period: item.period,
+        statusBadge: item.statusBadge || undefined,
+        gpaOrBadge: item.grades || undefined,
+        type: "education",
+        description: item.description,
+        highlights: item.highlights,
+        tags: item.courses,
+      }));
+    }
+  } catch (error) {
+    console.warn("Failed to fetch education records from database, fallback to static items:", error);
+  }
+
   return (
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper">
