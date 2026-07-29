@@ -3,18 +3,25 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { Container } from "../ui/Container";
 
-const navItems = [
+export interface NavItem {
+  label: string;
+  href: string;
+  id: string;
+  kanji: string;
+}
+
+const getNavItems = (isHomePage: boolean): NavItem[] => [
   { label: "Home", href: "/", id: "home", kanji: "ホーム" },
-  { label: "About", href: "/#about", id: "about", kanji: "概要" },
-  { label: "Experience", href: "/#experience", id: "experience", kanji: "経歴" },
-  { label: "Projects", href: "/#projects", id: "projects", kanji: "実績" },
-  { label: "Blog", href: "/#blogs", id: "blogs", kanji: "記事" },
-  { label: "Contact", href: "/#contact", id: "contact", kanji: "連絡" },
+  { label: "About", href: isHomePage ? "/#about" : "/about", id: "about", kanji: "概要" },
+  { label: "Experience", href: isHomePage ? "/#experience" : "/experiences", id: "experience", kanji: "経歴" },
+  { label: "Projects", href: isHomePage ? "/#projects" : "/projects", id: "projects", kanji: "実績" },
+  { label: "Blog", href: isHomePage ? "/#blogs" : "/blogs", id: "blogs", kanji: "記事" },
+  { label: "Contact", href: isHomePage ? "/#contact" : "/", id: "contact", kanji: "連絡" },
 ];
 
 const observedSectionIds = ["about", "skills", "experience", "projects", "blogs", "contact"];
@@ -31,7 +38,7 @@ const getSectionForPath = (path: string) => {
   if (path.startsWith("/about")) return "about";
   if (path.startsWith("/projects")) return "projects";
   if (path.startsWith("/blogs")) return "blogs";
-  if (path.startsWith("/experience")) return "experience";
+  if (path.startsWith("/experiences") || path.startsWith("/experience")) return "experience";
   if (path.startsWith("/docs")) return "docs";
   if (path === "/") return "home";
   return "";
@@ -52,6 +59,10 @@ export const Navbar: React.FC = () => {
   const mounted = useIsMounted();
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const isHomePage = pathname === "/";
+  const navItems = getNavItems(isHomePage);
 
   // Initial state matches SSR output deterministically to avoid hydration mismatches
   const [scrolled, setScrolled] = React.useState<boolean>(false);
@@ -80,6 +91,34 @@ export const Navbar: React.FC = () => {
     }
   }, []);
 
+  // Check for pending scrollToSection when landing on home page (e.g. from Contact click outside landing page)
+  React.useEffect(() => {
+    if (isHomePage) {
+      try {
+        const pendingSection = sessionStorage.getItem("scrollToSection");
+        if (pendingSection) {
+          sessionStorage.removeItem("scrollToSection");
+          setTimeout(() => {
+            const el = document.getElementById(pendingSection);
+            if (el) {
+              isProgrammaticScrollRef.current = true;
+              setActiveSection(pendingSection);
+              const headerOffset = 65;
+              const elementPosition = el.getBoundingClientRect().top;
+              const offsetPosition = elementPosition + window.scrollY - headerOffset;
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth",
+              });
+              if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
+              scrollEndTimerRef.current = setTimeout(unlockScrollSpy, 1000);
+            }
+          }, 150);
+        }
+      } catch {}
+    }
+  }, [isHomePage, unlockScrollSpy]);
+
   // Optimized rAF-throttled scroll state & scroll spy listener (0ms forced reflow)
   useIsomorphicLayoutEffect(() => {
     let ticking = false;
@@ -90,7 +129,7 @@ export const Navbar: React.FC = () => {
           const scrollY = window.scrollY;
           setScrolled(scrollY > 20);
 
-          if (pathname === "/" && !isProgrammaticScrollRef.current) {
+          if (isHomePage && !isProgrammaticScrollRef.current) {
             if (scrollY < 180) {
               setActiveSection((prev) => (prev !== "home" ? "home" : prev));
             } else {
@@ -131,14 +170,17 @@ export const Navbar: React.FC = () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("scrollend", handleScrollEnd);
     };
-  }, [pathname, unlockScrollSpy]);
+  }, [isHomePage, unlockScrollSpy]);
 
   // Event-driven smooth scroll handler ONLY on explicit user link clicks (Mobile & Desktop)
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    item: NavItem
+  ) => {
     setIsOpen(false);
 
-    if (pathname === "/") {
-      if (href === "/" || href === "/#home" || href === "/#hero") {
+    if (isHomePage) {
+      if (item.id === "home") {
         e.preventDefault();
         isProgrammaticScrollRef.current = true;
         setActiveSection("home");
@@ -146,13 +188,12 @@ export const Navbar: React.FC = () => {
 
         if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
         scrollEndTimerRef.current = setTimeout(unlockScrollSpy, 1000);
-      } else if (href.includes("#")) {
-        const sectionId = href.split("#")[1];
-        const targetEl = document.getElementById(sectionId);
+      } else {
+        const targetEl = document.getElementById(item.id);
         if (targetEl) {
           e.preventDefault();
           isProgrammaticScrollRef.current = true;
-          setActiveSection(sectionId);
+          setActiveSection(item.id);
 
           const headerOffset = 65; // Exact 65px scrolled header height
           const elementPosition = targetEl.getBoundingClientRect().top;
@@ -167,7 +208,19 @@ export const Navbar: React.FC = () => {
           scrollEndTimerRef.current = setTimeout(unlockScrollSpy, 1000);
         }
       }
+    } else {
+      if (item.id === "contact") {
+        e.preventDefault();
+        try {
+          sessionStorage.setItem("scrollToSection", "contact");
+        } catch {}
+        router.push("/");
+      }
     }
+  };
+
+  const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    handleNavClick(e, { label: "Contact", href: "/#contact", id: "contact", kanji: "連絡" });
   };
 
   return (
@@ -183,7 +236,7 @@ export const Navbar: React.FC = () => {
           {/* Logo Branding */}
           <Link
             href="/"
-            onClick={(e) => handleNavClick(e, "/")}
+            onClick={(e) => handleNavClick(e, { label: "Home", href: "/", id: "home", kanji: "ホーム" })}
             className="group flex items-center space-x-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md p-1"
           >
             <Image
@@ -211,9 +264,9 @@ export const Navbar: React.FC = () => {
 
               return (
                 <Link
-                  key={item.href}
+                  key={item.id}
                   href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
+                  onClick={(e) => handleNavClick(e, item)}
                   className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all relative group flex items-center space-x-1.5 ${
                     isActive
                       ? "text-primary font-semibold"
@@ -238,8 +291,8 @@ export const Navbar: React.FC = () => {
             <div className="h-4 w-px bg-border-warm mx-2" />
 
             <Link
-              href="/#contact"
-              onClick={(e) => handleNavClick(e, "/#contact")}
+              href={isHomePage ? "/#contact" : "/"}
+              onClick={handleContactClick}
               className="inline-flex items-center justify-center text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-primary text-white hover:bg-[#993b3d] transition-colors shadow-2xs space-x-1"
             >
               <span>Get in Touch</span>
@@ -277,9 +330,9 @@ export const Navbar: React.FC = () => {
                   const isActive = activeSection === item.id;
                   return (
                     <Link
-                      key={item.href}
+                      key={item.id}
                       href={item.href}
-                      onClick={(e) => handleNavClick(e, item.href)}
+                      onClick={(e) => handleNavClick(e, item)}
                       className={`flex items-center justify-between py-3 px-3.5 rounded-md font-medium transition-colors ${
                         isActive ? "bg-primary/10 text-primary font-bold" : "text-ink hover:bg-[#f6e0ce]/40"
                       }`}
@@ -293,8 +346,8 @@ export const Navbar: React.FC = () => {
 
               <div className="pt-4 border-t border-border-subtle flex flex-col space-y-3">
                 <Link
-                  href="/#contact"
-                  onClick={(e) => handleNavClick(e, "/#contact")}
+                  href={isHomePage ? "/#contact" : "/"}
+                  onClick={handleContactClick}
                   className="w-full py-3 px-4 bg-primary text-white text-center font-medium rounded-md text-sm shadow-xs flex items-center justify-center space-x-2"
                 >
                   <span>Get in Touch</span>
@@ -308,3 +361,4 @@ export const Navbar: React.FC = () => {
     </header>
   );
 };
+
