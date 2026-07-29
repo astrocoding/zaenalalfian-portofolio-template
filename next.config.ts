@@ -7,6 +7,7 @@ verifyServerAttributionIntegrity();
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  compress: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
   },
@@ -16,8 +17,12 @@ const nextConfig: NextConfig = {
       "framer-motion",
       "date-fns",
       "@prisma/client",
+      "clsx",
+      "tailwind-merge",
+      "embla-carousel-react",
     ],
   },
+  turbopack: {},
 };
 
 export default nextConfig;

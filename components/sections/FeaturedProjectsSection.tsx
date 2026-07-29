@@ -7,6 +7,9 @@ import { Button } from "../ui/Button";
 import { CardCornerSeigaiha } from "../ui/CardCornerSeigaiha";
 import { ArrowRight, FolderGit2 } from "lucide-react";
 
+import Image from "next/image";
+import { EmptyState } from "../ui/EmptyState";
+
 export interface ProjectItem {
   id: string;
   title: string;
@@ -16,49 +19,6 @@ export interface ProjectItem {
   thumbnail: string;
   techstack: string[];
 }
-
-const fallbackProjects: ProjectItem[] = [
-  {
-    id: "proj-1",
-    title: "Zenith Architecture Platform",
-    slug: "zenith-architecture-platform",
-    category: "Full-Stack Web App",
-    description:
-      "Enterprise Next.js 16 app with Server Components, PostgreSQL, and Prisma ORM for high-throughput cloud infrastructure management.",
-    thumbnail: "",
-    techstack: ["Next.js 16", "React 19", "PostgreSQL", "Prisma 7", "TailwindCSS"],
-  },
-  {
-    id: "proj-2",
-    title: "Kaizen Design System",
-    slug: "kaizen-design-system",
-    category: "Design System & UI Library",
-    description:
-      "Japanese minimalist editorial design system for scalable web applications featuring soft warm palettes and accessible micro-interactions.",
-    thumbnail: "",
-    techstack: ["React 19", "TypeScript", "TailwindCSS v4", "Framer Motion", "Storybook"],
-  },
-  {
-    id: "proj-3",
-    title: "Shuri Docs & Knowledge Engine",
-    slug: "shuri-docs-engine",
-    category: "Documentation Platform",
-    description:
-      "High-speed MDX-powered documentation platform with dynamic TOC, instant search, and code highlight optimizations.",
-    thumbnail: "",
-    techstack: ["Next.js 16", "MDX", "gray-matter", "TailwindCSS v4", "TypeScript"],
-  },
-  {
-    id: "proj-4",
-    title: "LibrarySkill Learning Portal",
-    slug: "library-skill-learning-portal",
-    category: "EdTech Platform",
-    description:
-      "Modern full-stack learning platform with interactive skill courses, role-based access control, and seamless progress tracking.",
-    thumbnail: "",
-    techstack: ["Next.js 16", "PostgreSQL", "Prisma ORM", "NextAuth.js", "TailwindCSS"],
-  },
-];
 
 const ProjectCardThumbnail: React.FC<{ thumbnail: string; title: string; category: string }> = ({
   thumbnail,
@@ -76,12 +36,14 @@ const ProjectCardThumbnail: React.FC<{ thumbnail: string; title: string; categor
   return (
     <div className="relative w-full h-full overflow-hidden">
       {isCustomImage ? (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img
+        <Image
           src={thumbnail}
           alt={title}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+          decoding="async"
           onError={() => setImageError(true)}
-          className="w-full h-full object-cover"
+          className="object-cover"
         />
       ) : (
         <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center bg-[#f6e0ce]/30">
@@ -192,17 +154,9 @@ export const BoxyProjectCard: React.FC<{
 };
 
 export const FeaturedProjectsSection: React.FC<{ projects?: ProjectItem[] }> = ({
-  projects = fallbackProjects,
+  projects = [],
 }) => {
-  // Ensure 4 items exist for symmetrical 4-column compact layout
-  const displayProjects = React.useMemo(() => {
-    const list = [...projects];
-    while (list.length < 4) {
-      const fallback = fallbackProjects[list.length % fallbackProjects.length];
-      list.push({ ...fallback, id: `${fallback.id}-extra-${list.length}` });
-    }
-    return list.slice(0, 4);
-  }, [projects]);
+  const hasProjects = projects && projects.length > 0;
 
   return (
     <SectionWrapper
@@ -215,33 +169,42 @@ export const FeaturedProjectsSection: React.FC<{ projects?: ProjectItem[] }> = (
       containerSize="wide"
       className="pt-10 sm:pt-14 pb-16 sm:pb-24"
     >
-      {/* --- CAROUSEL TRACK (Native Touch Swipe on Mobile/Tablet, 4-Col Grid on Desktop) --- */}
-      <div className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-4 sm:gap-5 pb-6 pt-2 items-stretch">
-        {displayProjects.map((project, index) => (
-          <BoxyProjectCard
-            key={project.id}
-            project={project}
-            index={index}
-            className="w-[85vw] sm:w-[calc(50%-10px)] lg:w-auto shrink-0 snap-start lg:shrink"
-          />
-        ))}
-      </div>
+      {!hasProjects ? (
+        <EmptyState
+          icon={FolderGit2}
+          title="No projects posted yet"
+          subtitleKanji="実績作品はまだありません"
+          description="Production web applications, architecture platforms, and technical contributions will be showcased here once published."
+        />
+      ) : (
+        <>
+          <div className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-4 sm:gap-5 pb-6 pt-2 items-stretch">
+            {projects.map((project, index) => (
+              <BoxyProjectCard
+                key={project.id}
+                project={project}
+                index={index}
+                className="w-[85vw] sm:w-[calc(50%-10px)] lg:w-auto shrink-0 snap-start lg:shrink"
+              />
+            ))}
+          </div>
 
-      {/* --- SECTION SEPARATOR WITH CENTERED SHOW MORE PROJECTS BUTTON --- */}
-      <div className="mt-12 sm:mt-16 flex items-center justify-center w-full">
-        <div className="flex-1 h-px bg-border-subtle" />
-        <Link href="/projects" className="mx-4 shrink-0">
-          <Button
-            variant="outline"
-            size="sm"
-            className="rounded-xl px-5 py-2.5 text-xs font-mono font-semibold border-border-warm bg-surface hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-            icon={<ArrowRight className="w-3.5 h-3.5" />}
-          >
-            Show More Projects
-          </Button>
-        </Link>
-        <div className="flex-1 h-px bg-border-subtle" />
-      </div>
+          <div className="mt-12 sm:mt-16 flex items-center justify-center w-full">
+            <div className="flex-1 h-px bg-border-subtle" />
+            <Link href="/projects" className="mx-4 shrink-0">
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-xl px-5 py-2.5 text-xs font-mono font-semibold border-border-warm bg-surface hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+                icon={<ArrowRight className="w-3.5 h-3.5" />}
+              >
+                Show More Projects
+              </Button>
+            </Link>
+            <div className="flex-1 h-px bg-border-subtle" />
+          </div>
+        </>
+      )}
     </SectionWrapper>
   );
 };

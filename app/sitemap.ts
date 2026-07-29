@@ -7,14 +7,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zaenalalfian.dev";
 
   // Base static routes
-  const routes: MetadataRoute.Sitemap = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-  ];
+  const staticPaths = ["", "/projects", "/blogs", "/docs", "/about", "/experiences", "/education"];
+  const routes: MetadataRoute.Sitemap = staticPaths.map((path) => ({
+    url: `${baseUrl}${path}`,
+    lastModified: new Date(),
+    changeFrequency: path === "" ? "weekly" : "monthly",
+    priority: path === "" ? 1.0 : 0.8,
+  }));
 
   // Projects dynamic routes
   try {
@@ -28,20 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     });
   } catch {
-    // Fallback sample project routes
-    const fallbackSlugs = [
-      "zenith-architecture-platform",
-      "kaizen-design-system",
-      "shuri-docs-engine",
-    ];
-    fallbackSlugs.forEach((slug) => {
-      routes.push({
-        url: `${baseUrl}/projects/${slug}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly",
-        priority: 0.8,
-      });
-    });
+    // Database query fallback
   }
 
   // Blog dynamic routes

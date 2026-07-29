@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/Badge";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { CardCornerSeigaiha } from "@/components/ui/CardCornerSeigaiha";
 import { getAllDocs } from "@/lib/docs";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { ArrowRight, FileText } from "lucide-react";
 
 export const revalidate = 60;
@@ -32,8 +33,13 @@ export default async function DocsPage() {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
             {docs.length === 0 ? (
-              <div className="col-span-full text-center py-12 text-ink-muted font-mono text-sm">
-                No public documentation available yet.
+              <div className="col-span-full">
+                <EmptyState
+                  icon={FileText}
+                  title="No docs posted yet"
+                  subtitleKanji="ドキュメントはまだありません"
+                  description="Technical blueprints, system architecture notes, and developer guides will be published here."
+                />
               </div>
             ) : (
               docs.map((doc) => (

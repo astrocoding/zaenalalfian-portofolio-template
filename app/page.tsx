@@ -68,33 +68,27 @@ export default async function HomePage() {
     // Graceful fallback to static seed items when database is empty
   }
 
-  const projects =
-    dbProjects.length > 0
-      ? dbProjects.map((p) => ({
-          id: p.id,
-          title: p.title,
-          slug: p.slug,
-          description: p.description,
-          category: p.category,
-          thumbnail: p.thumbnail,
-          techstack: p.techstack,
-          problem: p.problem ?? undefined,
-          solution: p.solution ?? undefined,
-        }))
-      : undefined;
+  const projects = dbProjects.map((p) => ({
+    id: p.id,
+    title: p.title,
+    slug: p.slug,
+    description: p.description,
+    category: p.category,
+    thumbnail: p.thumbnail,
+    techstack: p.techstack,
+    problem: p.problem ?? undefined,
+    solution: p.solution ?? undefined,
+  }));
 
-  const blogs =
-    dbBlogs.length > 0
-      ? dbBlogs.map((b) => ({
-          id: b.id,
-          title: b.title,
-          slug: b.slug,
-          category: b.category,
-          description: b.description,
-          thumbnail: b.thumbnail,
-          publishedAt: b.publishedAt ? new Date(b.publishedAt).toISOString().split("T")[0] : "",
-        }))
-      : undefined;
+  const blogs = dbBlogs.map((b) => ({
+    id: b.id,
+    title: b.title,
+    slug: b.slug,
+    category: b.category,
+    description: b.description,
+    thumbnail: b.thumbnail,
+    publishedAt: b.publishedAt ? new Date(b.publishedAt).toISOString().split("T")[0] : "",
+  }));
 
   const experiences =
     dbExperiences.length > 0
