@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
 
@@ -26,12 +27,15 @@ const GallerySlide: React.FC<{ img: string; title: string; index: number; total:
   return (
     <div className="flex-[0_0_100%] min-w-0 h-[300px] sm:h-[480px] bg-[#f6e0ce]/30 flex flex-col items-center justify-center relative overflow-hidden group">
       {isCustomImage ? (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img
+        <Image
           src={img}
           alt={`${title} screenshot ${index + 1}`}
+          fill
+          priority={index === 0}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 800px"
+          decoding="async"
           onError={() => setImageError(true)}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
       ) : (
         <div className="flex flex-col items-center justify-center p-8">
@@ -45,7 +49,7 @@ const GallerySlide: React.FC<{ img: string; title: string; index: number; total:
         </div>
       )}
 
-      <div className="absolute bottom-4 right-4 px-3 py-1 rounded bg-black/70 text-white text-xs font-mono backdrop-blur-md">
+      <div className="absolute bottom-4 right-4 px-3 py-1 rounded bg-black/70 text-white text-xs font-mono backdrop-blur-md z-10">
         {index + 1} / {total}
       </div>
     </div>
@@ -114,7 +118,7 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
           <>
             <button
               onClick={scrollPrev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-surface/90 border border-border-warm text-ink hover:bg-white hover:text-primary transition-colors shadow-xs cursor-pointer"
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-surface/90 border border-border-warm text-ink hover:bg-white hover:text-primary transition-colors shadow-xs cursor-pointer z-10"
               aria-label="Previous image"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -122,7 +126,7 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
 
             <button
               onClick={scrollNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-surface/90 border border-border-warm text-ink hover:bg-white hover:text-primary transition-colors shadow-xs cursor-pointer"
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-surface/90 border border-border-warm text-ink hover:bg-white hover:text-primary transition-colors shadow-xs cursor-pointer z-10"
               aria-label="Next image"
             >
               <ChevronRight className="w-5 h-5" />
@@ -133,16 +137,20 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
 
       {/* Pagination Dot Indicator */}
       {displayImages.length > 1 && (
-        <div className="flex items-center justify-center space-x-2">
+        <div className="flex items-center justify-center space-x-1.5">
           {displayImages.map((_, idx) => (
             <button
               key={idx}
               onClick={() => emblaApi?.scrollTo(idx)}
-              className={`w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${
-                idx === selectedIndex ? "w-8 bg-primary" : "bg-border-warm hover:bg-ink-muted"
-              }`}
+              className="p-2 flex items-center justify-center cursor-pointer group focus:outline-none"
               aria-label={`Go to slide ${idx + 1}`}
-            />
+            >
+              <span
+                className={`h-2.5 rounded-full transition-all ${
+                  idx === selectedIndex ? "w-8 bg-primary" : "w-2.5 bg-border-warm group-hover:bg-ink-muted"
+                }`}
+              />
+            </button>
           ))}
         </div>
       )}

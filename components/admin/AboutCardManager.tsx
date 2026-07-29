@@ -59,9 +59,11 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
   });
 
   // Keep cards synced when initialCards prop updates from server revalidation
-  React.useEffect(() => {
+  const [prevInitialCards, setPrevInitialCards] = React.useState(initialCards);
+  if (initialCards !== prevInitialCards) {
+    setPrevInitialCards(initialCards);
     setCards(initialCards);
-  }, [initialCards]);
+  }
 
   const handleOpenAddModal = () => {
     setEditingCard(null);

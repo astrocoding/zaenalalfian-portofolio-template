@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
 import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
@@ -129,20 +128,17 @@ export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({ className
 };
 
 const DesktopArchitectureCard: React.FC<{ name: string; role: string; status: string }> = ({ name, role, status }) => {
-  const [mounted, setMounted] = React.useState<boolean>(false);
-  const [isDesktop, setIsDesktop] = React.useState<boolean>(false);
+  const isDesktop = React.useSyncExternalStore(
+    (callback) => {
+      const mediaQuery = window.matchMedia("(min-width: 1024px)");
+      mediaQuery.addEventListener("change", callback);
+      return () => mediaQuery.removeEventListener("change", callback);
+    },
+    () => window.matchMedia("(min-width: 1024px)").matches,
+    () => false
+  );
 
-  React.useEffect(() => {
-    setMounted(true);
-    const mediaQuery = window.matchMedia("(min-width: 1024px)");
-    setIsDesktop(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
-
-  if (!mounted || !isDesktop) return null;
+  if (!isDesktop) return null;
 
   return (
     <div className="hidden lg:block lg:col-span-5 relative pt-4 sm:pt-6 lg:pt-14 animate-float">

@@ -50,7 +50,7 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
             <Calendar className="w-3.5 h-3.5" />
             {formattedDate}
           </span>
-          <span className="font-serif text-xs text-primary/50 font-semibold">プロジェクト詳細</span>
+          <span className="font-serif text-xs text-primary font-medium">プロジェクト詳細</span>
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink leading-tight">

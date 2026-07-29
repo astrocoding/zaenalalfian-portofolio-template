@@ -101,11 +101,6 @@ export const Footer: React.FC<FooterProps> = async ({
     footerData.contact?.facebook ||
     "https://www.facebook.com/zaenal.alfian.2025/";
 
-  const gmailAddress =
-    propContact?.gmail ||
-    footerData.contact?.gmail ||
-    "zaenalalfian20@gmail.com";
-
   return (
     <footer className="bg-surface border-t border-border-warm pt-16 pb-12 mt-auto text-ink">
       <Container size="wide">
