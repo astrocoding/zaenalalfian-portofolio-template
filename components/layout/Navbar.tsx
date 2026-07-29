@@ -221,7 +221,7 @@ export const Navbar: React.FC = () => {
                   }`}
                 >
                   <span>{item.label}</span>
-                  <span className="text-[10px] text-primary/70 font-serif font-normal">
+                  <span className="text-[10px] text-primary font-serif font-normal">
                     {item.kanji}
                   </span>
                   {mounted && isActive && (

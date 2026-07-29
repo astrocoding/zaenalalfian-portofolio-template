@@ -126,18 +126,6 @@ export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({ className
 };
 
 const DesktopArchitectureCard: React.FC<{ name: string; role: string; status: string }> = ({ name, role, status }) => {
-  const isDesktop = React.useSyncExternalStore(
-    (callback) => {
-      const mediaQuery = window.matchMedia("(min-width: 768px)");
-      mediaQuery.addEventListener("change", callback);
-      return () => mediaQuery.removeEventListener("change", callback);
-    },
-    () => window.matchMedia("(min-width: 768px)").matches,
-    () => false
-  );
-
-  if (!isDesktop) return null;
-
   return (
     <div className="hidden md:block lg:col-span-5 relative pt-4 md:pt-6 lg:self-end lg:pb-4 animate-float">
       {/* Japanese Minimalist Frame Container */}

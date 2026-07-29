@@ -14,14 +14,14 @@ const newsreader = Newsreader({
   variable: "--font-newsreader",
   subsets: ["latin"],
   style: ["normal", "italic"],
-  display: "swap",
+  display: "optional",
   preload: false,
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
   preload: false,
 });
 
