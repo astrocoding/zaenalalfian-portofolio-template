@@ -83,16 +83,17 @@ model Doc {
 }
 
 model Experience {
-  id          String   @id @default(cuid())
-  role        String
-  company     String
-  period      String
-  isCurrent   Boolean  @default(false)
-  description String
-  skills      String[] @default([])
-  order       Int      @default(1)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  role            String
+  company         String
+  period          String
+  isCurrent       Boolean  @default(false)
+  description     String
+  accomplishments String[] @default([])
+  skills          String[] @default([])
+  order           Int      @default(1)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Skillset {
@@ -130,6 +131,7 @@ model AboutCard {
   title     String
   subtitle  String
   badge     String?  @map("badge")
+  icon      String?  @map("icon")
   order     Int      @default(1)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

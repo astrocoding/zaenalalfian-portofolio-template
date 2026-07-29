@@ -62,6 +62,11 @@ async function main() {
       order: 1,
       description:
         "Architected a three-tier architecture for ERP system using Node.js & Hapi, React, PostgreSQL, and Redis, improving system performance by 150% compared to legacy code. Developed and deployed a web-based employee attendance system using barcode scanning integrated with payroll management in Laravel, reducing HR's time spent on attendance reconciliation by 65%.",
+      accomplishments: [
+        "Architected 3-tier enterprise ERP system using Node.js/Hapi, React, PostgreSQL & Redis (+150% performance speedup).",
+        "Developed barcode-scanned employee attendance system integrated with payroll in Laravel (65% HR reconciliation time saved).",
+        "Led end-to-end database modeling, Redis caching strategies, and REST API architectural standards.",
+      ],
       skills: ["Node.js", "Hapi.js", "React", "Laravel", "PostgreSQL", "Redis"],
     },
     {
@@ -72,6 +77,11 @@ async function main() {
       order: 2,
       description:
         "Contributed to backend development of InternPro, a web-based internship platform for vocational high school students, using Laravel. Collaborated closely with Frontend Developers, System Analysts, Project Managers, and QA teams to deliver features aligned with specifications and timelines.",
+      accomplishments: [
+        "Built core REST API endpoints and data models for InternPro vocational internship platform.",
+        "Optimized Eloquent database queries and automated test suite coverage using Pest PHP.",
+        "Collaborated in cross-functional Agile sprint cycles delivering features on schedule.",
+      ],
       skills: ["Laravel", "PHP", "REST API", "MySQL", "Agile"],
     },
     {
@@ -82,6 +92,11 @@ async function main() {
       order: 3,
       description:
         "Developed custom web applications based on client requirements using diverse technology stacks including Laravel, React, Express, MySQL, and PostgreSQL. Involved in end-to-end development from requirements analysis to deployment with a strong focus on deadlines, coding standards, sprint planning, and code reviews in Agile teams.",
+      accomplishments: [
+        "Delivered 10+ custom full-stack web applications for clients across various business domains.",
+        "Designed responsive user interfaces in React integrated with high-throughput Express and Laravel backends.",
+        "Enforced clean code standards, git workflow conventions, and continuous delivery deployment pipelines.",
+      ],
       skills: ["Laravel", "React", "Express.js", "MySQL", "PostgreSQL", "CI/CD"],
     },
   ];
@@ -94,6 +109,12 @@ async function main() {
     if (!existing) {
       await prisma.experience.create({ data: exp });
       console.log(`- Created experience: ${exp.role} at ${exp.company}`);
+    } else {
+      await prisma.experience.update({
+        where: { id: existing.id },
+        data: exp,
+      });
+      console.log(`- Updated experience: ${exp.role} at ${exp.company}`);
     }
   }
 
