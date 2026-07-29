@@ -4,13 +4,12 @@ import * as React from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
+import { normalizeImageUrl } from "@/lib/seo";
 
 export interface ProjectGalleryProps {
   images?: string[];
   title: string;
 }
-
-import { normalizeImageUrl } from "@/lib/seo";
 
 const GallerySlide: React.FC<{ img: string; title: string; index: number; total: number }> = ({
   img,
@@ -89,14 +88,9 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
     };
   }, [emblaApi, onSelect]);
 
-  const displayImages =
-    images.length > 0
-      ? images
-      : [
-          `/projects/preview-1.jpg`,
-          `/projects/preview-2.jpg`,
-          `/projects/preview-3.jpg`,
-        ];
+  if (!images || images.length === 0) {
+    return null;
+  }
 
   return (
     <div className="space-y-4">
@@ -104,20 +98,20 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
       <div className="relative overflow-hidden rounded-xl border border-border-warm bg-surface shadow-card">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
-            {displayImages.map((img, idx) => (
+            {images.map((img, idx) => (
               <GallerySlide
                 key={idx}
                 img={img}
                 title={title}
                 index={idx}
-                total={displayImages.length}
+                total={images.length}
               />
             ))}
           </div>
         </div>
 
         {/* Carousel Prev/Next Buttons */}
-        {displayImages.length > 1 && (
+        {images.length > 1 && (
           <>
             <button
               onClick={scrollPrev}
@@ -139,9 +133,9 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
       </div>
 
       {/* Pagination Dot Indicator */}
-      {displayImages.length > 1 && (
+      {images.length > 1 && (
         <div className="flex items-center justify-center space-x-1.5">
-          {displayImages.map((_, idx) => (
+          {images.map((_, idx) => (
             <button
               key={idx}
               onClick={() => emblaApi?.scrollTo(idx)}
