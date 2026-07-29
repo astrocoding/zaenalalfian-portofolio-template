@@ -61,6 +61,7 @@ const BlogCardThumbnail: React.FC<{
           src={normalized}
           alt={title}
           fill
+          unoptimized={normalized.startsWith("/upload/")}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 400px"
           decoding="async"
           loading="lazy"

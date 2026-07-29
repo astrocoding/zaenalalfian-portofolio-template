@@ -42,6 +42,7 @@ const ProjectCardThumbnail: React.FC<{ thumbnail: string; title: string; categor
           src={normalized}
           alt={title}
           fill
+          unoptimized={normalized.startsWith("/upload/")}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
           decoding="async"
           onError={() => setImageError(true)}

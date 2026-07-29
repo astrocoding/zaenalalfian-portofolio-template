@@ -33,6 +33,7 @@ const GallerySlide: React.FC<{ img: string; title: string; index: number; total:
           src={normalized}
           alt={`${title} screenshot ${index + 1}`}
           fill
+          unoptimized={normalized.startsWith("/upload/")}
           priority={index === 0}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 800px"
           decoding="async"

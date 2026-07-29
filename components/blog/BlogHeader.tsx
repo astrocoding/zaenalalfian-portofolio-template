@@ -13,6 +13,8 @@ export interface BlogHeaderProps {
   thumbnail?: string;
 }
 
+import { normalizeImageUrl } from "@/lib/seo";
+
 export const BlogHeader: React.FC<BlogHeaderProps> = ({
   title,
   category,
@@ -21,6 +23,8 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
   description,
   thumbnail,
 }) => {
+  const normalized = normalizeImageUrl(thumbnail);
+
   return (
     <div className="space-y-6 pb-4 border-b border-border-warm">
       <Link
@@ -55,21 +59,19 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
           &quot;{description}&quot;
         </p>
 
-        {thumbnail &&
-          (thumbnail.startsWith("/upload/") ||
-            thumbnail.startsWith("http") ||
-            thumbnail.startsWith("/")) && (
-            <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden border border-border-warm my-6 shadow-md">
-              <Image
-                src={thumbnail}
-                alt={title}
-                fill
-                priority
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 800px"
-                className="object-cover"
-              />
-            </div>
-          )}
+        {normalized && (
+          <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden border border-border-warm my-6 shadow-md">
+            <Image
+              src={normalized}
+              alt={title}
+              fill
+              unoptimized={normalized.startsWith("/upload/")}
+              priority
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 800px"
+              className="object-cover"
+            />
+          </div>
+        )}
 
         <div className="flex items-center space-x-3 pt-2">
           <Image
