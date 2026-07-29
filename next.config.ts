@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
       "tailwind-merge",
       "embla-carousel-react",
     ],
+    // Inline critical CSS into HTML to eliminate render-blocking CSS chunk
+    // (was causing 190ms FCP penalty per Lighthouse audit)
+    inlineCss: true,
   },
   turbopack: {},
 };

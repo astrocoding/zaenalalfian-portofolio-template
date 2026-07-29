@@ -1,6 +1,16 @@
-# Target modern ES2022+ browsers to eliminate legacy polyfills (Array.prototype.at, flat, Object.hasOwn, etc.)
-chrome >= 100
-safari >= 15
-firefox >= 100
-edge >= 100
+# Target only modern browsers that natively support ES2020+
+# This eliminates unnecessary polyfills (Array.at, flat, flatMap,
+# Object.fromEntries, Object.hasOwn, String.trimStart/trimEnd)
+# which Lighthouse flags as legacy JavaScript wasting 13.6 KiB.
+[production]
+last 2 Chrome versions
+last 2 Firefox versions
+last 2 Safari versions
+last 2 Edge versions
+not IE 11
 not dead
+
+[development]
+last 1 Chrome version
+last 1 Firefox version
+last 1 Safari version
