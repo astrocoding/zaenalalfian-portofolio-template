@@ -2,6 +2,7 @@ import * as React from "react";
 import { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
+import { ActionFooter } from "@/components/ui/ActionFooter";
 import { ProjectsPageLayout } from "@/components/project/ProjectsPageLayout";
 import { prisma } from "@/lib/prisma";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
@@ -59,8 +60,16 @@ export default async function ProjectsPage() {
   return (
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper min-h-screen">
-        <Container size="wide">
+        <Container size="wide" className="space-y-12">
           <ProjectsPageLayout projects={projects} />
+          <ActionFooter
+            title="Explore Technical Writings & Architecture Guides"
+            description="Dive into articles on software craftsmanship, frontend engineering, database optimization, and system design."
+            secondaryButtonText="My Blogs"
+            secondaryButtonHref="/blogs"
+            primaryButtonText="Get in Touch"
+            primaryButtonHref="/#contact"
+          />
         </Container>
       </div>
     </MainLayout>

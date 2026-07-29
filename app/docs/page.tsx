@@ -2,6 +2,7 @@ import * as React from "react";
 import { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
+import { ActionFooter } from "@/components/ui/ActionFooter";
 import { DocsPageLayout } from "@/components/docs/DocsPageLayout";
 import { getAllDocs } from "@/lib/docs";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
@@ -46,8 +47,16 @@ export default async function DocsPage() {
   return (
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper min-h-screen">
-        <Container size="wide">
+        <Container size="wide" className="space-y-12">
           <DocsPageLayout docs={formattedDocs} />
+          <ActionFooter
+            title="Building Scalable Web Architecture Together"
+            description="Need technical consulting, system architecture reviews, or full-stack software development?"
+            secondaryButtonText="My Blogs"
+            secondaryButtonHref="/blogs"
+            primaryButtonText="Get in Touch"
+            primaryButtonHref="/#contact"
+          />
         </Container>
       </div>
     </MainLayout>

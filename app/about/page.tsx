@@ -7,7 +7,9 @@ import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { ArrowRight, Mail, FileText } from "lucide-react";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { ActionFooter } from "@/components/ui/ActionFooter";
+import { FileText, Layers } from "lucide-react";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -42,27 +44,6 @@ export const metadata: Metadata = {
     creator: "@zaenalalfian",
   },
 };
-
-const defaultPhilosophyPillars = [
-  {
-    badge: "01",
-    title: "Ma (間) — Intentional Space",
-    subtitle:
-      "Codebases and user interfaces thrive when clutter is removed. By honoring negative space and clean domain boundaries, software becomes easier to reason about, maintain, and scale.",
-  },
-  {
-    badge: "02",
-    title: "Wabi-Sabi (侘寂) — Elegant Simplicity",
-    subtitle:
-      "Perfection in software isn't achieved when there's nothing more to add, but when there's nothing left to take away. Simple, type-safe architecture beats complex abstractions every time.",
-  },
-  {
-    badge: "03",
-    title: "Shokunin (職人) — Technical Craftsmanship",
-    subtitle:
-      "Approaching software development as a lifelong craft. Every database index, API payload, and UI component is executed with meticulous care for performance and accessibility.",
-  },
-];
 
 export default async function AboutPage() {
   let aboutData = null;
@@ -106,15 +87,12 @@ export default async function AboutPage() {
     .map((p: string) => p.trim())
     .filter(Boolean);
 
-  const cards =
-    aboutData?.cards && aboutData.cards.length > 0
-      ? aboutData.cards
-      : defaultPhilosophyPillars;
+  const cards = aboutData?.cards || [];
 
   return (
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper">
-        <Container size="default" className="space-y-16">
+        <Container size="default" className="space-y-10">
           {/* Header Banner */}
           <div className="space-y-4 border-b border-border-warm pb-8">
             <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
@@ -123,13 +101,15 @@ export default async function AboutPage() {
             <h1 className="text-4xl sm:text-5xl font-serif font-bold text-ink tracking-tight">
               {title}
             </h1>
-            <p className="text-lg text-ink-muted leading-relaxed font-sans max-w-3xl">
-              {excerpt}
+            {/* Bio Excerpt with Quote UI Styling matching Blog Header Quote UI */}
+            <p className="text-base sm:text-lg text-ink-muted leading-relaxed font-serif italic w-full border-l-2 sm:border-l-4 border-primary/40 pl-4 py-1.5 bg-primary/5 rounded-r-lg">
+              &quot;{excerpt}&quot;
             </p>
           </div>
 
-          {/* Extended Bio Story */}
+          {/* Extended Bio Story & Quick Stats Side-by-Side Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            {/* Left Column: Extended Bio Story */}
             <div className="lg:col-span-7 space-y-6 text-ink-muted leading-relaxed font-sans text-base">
               <h2 className="text-2xl font-serif font-bold text-ink">
                 {subtitle}
@@ -139,7 +119,7 @@ export default async function AboutPage() {
               ))}
             </div>
 
-            {/* Quick Stats Card */}
+            {/* Right Column: Quick Stats Card */}
             <div className="lg:col-span-5 bg-surface border border-border-warm rounded-2xl p-5 sm:p-6 space-y-5 shadow-card w-full max-w-[420px] lg:justify-self-end">
               <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
                 <Image
@@ -197,7 +177,7 @@ export default async function AboutPage() {
           </div>
 
           {/* Philosophy Pillars Section */}
-          <div className="space-y-8 pt-6 border-t border-border-warm">
+          <div className="space-y-6 pt-6 border-t border-border-warm">
             <div>
               <span className="font-serif text-primary/60 tracking-widest text-xs font-semibold uppercase block">
                 美学 • PHILOSOPHY PILLARS
@@ -207,44 +187,42 @@ export default async function AboutPage() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {cards.map((pillar: { id?: string; badge?: string | null; title: string; subtitle: string }, idx: number) => (
-                <Card key={pillar.id || idx} hoverEffect className="bg-surface p-6 space-y-3">
-                  {pillar.badge && (
-                    <span className="text-2xl font-serif font-bold text-primary/40 block">
-                      {pillar.badge}
-                    </span>
-                  )}
-                  <h3 className="text-lg font-serif font-bold text-ink">{pillar.title}</h3>
-                  <p className="text-xs text-ink-muted leading-relaxed font-sans">
-                    {pillar.subtitle}
-                  </p>
-                </Card>
-              ))}
-            </div>
+            {cards.length === 0 ? (
+              <EmptyState
+                icon={Layers}
+                title="There are no values or pillars posted yet"
+                subtitleKanji="データなし"
+                description="Engineering principles and core values will appear here once published from the admin panel."
+                className="my-0"
+              />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {cards.map((pillar: { id?: string; badge?: string | null; title: string; subtitle: string }, idx: number) => (
+                  <Card key={pillar.id || idx} hoverEffect className="bg-surface p-6 space-y-3">
+                    {pillar.badge && (
+                      <span className="text-2xl font-serif font-bold text-primary/40 block">
+                        {pillar.badge}
+                      </span>
+                    )}
+                    <h3 className="text-lg font-serif font-bold text-ink">{pillar.title}</h3>
+                    <p className="text-xs text-ink-muted leading-relaxed font-sans">
+                      {pillar.subtitle}
+                    </p>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Bottom Action Footer */}
-          <div className="p-8 rounded-2xl bg-surface border border-border-warm flex flex-col sm:flex-row items-center justify-between gap-6 shadow-card">
-            <div>
-              <h3 className="text-xl font-serif font-bold text-ink">Interested in working together?</h3>
-              <p className="text-xs text-ink-muted font-sans mt-1">
-                Let&apos;s discuss architecture consulting, senior engineering roles, or custom web development projects.
-              </p>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Link href="/#projects">
-                <Button variant="outline" size="md">
-                  View Projects
-                </Button>
-              </Link>
-              <Link href="/#contact">
-                <Button variant="primary" size="md" icon={<ArrowRight className="w-4 h-4" />}>
-                  Start Conversation
-                </Button>
-              </Link>
-            </div>
-          </div>
+          {/* Reusable Bottom Action Footer */}
+          <ActionFooter
+            title="Interested in working together?"
+            description="Let's discuss architecture consulting, senior engineering roles, or custom web development projects."
+            secondaryButtonText="My Projects"
+            secondaryButtonHref="/projects"
+            primaryButtonText="Start Conversation"
+            primaryButtonHref="/#contact"
+          />
         </Container>
       </div>
     </MainLayout>

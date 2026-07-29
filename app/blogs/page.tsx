@@ -2,6 +2,7 @@ import * as React from "react";
 import { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
+import { ActionFooter } from "@/components/ui/ActionFooter";
 import { BlogsPageLayout } from "@/components/blog/BlogsPageLayout";
 import { getAllBlogPosts } from "@/lib/blogs";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
@@ -50,8 +51,16 @@ export default async function BlogsPage() {
   return (
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper min-h-screen">
-        <Container size="wide">
+        <Container size="wide" className="space-y-12">
           <BlogsPageLayout blogs={formattedBlogs} />
+          <ActionFooter
+            title="Looking for Proven Full-Stack Engineering Expertise?"
+            description="Discover featured client projects, enterprise web applications, open-source tools, and system benchmarks."
+            secondaryButtonText="My Projects"
+            secondaryButtonHref="/projects"
+            primaryButtonText="Let's Connect!"
+            primaryButtonHref="/#contact"
+          />
         </Container>
       </div>
     </MainLayout>
