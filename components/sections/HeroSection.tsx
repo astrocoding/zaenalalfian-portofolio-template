@@ -3,9 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
-import { Button } from "../ui/Button";
-import { Badge } from "../ui/Badge";
-import { Container } from "../ui/Container";
+import { Button, Badge, Container, SeigaihaPattern } from "../ui";
 import { fetchGitHubAllTimeCommits } from "@/lib/github";
 
 interface CounterNumberProps {
@@ -41,7 +39,7 @@ const CounterNumber: React.FC<CounterNumberProps> = ({
       const step = (timestamp: number) => {
         if (!startTime) startTime = timestamp;
         const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
-        
+
         // Smooth Cubic Ease Out curve for fluid counting speed transition
         const easeProgress = 1 - Math.pow(1 - progress, 3);
         const currentValue = from + (to - from) * easeProgress;
@@ -121,7 +119,7 @@ export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({ className
           <SeigaihaFan cx={-80} cy={80} />
           <SeigaihaFan cx={160} cy={80} />
         </pattern>
-      <rect x="0" y="0" width="100%" height="100%" fill="url(#seigaiha-hero-pattern)" />
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#seigaiha-hero-pattern)" />
       </svg>
     </div>
   );
@@ -130,18 +128,18 @@ export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({ className
 const DesktopArchitectureCard: React.FC<{ name: string; role: string; status: string }> = ({ name, role, status }) => {
   const isDesktop = React.useSyncExternalStore(
     (callback) => {
-      const mediaQuery = window.matchMedia("(min-width: 1024px)");
+      const mediaQuery = window.matchMedia("(min-width: 768px)");
       mediaQuery.addEventListener("change", callback);
       return () => mediaQuery.removeEventListener("change", callback);
     },
-    () => window.matchMedia("(min-width: 1024px)").matches,
+    () => window.matchMedia("(min-width: 768px)").matches,
     () => false
   );
 
   if (!isDesktop) return null;
 
   return (
-    <div className="hidden lg:block lg:col-span-5 relative pt-4 sm:pt-6 lg:pt-14 animate-float">
+    <div className="hidden md:block lg:col-span-5 relative pt-4 md:pt-6 lg:self-end lg:pb-4 animate-float">
       {/* Japanese Minimalist Frame Container */}
       <div className="relative mx-auto max-w-md bg-surface border border-border-warm rounded-2xl p-5 sm:p-6 shadow-xl hover:shadow-2xl transition-shadow duration-500 overflow-hidden">
         {/* Top Red Japanese Hanko Stamp Motif */}
@@ -222,7 +220,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
   }, []);
 
   return (
-    <section id="hero" className="relative pt-2 sm:pt-4 lg:pt-6 pb-24 sm:pb-28 lg:pb-32 overflow-hidden bg-paper min-h-[calc(100vh-80px)] flex items-center">
+    <section id="hero" className="relative w-full min-h-[90dvh] lg:h-[90dvh] lg:max-h-[90dvh] flex flex-col justify-between pt-[10px] sm:pt-[12px] lg:pt-[16px] pb-0 overflow-hidden bg-paper">
       {/* Decorative Subtle Japanese Grid & Background Motifs */}
       <div className="absolute inset-0 bg-[radial-gradient(#b04749_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none" />
 
@@ -231,10 +229,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
         創造と建築
       </div>
 
-      <Container size="wide" className="relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+      <Container size="wide" className="relative z-10 w-full flex-1 flex flex-col justify-start pt-0 pb-16 sm:pb-20 min-h-0">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 lg:items-stretch">
           {/* Main Hero Copy */}
-          <div className="lg:col-span-7 space-y-4 sm:space-y-5">
+          <div className="lg:col-span-7 space-y-3 sm:space-y-4">
             {/* Status Pill Badge */}
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#f6e0ce]/60 border border-border-warm text-ink text-xs font-mono">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -334,8 +332,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
         </div>
       </Container>
 
-      {/* --- JAPANESE SEIGAIHA (青海波) PERFECT 1:1 SEMICIRCLE DYNAMIC HORIZONTAL REPEATING BORDER --- */}
-      <SeigaihaWaveBorder />
+      {/* --- JAPANESE SEIGAIHA (青海波) REUSABLE ANIMATED UI COMPONENT --- */}
+      <SeigaihaPattern />
     </section>
   );
 };
