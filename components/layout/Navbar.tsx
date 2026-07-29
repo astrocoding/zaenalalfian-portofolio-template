@@ -177,36 +177,40 @@ export const Navbar: React.FC = () => {
     e: React.MouseEvent<HTMLAnchorElement>,
     item: NavItem
   ) => {
+    const wasOpen = isOpen;
     setIsOpen(false);
 
     if (isHomePage) {
-      if (item.id === "home") {
-        e.preventDefault();
-        isProgrammaticScrollRef.current = true;
-        setActiveSection("home");
-        window.scrollTo({ top: 0, behavior: "smooth" });
+      e.preventDefault();
+      isProgrammaticScrollRef.current = true;
+      setActiveSection(item.id);
+
+      const doScroll = () => {
+        if (item.id === "home") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          const targetEl = document.getElementById(item.id);
+          if (targetEl) {
+            const headerOffset = 65; // Exact 65px scrolled header height
+            const elementPosition = targetEl.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth",
+            });
+          }
+        }
 
         if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
-        scrollEndTimerRef.current = setTimeout(unlockScrollSpy, 1000);
+        scrollEndTimerRef.current = setTimeout(unlockScrollSpy, 1200);
+      };
+
+      if (wasOpen) {
+        // Defer scroll slightly on mobile drawer so collapse animation does not cancel smooth scroll
+        setTimeout(doScroll, 120);
       } else {
-        const targetEl = document.getElementById(item.id);
-        if (targetEl) {
-          e.preventDefault();
-          isProgrammaticScrollRef.current = true;
-          setActiveSection(item.id);
-
-          const headerOffset = 65; // Exact 65px scrolled header height
-          const elementPosition = targetEl.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.scrollY - headerOffset;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth",
-          });
-
-          if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
-          scrollEndTimerRef.current = setTimeout(unlockScrollSpy, 1000);
-        }
+        doScroll();
       }
     } else {
       if (item.id === "contact") {
