@@ -20,24 +20,26 @@ export interface ProjectItem {
   techstack: string[];
 }
 
+import { normalizeImageUrl } from "@/lib/seo";
+
 const ProjectCardThumbnail: React.FC<{ thumbnail: string; title: string; category: string }> = ({
   thumbnail,
   title,
   category,
 }) => {
   const [imageError, setImageError] = React.useState(false);
+  const normalized = normalizeImageUrl(thumbnail);
 
   const isCustomImage =
-    thumbnail &&
-    thumbnail !== "/projects/preview.jpg" &&
-    (thumbnail.startsWith("/upload/") || thumbnail.startsWith("http") || thumbnail.includes(".")) &&
+    normalized &&
+    normalized !== "/projects/preview.jpg" &&
     !imageError;
 
   return (
     <div className="relative w-full h-full overflow-hidden">
       {isCustomImage ? (
         <Image
-          src={thumbnail}
+          src={normalized}
           alt={title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"

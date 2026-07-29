@@ -10,6 +10,8 @@ export interface ProjectGalleryProps {
   title: string;
 }
 
+import { normalizeImageUrl } from "@/lib/seo";
+
 const GallerySlide: React.FC<{ img: string; title: string; index: number; total: number }> = ({
   img,
   title,
@@ -17,18 +19,18 @@ const GallerySlide: React.FC<{ img: string; title: string; index: number; total:
   total,
 }) => {
   const [imageError, setImageError] = React.useState(false);
+  const normalized = normalizeImageUrl(img);
 
   const isCustomImage =
-    img &&
-    !img.includes("preview-") &&
-    (img.startsWith("/upload/") || img.startsWith("http") || img.includes(".")) &&
+    normalized &&
+    !normalized.includes("preview-") &&
     !imageError;
 
   return (
     <div className="flex-[0_0_100%] min-w-0 h-[300px] sm:h-[480px] bg-[#f6e0ce]/30 flex flex-col items-center justify-center relative overflow-hidden group">
       {isCustomImage ? (
         <Image
-          src={img}
+          src={normalized}
           alt={`${title} screenshot ${index + 1}`}
           fill
           priority={index === 0}

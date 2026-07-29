@@ -31,10 +31,17 @@ export function calculateReadingTime(text: string): string {
   return `${minutes} min read`;
 }
 
+import { normalizeImageUrl } from "@/lib/seo";
+
 export function optimizeHtmlImages(htmlContent: string): string {
   if (!htmlContent) return "";
   return htmlContent.replace(/<img\s+([^>]*)\/?>/gi, (match, attributes) => {
     let newAttrs = attributes;
+    // Normalize src attribute if it has domain prefix
+    newAttrs = newAttrs.replace(/src=["']([^"']+)["']/gi, (m: string, srcUrl: string) => {
+      const norm = normalizeImageUrl(srcUrl);
+      return `src="${norm || srcUrl}"`;
+    });
     if (!/loading=["']/i.test(newAttrs)) {
       newAttrs += ' loading="lazy"';
     }

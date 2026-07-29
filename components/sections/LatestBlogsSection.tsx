@@ -39,26 +39,26 @@ function formatDate(dateStr: string): string {
   }
 }
 
+import { normalizeImageUrl } from "@/lib/seo";
+
 const BlogCardThumbnail: React.FC<{
   thumbnail?: string | null;
   title: string;
   category: string;
 }> = ({ thumbnail, title, category }) => {
   const [imageError, setImageError] = React.useState(false);
+  const normalized = normalizeImageUrl(thumbnail);
 
   const isCustomImage =
-    thumbnail &&
-    thumbnail !== "/blogs/preview.jpg" &&
-    (thumbnail.startsWith("/upload/") ||
-      thumbnail.startsWith("http") ||
-      thumbnail.includes(".")) &&
+    normalized &&
+    normalized !== "/blogs/preview.jpg" &&
     !imageError;
 
   return (
     <div className="relative w-full h-full overflow-hidden">
       {isCustomImage ? (
         <Image
-          src={thumbnail}
+          src={normalized}
           alt={title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 400px"
