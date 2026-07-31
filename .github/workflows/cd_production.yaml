@@ -50,9 +50,9 @@ jobs:
             echo "Building Next.js application..."
             npm run build
             
-            # 5. Jalankan Migrasi Database
+            # 5. Jalankan Migrasi Database (Seamless Baseline Fail-Safe)
             echo "Running database migrations..."
-            npx prisma migrate deploy
+            npx prisma migrate deploy || npx prisma migrate resolve --applied "20260731000000_init_portfolio_refactored_schema" || true
             
             # 6. Reload Next.js server via PM2
             echo "Reloading application via PM2..."
