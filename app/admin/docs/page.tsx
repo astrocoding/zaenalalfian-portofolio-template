@@ -41,7 +41,7 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
   const totalPages = Math.ceil(totalItems / PAGE_SIZE);
 
   return (
-    <div className="space-y-6">
+    <div className="p-4 sm:p-6 lg:p-6 space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border-warm">
         <div>
@@ -73,13 +73,14 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
                 <th className="p-4">Order</th>
                 <th className="p-4">Guide Title</th>
                 <th className="p-4">Category</th>
+                <th className="p-4">Status</th>
                 <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border-subtle">
               {docs.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-ink-muted font-mono text-xs">
+                  <td colSpan={5} className="p-8 text-center text-ink-muted font-mono text-xs">
                     No database docs found. Click &quot;Create Doc Guide&quot; to add one.
                   </td>
                 </tr>
@@ -99,6 +100,19 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
                       <Badge variant="accent" size="sm">
                         {doc.category}
                       </Badge>
+                    </td>
+                    <td className="p-4">
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider ${
+                          doc.status === "published"
+                            ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                            : doc.status === "draft"
+                            ? "bg-amber-100 text-amber-800 border border-amber-300"
+                            : "bg-slate-100 text-slate-700 border border-slate-300"
+                        }`}
+                      >
+                        {doc.status}
+                      </span>
                     </td>
                     <td className="p-4 text-right">
                       <div className="flex items-center justify-end space-x-2">

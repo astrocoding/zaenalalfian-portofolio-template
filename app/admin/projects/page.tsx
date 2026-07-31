@@ -30,7 +30,7 @@ export default async function AdminProjectsPage({ searchParams }: AdminProjectsP
   try {
     totalItems = await prisma.project.count();
     projects = await prisma.project.findMany({
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ priorityOrder: "asc" }, { createdAt: "desc" }],
       skip: (currentPage - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
     });
@@ -41,7 +41,7 @@ export default async function AdminProjectsPage({ searchParams }: AdminProjectsP
   const totalPages = Math.ceil(totalItems / PAGE_SIZE);
 
   return (
-    <div className="space-y-6">
+    <div className="p-4 sm:p-6 lg:p-6 space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border-warm">
         <div>
@@ -70,8 +70,10 @@ export default async function AdminProjectsPage({ searchParams }: AdminProjectsP
           <table className="w-full text-left border-collapse text-sm">
             <thead>
               <tr className="bg-paper border-b border-border-warm font-serif text-ink text-xs uppercase tracking-wider">
+                <th className="p-4">Priority</th>
                 <th className="p-4">Project Title</th>
                 <th className="p-4">Category</th>
+                <th className="p-4">Status</th>
                 <th className="p-4">Tech Stack</th>
                 <th className="p-4">Links</th>
                 <th className="p-4 text-right">Actions</th>
@@ -80,13 +82,16 @@ export default async function AdminProjectsPage({ searchParams }: AdminProjectsP
             <tbody className="divide-y divide-border-subtle">
               {projects.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-ink-muted font-mono text-xs">
+                  <td colSpan={7} className="p-8 text-center text-ink-muted font-mono text-xs">
                     No projects found in database. Click &quot;Create Project&quot; to add one.
                   </td>
                 </tr>
               ) : (
                 projects.map((proj) => (
                   <tr key={proj.id} className="hover:bg-black/2 transition-colors">
+                    <td className="p-4 text-xs font-mono font-bold text-primary">
+                      #{proj.priorityOrder}
+                    </td>
                     <td className="p-4">
                       <span className="font-bold text-ink block font-serif">{proj.title}</span>
                       <span className="text-xs font-mono text-ink-muted">/{proj.slug}</span>
@@ -95,6 +100,19 @@ export default async function AdminProjectsPage({ searchParams }: AdminProjectsP
                       <Badge variant="accent" size="sm">
                         {proj.category}
                       </Badge>
+                    </td>
+                    <td className="p-4">
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider ${
+                          proj.status === "published"
+                            ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                            : proj.status === "draft"
+                            ? "bg-amber-100 text-amber-800 border border-amber-300"
+                            : "bg-slate-100 text-slate-700 border border-slate-300"
+                        }`}
+                      >
+                        {proj.status}
+                      </span>
                     </td>
                     <td className="p-4">
                       <div className="flex flex-wrap gap-1 max-w-xs">

@@ -1,4 +1,4 @@
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 import { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -6,28 +6,29 @@ import { prisma } from "@/lib/prisma";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 // Lazy load below-the-fold sections for maximum mobile performance & code splitting
-const AboutSection = dynamic(() =>
+const AboutSection = nextDynamic(() =>
   import("@/components/sections/AboutSection").then((m) => m.AboutSection)
 );
-const SkillsSection = dynamic(() =>
+const SkillsSection = nextDynamic(() =>
   import("@/components/sections/SkillsSection").then((m) => m.SkillsSection)
 );
-const ExperienceSection = dynamic(() =>
+const ExperienceSection = nextDynamic(() =>
   import("@/components/sections/ExperienceSection").then((m) => m.ExperienceSection)
 );
-const FeaturedProjectsSection = dynamic(() =>
+const FeaturedProjectsSection = nextDynamic(() =>
   import("@/components/sections/FeaturedProjectsSection").then(
     (m) => m.FeaturedProjectsSection
   )
 );
-const LatestBlogsSection = dynamic(() =>
+const LatestBlogsSection = nextDynamic(() =>
   import("@/components/sections/LatestBlogsSection").then((m) => m.LatestBlogsSection)
 );
-const ContactSection = dynamic(() =>
+const ContactSection = nextDynamic(() =>
   import("@/components/sections/ContactSection").then((m) => m.ContactSection)
 );
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Zaenal Alfian — Senior Full-Stack Engineer & Product Architect",
@@ -92,10 +93,12 @@ export default async function HomePage() {
 
   try {
     dbProjects = await prisma.project.findMany({
-      orderBy: { createdAt: "desc" },
+      where: { status: "published" },
+      orderBy: [{ priorityOrder: "asc" }, { createdAt: "desc" }],
       take: 4,
     });
     dbBlogs = await prisma.blog.findMany({
+      where: { status: "published" },
       orderBy: { publishedAt: "desc" },
       take: 3,
     });
@@ -117,8 +120,8 @@ export default async function HomePage() {
       include: { contact: true },
       orderBy: { createdAt: "asc" },
     });
-  } catch {
-    // Graceful fallback to static seed items when database is empty
+  } catch (err) {
+    console.error("Error fetching HomePage database data:", err);
   }
 
   const projects = dbProjects.map((p) => ({

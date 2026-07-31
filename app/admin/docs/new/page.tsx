@@ -11,7 +11,7 @@ export default async function NewDocPage() {
   if (!session) redirect("/admin/login");
 
   return (
-    <div className="space-y-6">
+    <div className="p-4 sm:p-6 lg:p-6 space-y-6">
       <div>
         <Link
           href="/admin/docs"

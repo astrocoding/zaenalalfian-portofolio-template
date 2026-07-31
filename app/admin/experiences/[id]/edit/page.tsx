@@ -23,7 +23,7 @@ export default async function EditExperiencePage({
   if (!experience) notFound();
 
   return (
-    <div className="space-y-6">
+    <div className="p-4 sm:p-6 lg:p-6 space-y-6">
       <div>
         <Link
           href="/admin/experiences"

@@ -7,7 +7,8 @@ import { BlogsPageLayout } from "@/components/blog/BlogsPageLayout";
 import { getAllBlogPosts } from "@/lib/blogs";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Articles & Technical Insights | Zaenal Alfian",

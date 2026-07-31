@@ -41,7 +41,7 @@ export default async function AdminEducationPage({ searchParams }: AdminEducatio
   const totalPages = Math.ceil(totalItems / PAGE_SIZE);
 
   return (
-    <div className="space-y-6">
+    <div className="p-4 sm:p-6 lg:p-6 space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border-warm">
         <div>

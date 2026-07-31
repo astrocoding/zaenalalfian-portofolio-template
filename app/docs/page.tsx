@@ -7,7 +7,8 @@ import { DocsPageLayout } from "@/components/docs/DocsPageLayout";
 import { getAllDocs } from "@/lib/docs";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Technical Documentation & Guides | Zaenal Alfian",

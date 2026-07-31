@@ -11,7 +11,10 @@ export const revalidate = 60;
 
 export async function generateStaticParams() {
   try {
-    const projects = await prisma.project.findMany({ select: { slug: true } });
+    const projects = await prisma.project.findMany({
+      where: { status: "published" },
+      select: { slug: true },
+    });
     return projects.map((p) => ({ slug: p.slug }));
   } catch {
     return [];
@@ -24,11 +27,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  let project: Awaited<ReturnType<typeof prisma.project.findUnique>> = null;
+  let project: Awaited<ReturnType<typeof prisma.project.findFirst>> = null;
 
   try {
-    project = await prisma.project.findUnique({
-      where: { slug: resolvedParams.slug },
+    project = await prisma.project.findFirst({
+      where: { slug: resolvedParams.slug, status: "published" },
     });
   } catch {
     // Database query fallback
@@ -79,11 +82,11 @@ export default async function ProjectDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const resolvedParams = await params;
-  let project: Awaited<ReturnType<typeof prisma.project.findUnique>> = null;
+  let project: Awaited<ReturnType<typeof prisma.project.findFirst>> = null;
 
   try {
-    project = await prisma.project.findUnique({
-      where: { slug: resolvedParams.slug },
+    project = await prisma.project.findFirst({
+      where: { slug: resolvedParams.slug, status: "published" },
     });
   } catch {
     // Database query fallback

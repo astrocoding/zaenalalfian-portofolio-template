@@ -58,8 +58,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Projects dynamic routes — priority 0.9, updatedAt from DB
   try {
     const projects = await prisma.project.findMany({
+      where: { status: "published" },
       select: { slug: true, updatedAt: true },
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ priorityOrder: "asc" }, { createdAt: "desc" }],
     });
     projects.forEach((proj) => {
       routes.push({

@@ -7,7 +7,8 @@ import { ProjectsPageLayout } from "@/components/project/ProjectsPageLayout";
 import { prisma } from "@/lib/prisma";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Featured Projects & Portfolio | Zaenal Alfian",
@@ -39,10 +40,11 @@ export default async function ProjectsPage() {
 
   try {
     dbProjects = await prisma.project.findMany({
-      orderBy: { createdAt: "desc" },
+      where: { status: "published" },
+      orderBy: [{ priorityOrder: "asc" }, { createdAt: "desc" }],
     });
-  } catch {
-    // Database fallback
+  } catch (err) {
+    console.error("Error fetching projects for ProjectsPage:", err);
   }
 
   const projects = dbProjects.map((p) => ({

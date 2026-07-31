@@ -20,7 +20,7 @@ export default async function EditEducationPage({ params }: EditEducationPagePro
   if (!education) notFound();
 
   return (
-    <div className="space-y-6">
+    <div className="p-4 sm:p-6 lg:p-6 space-y-6">
       <div className="pb-4 border-b border-border-warm">
         <Link
           href="/admin/education"

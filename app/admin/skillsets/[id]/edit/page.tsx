@@ -26,7 +26,7 @@ export default async function EditSkillsetPage({ params }: EditSkillsetPageProps
   }
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-6 space-y-6 max-w-4xl mx-auto">
       <div className="pb-4 border-b border-border-warm">
         <Link
           href="/admin/skillsets"
