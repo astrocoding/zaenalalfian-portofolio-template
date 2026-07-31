@@ -102,7 +102,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="e.g. Zaenal Alfian"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -114,7 +114,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
             value={formData.username}
             onChange={(e) => setFormData({ ...formData, username: e.target.value })}
             placeholder="e.g. zaenal"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
       </div>
@@ -129,7 +129,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             placeholder="e.g. admin@zaenalalfian.dev"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -138,7 +138,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
           <select
             value={formData.role}
             onChange={(e) => setFormData({ ...formData, role: e.target.value as "ADMIN" | "USER" })}
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="admin-select w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
           >
             <option value="ADMIN">ADMIN (Full Access)</option>
             <option value="USER">USER (Read Access)</option>
@@ -159,7 +159,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               placeholder="••••••••••••"
-              className="w-full pl-3.5 pr-10 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full pl-3.5 pr-10 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
             <button
               type="button"
@@ -183,7 +183,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, isEdit = false 
               value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               placeholder="••••••••••••"
-              className="w-full pl-3.5 pr-10 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full pl-3.5 pr-10 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
             <button
               type="button"

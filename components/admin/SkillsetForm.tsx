@@ -99,7 +99,7 @@ export const SkillsetForm: React.FC<SkillsetFormProps> = ({ initialData, isEdit 
             value={formData.skillName}
             onChange={(e) => setFormData({ ...formData, skillName: e.target.value })}
             placeholder="e.g. Next.js 16 (App Router)"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -109,7 +109,7 @@ export const SkillsetForm: React.FC<SkillsetFormProps> = ({ initialData, isEdit 
             <select
               value={formData.category}
               onChange={(e) => handleCategoryChange(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="admin-select w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
               {DEFAULT_CATEGORIES.map((c) => (
                 <option key={c.name} value={c.name}>
@@ -125,7 +125,7 @@ export const SkillsetForm: React.FC<SkillsetFormProps> = ({ initialData, isEdit 
                 required
                 placeholder="Type custom category name..."
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-3.5 py-2 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-3.5 py-2 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             )}
           </div>
@@ -142,7 +142,7 @@ export const SkillsetForm: React.FC<SkillsetFormProps> = ({ initialData, isEdit 
             value={formData.categoryOrder}
             onChange={(e) => setFormData({ ...formData, categoryOrder: Number(e.target.value) })}
             placeholder="1, 2, 3, etc."
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
           <span className="text-[11px] font-mono text-ink-muted block">
             Used to determine card sequence on landing page (1: Frontend, 2: Backend, 3: Architecture, 4: Tools).
@@ -156,7 +156,7 @@ export const SkillsetForm: React.FC<SkillsetFormProps> = ({ initialData, isEdit 
             value={formData.link}
             onChange={(e) => setFormData({ ...formData, link: e.target.value })}
             placeholder="https://nextjs.org"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
       </div>
