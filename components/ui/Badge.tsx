@@ -7,7 +7,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: "default" | "accent" | "outline" | "ghost" | "tech";
+  variant?: "default" | "accent" | "outline" | "ghost" | "tech" | "status-published" | "status-draft" | "status-archived";
   size?: "sm" | "md";
 }
 
@@ -27,6 +27,9 @@ export const Badge: React.FC<BadgeProps> = ({
     outline: "bg-transparent text-ink-muted border border-border-warm",
     ghost: "bg-black/5 text-ink-muted",
     tech: "bg-surface text-primary border border-border-warm font-mono text-xs shadow-2xs",
+    "status-published": "bg-emerald-50 text-emerald-700 border border-emerald-200",
+    "status-draft": "bg-zinc-100 text-zinc-500 border border-zinc-300",
+    "status-archived": "bg-amber-50 text-amber-600 border border-amber-200",
   };
 
   const sizeStyles = {

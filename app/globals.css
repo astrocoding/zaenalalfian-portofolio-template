@@ -28,6 +28,7 @@
 
   html {
     scroll-padding-top: 65px;
+    scroll-behavior: smooth;
     background-color: var(--color-bg);
     color: var(--color-text);
   }
@@ -113,4 +114,12 @@
   background-position: right 12px center;
   padding-right: 2.5rem;
   cursor: pointer;
+}
+
+/* Admin Form Fields — neutral border scoped to .admin-portal */
+/* Unlayered CSS overrides Tailwind @layer utilities (border-border-warm) */
+.admin-portal form input.bg-watermark-surface,
+.admin-portal form textarea.bg-watermark-surface,
+.admin-portal form select.bg-watermark-surface {
+  border-color: #c8c5c2;
 }

@@ -156,7 +156,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           className={`border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center space-y-1.5 ${
             isDragging
               ? "border-primary bg-primary/5 scale-[1.01]"
-              : "border-border-warm bg-watermark-surface hover:border-primary/50 hover:bg-surface"
+              : "border-[#c8c5c2] bg-watermark-surface hover:border-primary/50 hover:bg-surface"
           }`}
         >
           <input
@@ -181,7 +181,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             </div>
           ) : (
             <>
-              <div className="w-8 h-8 rounded-full bg-watermark-surface text-primary flex items-center justify-center border border-border-warm">
+              <div className="w-8 h-8 rounded-full bg-watermark-surface text-primary flex items-center justify-center border border-[#c8c5c2]">
                 <UploadCloud className="w-4 h-4" />
               </div>
               <div className="space-y-0.5">
