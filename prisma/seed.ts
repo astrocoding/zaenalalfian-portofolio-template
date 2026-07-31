@@ -51,6 +51,97 @@ async function main() {
   });
   console.log("- Created/Updated Contact record for admin user:", contact.gmail);
 
+  console.log("\nSeeding initial projects...");
+  const projectsData = [
+    {
+      title: "Enterprise ERP System Architecture",
+      slug: "enterprise-erp-system-architecture",
+      description: "High-performance three-tier enterprise ERP system architected with Node.js, Hapi.js, React, PostgreSQL, and Redis caching.",
+      category: "Full-Stack Web App",
+      thumbnail: "",
+      techstack: ["Node.js", "Hapi.js", "React", "PostgreSQL", "Redis"],
+      priorityOrder: 1,
+      status: "published" as const,
+      problem: "Legacy monolithic code couldn't handle concurrent enterprise queries during peak operations.\nHigh database lock contention on multi-role user queries.\nLack of automated caching led to slow API response times under load.",
+      solution: "Designed decoupled 3-tier REST API architecture with Redis response caching.\nImplemented PostgreSQL database indexing for heavy query operations.\nAdopted Next.js 16 App Router & Server Actions for optimized client hydration.",
+      architecture: "Node.js API Gateway & Hapi.js microservices cluster\nPostgreSQL database cluster with indexed multi-table queries\nRedis caching layer & Vercel Edge CDN distribution",
+      challenge: "Optimizing multi-table join queries across concurrent enterprise sessions.\nDesigning real-time cache invalidation strategies upon data mutations.\nEnsuring zero-downtime database migration deployment.",
+      result: "Achieved 150% overall system throughput improvement.\nSub-100ms response times across all primary API endpoints.\nEliminated database locks during peak business hours.",
+      repository: "https://github.com/astrocoding",
+      sourceLink: "https://zaenalalfian.dev",
+    },
+    {
+      title: "InternPro Vocational Internship Platform",
+      slug: "internpro-vocational-internship-platform",
+      description: "Comprehensive web platform for vocational high school students internship management and tracking.",
+      category: "Full-Stack Web App",
+      thumbnail: "",
+      techstack: ["Laravel", "PHP", "MySQL", "REST API", "TailwindCSS"],
+      priorityOrder: 2,
+      status: "published" as const,
+      problem: "Manual paper-based internship recording caused reconciliation delays for vocational schools.\nDifficulty tracking real-time student attendance across multiple company locations.\nLack of centralized grading system for school mentors and industry supervisors.",
+      solution: "Developed unified web platform with automated digital attendance logbooks.\nIntegrated real-time supervisor grading and evaluation modules.\nCreated automated monthly PDF report generation for school administrators.",
+      architecture: "Laravel MVC backend framework with RESTful APIs\nPostgreSQL / MySQL relational database for structured student logs\nResponsive TailwindCSS templates optimized for desktop and mobile",
+      challenge: "Managing multi-role permissions for students, school mentors, and industry supervisors.\nEnsuring secure file upload for daily internship activity evidence.\nOptimizing portal load times over low-bandwidth mobile networks.",
+      result: "Streamlined internship tracking across 500+ vocational students.\nReduced report processing time from 2 weeks to 5 minutes.\n100% digital transition for 15+ partner vocational high schools.",
+      repository: "https://github.com/astrocoding",
+      sourceLink: "https://zaenalalfian.dev",
+    },
+  ];
+
+  for (const proj of projectsData) {
+    await prisma.project.upsert({
+      where: { slug: proj.slug },
+      update: proj,
+      create: proj,
+    });
+    console.log(`- Created/Updated project: ${proj.title}`);
+  }
+
+  console.log("\nSeeding initial blogs...");
+  const blogsData = [
+    {
+      title: "Mastering Clean Architecture in Next.js 16",
+      slug: "mastering-clean-architecture-nextjs-16",
+      category: "architecture",
+      description: "A deep dive into structuring scalable Next.js 16 applications using domain-driven boundaries, Prisma 7, and React 19 Server Components.",
+      content: "# Mastering Clean Architecture in Next.js 16\n\nBuilding enterprise-grade applications requires strict separation of concerns...\n\n## Core Principles\n- Keep UI components presentational\n- Use Server Actions for mutation contracts\n- Optimize PostgreSQL access via Prisma 7 adapter",
+      keywords: ["Next.js 16", "Clean Architecture", "Prisma 7", "TypeScript"],
+      status: "published" as const,
+    },
+  ];
+
+  for (const blog of blogsData) {
+    await prisma.blog.upsert({
+      where: { slug: blog.slug },
+      update: blog,
+      create: blog,
+    });
+    console.log(`- Created/Updated blog: ${blog.title}`);
+  }
+
+  console.log("\nSeeding initial docs...");
+  const docsData = [
+    {
+      title: "System Architecture & Design Overview",
+      slug: "system-architecture-overview",
+      category: "architecture",
+      description: "Technical specification and architectural overview of portfolio domain design.",
+      content: "# System Architecture Overview\n\nThis portfolio application is built with Next.js 16 App Router, React 19, PostgreSQL, and Prisma 7 ORM.",
+      order: 1,
+      status: "published" as const,
+    },
+  ];
+
+  for (const doc of docsData) {
+    await prisma.doc.upsert({
+      where: { slug: doc.slug },
+      update: doc,
+      create: doc,
+    });
+    console.log(`- Created/Updated doc: ${doc.title}`);
+  }
+
   console.log("\nSeeding initial experiences...");
 
   const experiencesData = [
@@ -243,7 +334,6 @@ async function main() {
       console.log(`- Updated education: ${edu.title} at ${edu.organization}`);
     }
   }
-
 }
 
 main()

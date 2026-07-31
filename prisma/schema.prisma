@@ -15,6 +15,12 @@ enum Role {
   USER
 }
 
+enum ContentStatus {
+  draft
+  published
+  archived
+}
+
 model User {
   id           String   @id @default(cuid())
   name         String
@@ -30,56 +36,68 @@ model User {
   quotes       String?
   bio          String?
   resume       String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
   about        About?
   contact      Contact?
+
+  @@map("users")
 }
 
 model Project {
-  id           String   @id @default(cuid())
-  title        String
-  slug         String   @unique
-  description  String
-  category     String
-  thumbnail    String
-  images       String[] @default([])
-  techstack    String[]
-  problem      String?
-  solution     String?
-  architecture String?
-  challenge    String?
-  result       String?
-  repository   String?
-  sourceLink   String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  description   String
+  category      String
+  thumbnail     String
+  images        String[]      @default([])
+  techstack     String[]
+  problem       String?
+  solution      String?
+  architecture  String?
+  challenge     String?
+  result        String?
+  repository    String?
+  sourceLink    String?       @map("source_link")
+  priorityOrder Int           @default(1) @map("priority_order")
+  status        ContentStatus @default(published) @map("status")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  @@map("projects")
 }
 
 model Blog {
-  id          String   @id @default(cuid())
+  id          String        @id @default(cuid())
   title       String
-  slug        String   @unique
+  slug        String        @unique
   category    String
   description String
   content     String
   thumbnail   String?
   keywords    String[]
-  publishedAt DateTime @default(now())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      ContentStatus @default(published) @map("status")
+  publishedAt DateTime      @default(now()) @map("published_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@map("blogs")
 }
 
 model Doc {
-  id          String   @id @default(cuid())
+  id          String        @id @default(cuid())
   title       String
-  slug        String   @unique
+  slug        String        @unique
   category    String
   description String
   content     String
-  order       Int      @default(99)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  order       Int           @default(99)
+  status      ContentStatus @default(published) @map("status")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@map("docs")
 }
 
 model Experience {
@@ -87,13 +105,15 @@ model Experience {
   role            String
   company         String
   period          String
-  isCurrent       Boolean  @default(false)
+  isCurrent       Boolean  @default(false) @map("is_current")
   description     String
   accomplishments String[] @default([])
   skills          String[] @default([])
   order           Int      @default(1)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("experiences")
 }
 
 model Skillset {
@@ -176,4 +196,3 @@ model Education {
 
   @@map("educations")
 }
-
