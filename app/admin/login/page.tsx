@@ -2,19 +2,21 @@
 
 import * as React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { User, KeyRound, AlertCircle, ArrowRight, ShieldCheck } from "lucide-react";
+import { User, KeyRound, AlertCircle, ArrowRight, ShieldCheck, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export default function AdminLoginPage() {
   const [identifier, setIdentifier] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
@@ -47,16 +49,22 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md bg-surface border border-border-warm rounded-2xl p-8 shadow-card relative z-10 space-y-6">
         {/* Header Branding */}
         <div className="text-center space-y-2">
-          <Image
-            src="/zen.svg?v=2"
-            alt="Zaenal Alfian Logo"
-            width={48}
-            height={48}
-            className="w-12 h-12 mx-auto object-contain"
-            priority
-          />
-          <h1 className="text-2xl font-serif font-bold text-ink tracking-tight pt-2">
-            Admin Authentication / ログイン
+          <Link
+            href="/"
+            title="Zaenal Alfian's Portfolio"
+            className="inline-block transition-transform hover:scale-105 active:scale-95"
+          >
+            <Image
+              src="/zen.svg?v=2"
+              alt="Zaenal Alfian Logo"
+              width={48}
+              height={48}
+              className="w-12 h-12 mx-auto object-contain cursor-pointer"
+              priority
+            />
+          </Link>
+          <h1 className="text-2xl font-serif font-bold text-primary tracking-tight pt-2">
+            Admin Authentication
           </h1>
           <p className="text-xs font-mono text-ink-muted">
             Enter your email/username and password to access dashboard
@@ -75,7 +83,7 @@ export default function AdminLoginPage() {
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-xs font-mono text-ink font-medium">
-              Email or Username / ユーザー名・メール *
+              Email or Username / <span className="text-secondary">ユーザー名・メール *</span>
             </label>
             <div className="relative">
               <User className="w-4 h-4 text-ink-muted absolute left-3 top-1/2 -translate-y-1/2" />
@@ -92,18 +100,26 @@ export default function AdminLoginPage() {
 
           <div className="space-y-1.5">
             <label className="text-xs font-mono text-ink font-medium">
-              Password / パスワード *
+              Password / <span className="text-secondary">パスワード *</span>
             </label>
             <div className="relative">
               <KeyRound className="w-4 h-4 text-ink-muted absolute left-3 top-1/2 -translate-y-1/2" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-9 pr-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
+                className="w-full pl-9 pr-10 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink transition-colors cursor-pointer"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 
@@ -115,14 +131,14 @@ export default function AdminLoginPage() {
             className="w-full justify-center mt-2"
             icon={<ArrowRight className="w-4 h-4" />}
           >
-            {loading ? "Authenticating..." : "Sign In to Admin / ログイン"}
+            {loading ? "Authenticating..." : "Sign In to Admin"}
           </Button>
         </form>
 
         {/* Footer info */}
         <div className="pt-4 border-t border-border-subtle text-center text-xs text-ink-muted flex items-center justify-center space-x-1.5 font-mono">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Encrypted Session • NextAuth Credentials</span>
+          <span>Encrypted Session • Zaenal Alfian</span>
         </div>
       </div>
     </div>
