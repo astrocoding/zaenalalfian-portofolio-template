@@ -12,10 +12,8 @@ import { Plus, Edit, ArrowLeft, ExternalLink } from "lucide-react";
 import { deleteSkillsetAction } from "@/app/actions/admin";
 
 export interface AdminSkillsetsPageProps {
-  searchParams?: Promise<{ page?: string }>;
+  searchParams?: Promise<{ page?: string; limit?: string }>;
 }
-
-const PAGE_SIZE = 10;
 
 export default async function AdminSkillsetsPage({ searchParams }: AdminSkillsetsPageProps) {
   const session = await getServerSession(authOptions);
@@ -23,6 +21,7 @@ export default async function AdminSkillsetsPage({ searchParams }: AdminSkillset
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
 
   let skillsets: Awaited<ReturnType<typeof prisma.skillset.findMany>> = [];
   let totalItems = 0;
@@ -31,14 +30,14 @@ export default async function AdminSkillsetsPage({ searchParams }: AdminSkillset
     totalItems = await prisma.skillset.count();
     skillsets = await prisma.skillset.findMany({
       orderBy: [{ categoryOrder: "asc" }, { category: "asc" }, { createdAt: "asc" }],
-      skip: (currentPage - 1) * PAGE_SIZE,
-      take: PAGE_SIZE,
+      skip: (currentPage - 1) * pageSize,
+      take: pageSize,
     });
   } catch (e) {
     console.warn("Error fetching skillsets:", e);
   }
 
-  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+  const totalPages = Math.ceil(totalItems / pageSize);
 
   return (
     <div className="p-4 sm:p-6 lg:p-6 space-y-6">
@@ -151,7 +150,7 @@ export default async function AdminSkillsetsPage({ searchParams }: AdminSkillset
           currentPage={currentPage}
           totalPages={totalPages}
           totalItems={totalItems}
-          pageSize={PAGE_SIZE}
+          pageSize={pageSize}
           baseUrl="/admin/skillsets"
         />
       </div>

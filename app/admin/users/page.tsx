@@ -12,10 +12,8 @@ import { UserPlus, Edit, ArrowLeft } from "lucide-react";
 import { deleteUserAction } from "@/app/actions/admin";
 
 export interface AdminUsersPageProps {
-  searchParams?: Promise<{ page?: string }>;
+  searchParams?: Promise<{ page?: string; limit?: string }>;
 }
-
-const PAGE_SIZE = 10;
 
 export default async function AdminUsersPage({ searchParams }: AdminUsersPageProps) {
   const session = await getServerSession(authOptions);
@@ -23,6 +21,7 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
 
   let users: Awaited<ReturnType<typeof prisma.user.findMany>> = [];
   let totalItems = 0;
@@ -31,14 +30,14 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
     totalItems = await prisma.user.count();
     users = await prisma.user.findMany({
       orderBy: { createdAt: "desc" },
-      skip: (currentPage - 1) * PAGE_SIZE,
-      take: PAGE_SIZE,
+      skip: (currentPage - 1) * pageSize,
+      take: pageSize,
     });
   } catch (e) {
     console.warn("Error fetching users:", e);
   }
 
-  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+  const totalPages = Math.ceil(totalItems / pageSize);
 
   return (
     <div className="p-4 sm:p-6 lg:p-6 space-y-6">
@@ -149,7 +148,7 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
           currentPage={currentPage}
           totalPages={totalPages}
           totalItems={totalItems}
-          pageSize={PAGE_SIZE}
+          pageSize={pageSize}
           baseUrl="/admin/users"
         />
       </div>

@@ -17,6 +17,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { updateProfileAndAboutAction } from "@/app/actions/admin";
+import { AdminFormHeader } from "@/components/admin/AdminFormHeader";
 
 const GithubIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -123,8 +124,8 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     facebook: initialContact?.facebook || "https://www.facebook.com/zaenal.alfian.2025/",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent | React.MouseEvent) => {
+    if (e) e.preventDefault();
     setLoading(true);
     setError(null);
     setSuccess(null);
@@ -156,20 +157,33 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 w-full">
-      {error && (
-        <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
-          <AlertCircle className="w-4 h-4 shrink-0" />
-          <span>{error}</span>
-        </div>
-      )}
+    <form onSubmit={handleSubmit} className="w-full">
+      <AdminFormHeader
+        backHref="/admin"
+        backLabel="Back to Dashboard"
+        title="Profile & About Section"
+        showSearch={false}
+        showBadge={false}
+        showSaveDraft={false}
+        loading={loading}
+        onPublish={handleSubmit}
+        primaryActionLabel="Save All"
+      />
 
-      {success && (
-        <div className="p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center space-x-2">
-          <CheckCircle2 className="w-4 h-4 shrink-0" />
-          <span>{success}</span>
-        </div>
-      )}
+      <div className="pt-[87px] px-4 sm:px-6 lg:px-6 space-y-6 w-full">
+        {error && (
+          <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {success && (
+          <div className="p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center space-x-2">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span>{success}</span>
+          </div>
+        )}
 
       {/* 1. Account Settings Card */}
       <div className="bg-surface border border-border-warm rounded-xl p-5 sm:p-6 shadow-card space-y-5">
@@ -549,10 +563,11 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             disabled={loading}
             icon={<Save className="w-4 h-4" />}
           >
-            {loading ? "Saving Changes..." : "Save Profile, About, & Contact Info"}
+            {loading ? "Saving Changes..." : "Save All"}
           </Button>
         </div>
       </div>
-    </form>
-  );
+    </div>
+  </form>
+);
 };

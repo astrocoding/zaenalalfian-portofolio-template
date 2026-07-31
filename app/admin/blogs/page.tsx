@@ -12,10 +12,8 @@ import { Plus, Edit, ArrowLeft, Calendar } from "lucide-react";
 import { deleteBlogAction } from "@/app/actions/admin";
 
 export interface AdminBlogsPageProps {
-  searchParams?: Promise<{ page?: string }>;
+  searchParams?: Promise<{ page?: string; limit?: string }>;
 }
-
-const PAGE_SIZE = 10;
 
 export default async function AdminBlogsPage({ searchParams }: AdminBlogsPageProps) {
   const session = await getServerSession(authOptions);
@@ -23,6 +21,7 @@ export default async function AdminBlogsPage({ searchParams }: AdminBlogsPagePro
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
 
   let blogs: Awaited<ReturnType<typeof prisma.blog.findMany>> = [];
   let totalItems = 0;
@@ -31,14 +30,14 @@ export default async function AdminBlogsPage({ searchParams }: AdminBlogsPagePro
     totalItems = await prisma.blog.count();
     blogs = await prisma.blog.findMany({
       orderBy: { createdAt: "desc" },
-      skip: (currentPage - 1) * PAGE_SIZE,
-      take: PAGE_SIZE,
+      skip: (currentPage - 1) * pageSize,
+      take: pageSize,
     });
   } catch (e) {
     console.warn("Error fetching blogs:", e);
   }
 
-  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+  const totalPages = Math.ceil(totalItems / pageSize);
 
   return (
     <div className="p-4 sm:p-6 lg:p-6 space-y-6">
@@ -155,7 +154,7 @@ export default async function AdminBlogsPage({ searchParams }: AdminBlogsPagePro
           currentPage={currentPage}
           totalPages={totalPages}
           totalItems={totalItems}
-          pageSize={PAGE_SIZE}
+          pageSize={pageSize}
           baseUrl="/admin/blogs"
         />
       </div>

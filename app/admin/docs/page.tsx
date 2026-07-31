@@ -12,10 +12,8 @@ import { Plus, Edit, ArrowLeft } from "lucide-react";
 import { deleteDocAction } from "@/app/actions/admin";
 
 export interface AdminDocsPageProps {
-  searchParams?: Promise<{ page?: string }>;
+  searchParams?: Promise<{ page?: string; limit?: string }>;
 }
-
-const PAGE_SIZE = 10;
 
 export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps) {
   const session = await getServerSession(authOptions);
@@ -23,6 +21,7 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
 
   let docs: Awaited<ReturnType<typeof prisma.doc.findMany>> = [];
   let totalItems = 0;
@@ -31,14 +30,14 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
     totalItems = await prisma.doc.count();
     docs = await prisma.doc.findMany({
       orderBy: { order: "asc" },
-      skip: (currentPage - 1) * PAGE_SIZE,
-      take: PAGE_SIZE,
+      skip: (currentPage - 1) * pageSize,
+      take: pageSize,
     });
   } catch (e) {
     console.warn("Error fetching docs:", e);
   }
 
-  const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+  const totalPages = Math.ceil(totalItems / pageSize);
 
   return (
     <div className="p-4 sm:p-6 lg:p-6 space-y-6">
@@ -146,7 +145,7 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
           currentPage={currentPage}
           totalPages={totalPages}
           totalItems={totalItems}
-          pageSize={PAGE_SIZE}
+          pageSize={pageSize}
           baseUrl="/admin/docs"
         />
       </div>

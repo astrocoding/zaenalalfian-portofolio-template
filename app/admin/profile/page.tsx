@@ -1,12 +1,10 @@
 import * as React from "react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getProfileAndAboutAction } from "@/app/actions/admin";
 import { ProfileForm } from "@/components/admin/ProfileForm";
 import { AboutCardManager } from "@/components/admin/AboutCardManager";
-import { ArrowLeft } from "lucide-react";
 
 export const metadata = {
   title: "Admin Profile & About Management | Admin Portal",
@@ -32,27 +30,8 @@ export default async function AdminProfilePage() {
   const { user, about, contact } = result;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-6 space-y-6 w-full pb-12">
-      {/* Header */}
-      <div className="pb-6 border-b border-border-warm space-y-2">
-        <Link
-          href="/admin"
-          className="inline-flex items-center space-x-1 text-xs font-mono text-ink-muted hover:text-primary mb-1 transition-colors"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Back to Dashboard</span>
-        </Link>
-
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-serif font-bold text-ink tracking-tight">
-              Admin Profile &amp; About Section / プロフィール設定
-            </h1>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Profile & About Content Form */}
+    <div className="w-full pb-12">
+      {/* Main Profile & About Content Form (includes AdminFormHeader with Save All action) */}
       <ProfileForm
         userId={user.id}
         initialUser={{
@@ -95,10 +74,12 @@ export default async function AdminProfilePage() {
 
       {/* About Cards & Engineering Principles Manager */}
       {about && (
-        <AboutCardManager
-          aboutId={about.id}
-          initialCards={about.cards || []}
-        />
+        <div className="px-4 sm:px-6 lg:px-6 pt-6">
+          <AboutCardManager
+            aboutId={about.id}
+            initialCards={about.cards || []}
+          />
+        </div>
       )}
     </div>
   );
