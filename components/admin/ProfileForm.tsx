@@ -191,7 +191,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             value={userFormData.name}
             onChange={(e) => setUserFormData({ ...userFormData, name: e.target.value })}
             placeholder="e.g. Zaenal Alfian"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -204,7 +204,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={userFormData.username}
               onChange={(e) => setUserFormData({ ...userFormData, username: e.target.value })}
               placeholder="e.g. zaenal"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
 
@@ -216,7 +216,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={userFormData.email}
               onChange={(e) => setUserFormData({ ...userFormData, email: e.target.value })}
               placeholder="e.g. admin@zaenalalfian.dev"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
         </div>
@@ -232,7 +232,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                 value={userFormData.password}
                 onChange={(e) => setUserFormData({ ...userFormData, password: e.target.value })}
                 placeholder="••••••••••••"
-                className="w-full pl-3.5 pr-10 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full pl-3.5 pr-10 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
               <button
                 type="button"
@@ -255,7 +255,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                 value={userFormData.confirmPassword}
                 onChange={(e) => setUserFormData({ ...userFormData, confirmPassword: e.target.value })}
                 placeholder="••••••••••••"
-                className="w-full pl-3.5 pr-10 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full pl-3.5 pr-10 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
               <button
                 type="button"
@@ -290,7 +290,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={userFormData.position}
               onChange={(e) => setUserFormData({ ...userFormData, position: e.target.value })}
               placeholder="e.g. Senior Full-Stack Engineer"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
 
@@ -301,7 +301,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={userFormData.activity}
               onChange={(e) => setUserFormData({ ...userFormData, activity: e.target.value })}
               placeholder="e.g. Architecting ERP & Next.js Systems"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
         </div>
@@ -314,7 +314,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={userFormData.experience}
               onChange={(e) => setUserFormData({ ...userFormData, experience: e.target.value })}
               placeholder="e.g. 6+ Years"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
 
@@ -325,7 +325,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={userFormData.location}
               onChange={(e) => setUserFormData({ ...userFormData, location: e.target.value })}
               placeholder="e.g. Karawang, Indonesia (Remote Available)"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
 
@@ -336,7 +336,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={userFormData.availability}
               onChange={(e) => setUserFormData({ ...userFormData, availability: e.target.value })}
               placeholder="e.g. Open for Senior Roles & Tech Consulting"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
         </div>
@@ -349,7 +349,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={userFormData.quotes}
               onChange={(e) => setUserFormData({ ...userFormData, quotes: e.target.value })}
               placeholder="e.g. Crafting clean architecture with intentionality."
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
 
@@ -360,7 +360,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={userFormData.resume}
               onChange={(e) => setUserFormData({ ...userFormData, resume: e.target.value })}
               placeholder="e.g. https://drive.google.com/..."
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
             />
           </div>
         </div>
@@ -372,7 +372,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             value={userFormData.bio}
             onChange={(e) => setUserFormData({ ...userFormData, bio: e.target.value })}
             placeholder="A short introductory tagline for headers and cards..."
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans"
           />
         </div>
       </div>
@@ -398,7 +398,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={aboutFormData.title}
               onChange={(e) => setAboutFormData({ ...aboutFormData, title: e.target.value })}
               placeholder="Behind the Architecture"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
 
@@ -410,7 +410,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={aboutFormData.subtitle}
               onChange={(e) => setAboutFormData({ ...aboutFormData, subtitle: e.target.value })}
               placeholder="Bridging Design Vision & Technical Execution"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
         </div>
@@ -423,7 +423,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             value={aboutFormData.excerpt}
             onChange={(e) => setAboutFormData({ ...aboutFormData, excerpt: e.target.value })}
             placeholder="Short bio summary displayed on banner headers..."
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans leading-relaxed"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans leading-relaxed"
           />
         </div>
 
@@ -435,7 +435,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             value={aboutFormData.description}
             onChange={(e) => setAboutFormData({ ...aboutFormData, description: e.target.value })}
             placeholder="My journey in software development..."
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans leading-relaxed"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans leading-relaxed"
           />
           <span className="text-[10px] font-mono text-ink-muted block mt-1">
             Tip: Press Enter twice to create paragraph line breaks on the public /about page.
@@ -466,7 +466,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={contactFormData.gmail}
               onChange={(e) => setContactFormData({ ...contactFormData, gmail: e.target.value })}
               placeholder="e.g. zaenalalfian20@gmail.com"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
 
@@ -480,7 +480,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={contactFormData.whatsapp}
               onChange={(e) => setContactFormData({ ...contactFormData, whatsapp: e.target.value })}
               placeholder="e.g. +6281234567890"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
 
@@ -494,7 +494,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={contactFormData.github}
               onChange={(e) => setContactFormData({ ...contactFormData, github: e.target.value })}
               placeholder="https://github.com/astrocoding"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
             />
           </div>
 
@@ -508,7 +508,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={contactFormData.linkedin}
               onChange={(e) => setContactFormData({ ...contactFormData, linkedin: e.target.value })}
               placeholder="https://www.linkedin.com/in/zaenal-alfian/"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
             />
           </div>
 
@@ -522,7 +522,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={contactFormData.instagram}
               onChange={(e) => setContactFormData({ ...contactFormData, instagram: e.target.value })}
               placeholder="https://www.instagram.com/zenovasi/"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
             />
           </div>
 
@@ -536,7 +536,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               value={contactFormData.facebook}
               onChange={(e) => setContactFormData({ ...contactFormData, facebook: e.target.value })}
               placeholder="https://www.facebook.com/zaenal.alfian.2025/"
-              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
             />
           </div>
         </div>

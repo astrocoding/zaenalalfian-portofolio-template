@@ -110,7 +110,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             placeholder="e.g. Bachelor of Computer Science (S.Kom.)"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -122,7 +122,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
             value={formData.organization}
             onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
             placeholder="e.g. University / Higher Education Institute"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
       </div>
@@ -136,7 +136,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
             value={formData.location}
             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
             placeholder="e.g. Indonesia or Karawang, Indonesia"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -148,7 +148,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
             value={formData.period}
             onChange={(e) => setFormData({ ...formData, period: e.target.value })}
             placeholder="e.g. 2020 — 2024"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -159,7 +159,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
             value={formData.educationLevel}
             onChange={(e) => setFormData({ ...formData, educationLevel: e.target.value })}
             placeholder="e.g. Bachelor Degree or Vocational High School"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
       </div>
@@ -172,7 +172,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
             value={formData.statusBadge}
             onChange={(e) => setFormData({ ...formData, statusBadge: e.target.value })}
             placeholder="e.g. 卒業 • Graduated"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -183,7 +183,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
             value={formData.grades}
             onChange={(e) => setFormData({ ...formData, grades: e.target.value })}
             placeholder="e.g. GPA 3.85 / 4.00 or Rank 3 / 120"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -194,7 +194,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
             value={formData.order}
             onChange={(e) => setFormData({ ...formData, order: Number(e.target.value) })}
             placeholder="1"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
       </div>
@@ -207,7 +207,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           placeholder="Describe specialization, academic honors, thesis research..."
-          className="w-full px-4 py-3 rounded-md border border-border-warm bg-paper text-ink text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
+          className="w-full px-4 py-3 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm leading-relaxed placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
         />
       </div>
 
@@ -221,7 +221,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
           value={formData.highlightsText}
           onChange={(e) => setFormData({ ...formData, highlightsText: e.target.value })}
           placeholder={`Graduated with Academic Distinction (Cum Laude)\nPublished Capstone Project on High-Performance Web System Architecture\nActive Leader in Computer Science & Software Engineering Student Guild`}
-          className="w-full px-4 py-3 rounded-md border border-border-warm bg-paper text-ink text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y font-sans"
+          className="w-full px-4 py-3 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm leading-relaxed placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y font-sans"
         />
       </div>
 
@@ -235,7 +235,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({ initialData, isEdi
           value={formData.coursesText}
           onChange={(e) => setFormData({ ...formData, coursesText: e.target.value })}
           placeholder="Software Engineering, Database Systems & Design, Web Technologies, Data Structures & Algorithms"
-          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
         />
       </div>
 

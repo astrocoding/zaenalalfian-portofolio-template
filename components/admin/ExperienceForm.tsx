@@ -99,7 +99,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
             value={formData.role}
             onChange={(e) => setFormData({ ...formData, role: e.target.value })}
             placeholder="e.g. Lead Full-Stack Architect"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -111,7 +111,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
             value={formData.company}
             onChange={(e) => setFormData({ ...formData, company: e.target.value })}
             placeholder="e.g. Zenith Tech Labs"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
       </div>
@@ -125,7 +125,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
             value={formData.period}
             onChange={(e) => setFormData({ ...formData, period: e.target.value })}
             placeholder="2023 — Present"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -136,7 +136,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
             value={formData.order}
             onChange={(e) => setFormData({ ...formData, order: Number(e.target.value) })}
             placeholder="1"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -165,7 +165,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
           value={formData.skills}
           onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
           placeholder="Next.js, React, TypeScript, PostgreSQL, Docker"
-          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
         />
       </div>
 
@@ -177,7 +177,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           placeholder="Describe main responsibilities, team scope, and general overview..."
-          className="w-full px-4 py-3 rounded-md border border-border-warm bg-paper text-ink text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
+          className="w-full px-4 py-3 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm leading-relaxed placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"
         />
       </div>
 
@@ -191,7 +191,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({ initialData, isE
           value={formData.accomplishmentsText}
           onChange={(e) => setFormData({ ...formData, accomplishmentsText: e.target.value })}
           placeholder={`Architected 3-tier enterprise ERP system using Node.js/Hapi, React, PostgreSQL & Redis (+150% performance speedup).\nDeveloped barcode-scanned employee attendance system integrated with payroll in Laravel (65% HR reconciliation time saved).\nLed end-to-end database modeling, Redis caching strategies, and REST API architectural standards.`}
-          className="w-full px-4 py-3 rounded-md border border-border-warm bg-paper text-ink text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y font-sans"
+          className="w-full px-4 py-3 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm leading-relaxed placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y font-sans"
         />
       </div>
 
