@@ -95,71 +95,59 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
   );
 
   const renderUserActions = () => (
-    <div className="pt-4 border-t border-border-subtle space-y-4">
-      {user && (
-        <div className="p-3 rounded-md bg-paper border border-border-subtle flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-xs font-serif shrink-0">
-            {user.name ? user.name.charAt(0) : "A"}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-ink truncate">{user.name || "Admin User"}</p>
-            <p className="text-[10px] font-mono text-ink-muted truncate">@{user.username || "admin"}</p>
-          </div>
-        </div>
-      )}
+    <div className="pt-4 border-t border-border-subtle space-y-2">
+      <Link
+        href="/"
+        target="_blank"
+        onClick={() => setIsOpen(false)}
+        className="flex items-center justify-center space-x-2 text-xs font-mono text-ink-muted hover:text-primary py-2.5 rounded-md hover:bg-black/5 transition-colors"
+      >
+        <span>View Public Site</span>
+        <ExternalLink className="w-3.5 h-3.5" />
+      </Link>
 
-      <div className="flex flex-col space-y-2">
-        <Link
-          href="/"
-          target="_blank"
-          onClick={() => setIsOpen(false)}
-          className="flex items-center justify-center space-x-2 text-xs font-mono text-ink-muted hover:text-primary py-2.5 rounded-md hover:bg-black/5 transition-colors"
-        >
-          <span>View Public Site</span>
-          <ExternalLink className="w-3.5 h-3.5" />
-        </Link>
-
-        <button
-          type="button"
-          onClick={() => signOut({ callbackUrl: "/admin/login" })}
-          className="flex items-center justify-center space-x-2 text-xs font-mono text-rose-600 hover:bg-rose-50 py-2.5 rounded-md transition-colors w-full cursor-pointer font-medium"
-        >
-          <LogOut className="w-3.5 h-3.5" />
-          <span>Sign Out / ログアウト</span>
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={() => signOut({ callbackUrl: "/admin/login" })}
+        className="flex items-center justify-center space-x-2 text-xs font-mono text-rose-600 hover:bg-rose-50 py-2.5 rounded-md transition-colors w-full cursor-pointer font-medium"
+      >
+        <LogOut className="w-3.5 h-3.5" />
+        <span>Sign Out / ログアウト</span>
+      </button>
     </div>
   );
 
   return (
     <>
       {/* Mobile & Tablet Header Bar (Visible up to LG screens <1024px) */}
-      <div className="lg:hidden sticky top-0 z-50 bg-surface border-b border-border-warm px-4 py-3.5 relative shadow-xs shrink-0">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Image
-              src="/zen.svg?v=2"
-              alt="Zaenal Alfian Logo"
-              width={34}
-              height={34}
-              className="w-8.5 h-8.5 object-contain"
-            />
-            <div>
-              <h2 className="font-serif font-bold text-sm text-ink leading-tight">Admin Portal</h2>
-              <span className="text-[9px] font-mono text-ink-muted uppercase">管理パネル</span>
-            </div>
+      <div className="lg:hidden sticky top-0 z-50 bg-surface border-b border-border-warm px-4 h-[63px] flex items-center justify-between relative shadow-xs shrink-0">
+        <div className="flex items-center space-x-3 min-w-0">
+          <Image
+            src="/zen.svg?v=2"
+            alt="Zaenal Alfian Logo"
+            width={34}
+            height={34}
+            className="w-8.5 h-8.5 object-contain shrink-0"
+          />
+          <div className="flex-1 min-w-0 flex flex-col justify-center">
+            <h2 className="font-serif font-bold text-sm text-ink leading-snug truncate">
+              {user?.name || "Admin User"}
+            </h2>
+            <p className="text-[10px] font-mono text-ink-muted truncate -mt-0.5">
+              @{user?.username || "admin"}
+            </p>
           </div>
-
-          <button
-            type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-2 rounded-md text-ink hover:bg-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer border border-border-warm bg-paper"
-            aria-label={isOpen ? "Close Admin Navigation Menu" : "Open Admin Navigation Menu"}
-            aria-expanded={isOpen}
-          >
-            {isOpen ? <X className="w-5 h-5 text-ink" /> : <Menu className="w-5 h-5 text-ink" />}
-          </button>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="p-2 rounded-md text-ink hover:bg-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer border border-border-warm bg-paper shrink-0 ml-2"
+          aria-label={isOpen ? "Close Admin Navigation Menu" : "Open Admin Navigation Menu"}
+          aria-expanded={isOpen}
+        >
+          {isOpen ? <X className="w-5 h-5 text-ink" /> : <Menu className="w-5 h-5 text-ink" />}
+        </button>
 
         {/* Mobile & Tablet Floating Drawer Menu */}
         <AnimatePresence>
@@ -180,19 +168,23 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
       </div>
 
       {/* Desktop Persistent Fixed Left Sidebar (Visible on LG screens 1024px+) */}
-      <aside className="hidden lg:flex w-64 shrink-0 h-full bg-surface border-r border-border-warm p-6 flex-col justify-between overflow-y-auto">
+      <aside className="hidden lg:flex w-64 shrink-0 h-full bg-surface border-r border-border-warm pt-0 px-6 pb-6 flex-col justify-between overflow-y-auto">
         <div className="space-y-6">
-          <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
+          <div className="flex items-center space-x-3 border-b border-border-subtle min-h-[63px] px-0">
             <Image
               src="/zen.svg?v=2"
               alt="Zaenal Alfian Logo"
               width={36}
               height={36}
-              className="w-9 h-9 object-contain"
+              className="w-9 h-9 object-contain shrink-0"
             />
-            <div>
-              <h2 className="font-serif font-bold text-base text-ink leading-tight">Admin Portal</h2>
-              <span className="text-[10px] font-mono text-ink-muted uppercase">管理パネル</span>
+            <div className="flex-1 min-w-0 flex flex-col justify-center">
+              <h2 className="font-serif font-bold text-sm sm:text-base text-ink leading-snug truncate">
+                {user?.name || "Admin User"}
+              </h2>
+              <p className="text-[11px] font-mono text-ink-muted truncate -mt-0.5">
+                @{user?.username || "admin"}
+              </p>
             </div>
           </div>
 
