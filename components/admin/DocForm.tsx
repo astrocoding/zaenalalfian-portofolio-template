@@ -16,6 +16,7 @@ export interface DocData {
   description?: string;
   content?: string;
   order?: number;
+  status?: "draft" | "published" | "archived";
 }
 
 export interface DocFormProps {
@@ -35,6 +36,7 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
     description: initialData?.description || "",
     content: initialData?.content || "# Documentation Guide Title\n\nWrite guide content here...",
     order: initialData?.order || 1,
+    status: (initialData?.status || "published") as "draft" | "published" | "archived",
   });
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,20 +90,24 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
           required
           value={formData.title}
           onChange={handleTitleChange}
-          placeholder="e.g. System Architecture & Design Overview"
-          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+          placeholder="e.g. System Architecture & Design Specification"
+          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
         />
         {formData.slug && (
-          <p className="text-[11px] font-mono text-ink-muted flex items-center gap-1.5 mt-1.5">
-            <span className="text-primary font-medium">Auto Slug:</span>
-            <code className="px-2 py-0.5 rounded bg-surface border border-border-subtle text-ink font-semibold">
-              {formData.slug}
-            </code>
-          </p>
+          <div className="flex items-center gap-2 mt-2 text-[11px] font-mono w-full min-w-0">
+            <span className="text-primary font-medium whitespace-nowrap shrink-0">
+              Auto Slug:
+            </span>
+            <div className="flex-1 min-w-0 overflow-x-auto scrollbar-none py-0.5">
+              <code className="inline-block px-2 py-0.5 rounded bg-surface border border-border-subtle text-ink font-semibold whitespace-nowrap">
+                {formData.slug}
+              </code>
+            </div>
+          </div>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div className="space-y-1.5">
           <label className="text-xs font-mono font-medium text-ink">Category / カテゴリ *</label>
           <input
@@ -110,7 +116,7 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
             value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
             placeholder="architecture, design-system, or backend"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -121,8 +127,21 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
             value={formData.order}
             onChange={(e) => setFormData({ ...formData, order: Number(e.target.value) })}
             placeholder="1"
-            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="text-xs font-mono font-medium text-ink">Publication Status / ステータス *</label>
+          <select
+            value={formData.status}
+            onChange={(e) => setFormData({ ...formData, status: e.target.value as "draft" | "published" | "archived" })}
+            className="admin-select w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+          >
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+            <option value="archived">Archived</option>
+          </select>
         </div>
       </div>
 
@@ -134,7 +153,7 @@ export const DocForm: React.FC<DocFormProps> = ({ initialData, isEdit = false })
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           placeholder="Brief description of the documentation guide..."
-          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+          className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
         />
       </div>
 
