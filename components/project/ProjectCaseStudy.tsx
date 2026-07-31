@@ -53,6 +53,30 @@ export const ProjectCaseStudy: React.FC<ProjectCaseStudyProps> = ({
 
   const activeSections = allSections.filter((sec) => Boolean(sec.content));
 
+  const renderCaseStudyContent = (rawContent?: string | null) => {
+    if (!rawContent) return null;
+    const lines = rawContent
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+
+    if (lines.length === 0) return null;
+
+    return (
+      <ul className="space-y-2 text-sm text-ink-muted font-sans">
+        {lines.map((line, idx) => {
+          const cleanLine = line.replace(/^[•\-\*\s]+/, "").trim();
+          return (
+            <li key={idx} className="flex items-start gap-2">
+              <span className="text-primary font-bold text-base leading-none select-none mt-0.5">•</span>
+              <span className="leading-relaxed flex-1">{cleanLine}</span>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
   return (
     <div className="space-y-8 py-8">
       <div className="flex items-center space-x-3">
@@ -80,9 +104,7 @@ export const ProjectCaseStudy: React.FC<ProjectCaseStudyProps> = ({
                 </div>
               </CardHeader>
               <CardContent className="space-y-0">
-                <p className="text-sm leading-relaxed text-ink-muted font-sans">
-                  {sec.content}
-                </p>
+                {renderCaseStudyContent(sec.content)}
               </CardContent>
             </Card>
           ))}

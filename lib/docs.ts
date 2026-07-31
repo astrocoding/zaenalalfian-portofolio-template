@@ -83,6 +83,7 @@ export async function getAllDocs(): Promise<DocPost[]> {
   // 2. Fetch from Database (Prisma DB records add/override dynamic documentation)
   try {
     const dbDocs = await prisma.doc.findMany({
+      where: { status: "published" },
       orderBy: { order: "asc" },
     });
 
@@ -103,8 +104,8 @@ export async function getAllDocs(): Promise<DocPost[]> {
         toc: extractToc(doc.content),
       });
     }
-  } catch {
-    // Database query fallback
+  } catch (err) {
+    console.error("Error fetching dbDocs in getAllDocs:", err);
   }
 
   const docs = Array.from(docsMap.values());
@@ -139,8 +140,8 @@ export async function getDocPost(
 ): Promise<DocPost | null> {
   // 1. Try fetching from Database first
   try {
-    const dbDoc = await prisma.doc.findUnique({
-      where: { slug: slug },
+    const dbDoc = await prisma.doc.findFirst({
+      where: { slug: slug, status: "published" },
     });
 
     if (dbDoc) {

@@ -87,6 +87,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
   // 2. Fetch from Database (Prisma DB records take priority / add dynamically created/updated posts)
   try {
     const dbBlogs = await prisma.blog.findMany({
+      where: { status: "published" },
       orderBy: { publishedAt: "desc" },
     });
 
@@ -109,8 +110,8 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
         readingTime: calculateReadingTime(blog.content),
       });
     }
-  } catch {
-    // Database query failed fallback
+  } catch (err) {
+    console.error("Error fetching dbBlogs in getAllBlogPosts:", err);
   }
 
   const posts = Array.from(postsMap.values());
@@ -127,8 +128,8 @@ export async function getBlogPost(
 ): Promise<BlogPost | null> {
   // 1. Try fetching from Database first
   try {
-    const dbBlog = await prisma.blog.findUnique({
-      where: { slug: slug },
+    const dbBlog = await prisma.blog.findFirst({
+      where: { slug: slug, status: "published" },
     });
 
     if (dbBlog) {
