@@ -8,6 +8,7 @@
   --color-surface: var(--color-surface);
   --color-accent-mauve: var(--color-accent-mauve);
   --color-accent-peach: var(--color-accent-peach);
+  --color-watermark-surface: var(--color-watermark-surface);
   --color-ink: var(--color-text);
   --color-ink-muted: var(--color-text-muted);
   --color-border-warm: var(--color-border);
@@ -69,6 +70,21 @@
   background-color: var(--color-bg);
 }
 
+.bg-watermark-surface {
+  background-color: var(--color-watermark-surface);
+}
+
+.input-blend {
+  background-color: var(--color-watermark-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.input-blend::placeholder {
+  color: #948d85;
+  opacity: 0.8;
+}
+
 .text-ink {
   color: var(--color-text);
 }
@@ -86,4 +102,15 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--color-border-subtle);
+}
+
+/* Admin Select — consistent chevron with proper right spacing */
+.admin-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235a544f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 2.5rem;
+  cursor: pointer;
 }
