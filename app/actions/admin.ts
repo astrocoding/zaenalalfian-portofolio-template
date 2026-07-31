@@ -27,6 +27,8 @@ export async function createProjectAction(data: {
   result?: string;
   repository?: string;
   sourceLink?: string;
+  priorityOrder?: number;
+  status?: "draft" | "published" | "archived";
 }) {
   try {
     const slug = await generateUniqueSlug("project", data.title, data.slug);
@@ -35,10 +37,14 @@ export async function createProjectAction(data: {
         ...data,
         slug,
         images: data.images || [],
+        priorityOrder: data.priorityOrder ?? 1,
+        status: data.status || "published",
       },
     });
     revalidatePath("/");
+    revalidatePath("/projects");
     revalidatePath("/projects/[slug]", "page");
+    revalidatePath("/admin/projects");
     return { success: true, project: newProject };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to create project") };
@@ -62,6 +68,8 @@ export async function updateProjectAction(
     result?: string;
     repository?: string;
     sourceLink?: string;
+    priorityOrder?: number;
+    status?: "draft" | "published" | "archived";
   }
 ) {
   try {
@@ -73,6 +81,8 @@ export async function updateProjectAction(
     const updatePayload = {
       ...data,
       ...(slug ? { slug } : {}),
+      ...(data.priorityOrder !== undefined ? { priorityOrder: Number(data.priorityOrder) } : {}),
+      ...(data.status ? { status: data.status } : {}),
     };
 
     const updated = await prisma.project.update({
@@ -80,7 +90,9 @@ export async function updateProjectAction(
       data: updatePayload,
     });
     revalidatePath("/");
+    revalidatePath("/projects");
     revalidatePath(`/projects/${updated.slug}`);
+    revalidatePath("/admin/projects");
     return { success: true, project: updated };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to update project") };
@@ -91,6 +103,8 @@ export async function deleteProjectAction(id: string) {
   try {
     await prisma.project.delete({ where: { id } });
     revalidatePath("/");
+    revalidatePath("/projects");
+    revalidatePath("/admin/projects");
     return { success: true };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to delete project") };
@@ -108,6 +122,7 @@ export async function createBlogAction(data: {
   thumbnail?: string;
   keywords?: string[];
   publishedAt?: Date;
+  status?: "draft" | "published" | "archived";
 }) {
   try {
     const slug = await generateUniqueSlug("blog", data.title, data.slug);
@@ -116,10 +131,13 @@ export async function createBlogAction(data: {
         ...data,
         slug,
         publishedAt: data.publishedAt || new Date(),
+        status: data.status || "published",
       },
     });
     revalidatePath("/");
+    revalidatePath("/blogs");
     revalidatePath("/blogs/[category]/[slug]", "page");
+    revalidatePath("/admin/blogs");
     return { success: true, blog: newBlog };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to create blog") };
@@ -136,6 +154,7 @@ export async function updateBlogAction(
     content?: string;
     thumbnail?: string;
     keywords?: string[];
+    status?: "draft" | "published" | "archived";
   }
 ) {
   try {
@@ -147,6 +166,7 @@ export async function updateBlogAction(
     const updatePayload = {
       ...data,
       ...(slug ? { slug } : {}),
+      ...(data.status ? { status: data.status } : {}),
     };
 
     const updated = await prisma.blog.update({
@@ -154,7 +174,9 @@ export async function updateBlogAction(
       data: updatePayload,
     });
     revalidatePath("/");
+    revalidatePath("/blogs");
     revalidatePath(`/blogs/${updated.category}/${updated.slug}`);
+    revalidatePath("/admin/blogs");
     return { success: true, blog: updated };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to update blog") };
@@ -165,6 +187,8 @@ export async function deleteBlogAction(id: string) {
   try {
     await prisma.blog.delete({ where: { id } });
     revalidatePath("/");
+    revalidatePath("/blogs");
+    revalidatePath("/admin/blogs");
     return { success: true };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to delete blog") };
@@ -180,6 +204,7 @@ export async function createDocAction(data: {
   description: string;
   content: string;
   order?: number;
+  status?: "draft" | "published" | "archived";
 }) {
   try {
     const slug = await generateUniqueSlug("doc", data.title, data.slug);
@@ -188,9 +213,12 @@ export async function createDocAction(data: {
         ...data,
         slug,
         order: data.order ?? 99,
+        status: data.status || "published",
       },
     });
+    revalidatePath("/docs");
     revalidatePath("/docs/[category]/[slug]", "page");
+    revalidatePath("/admin/docs");
     return { success: true, doc: newDoc };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to create documentation") };
@@ -206,6 +234,7 @@ export async function updateDocAction(
     description?: string;
     content?: string;
     order?: number;
+    status?: "draft" | "published" | "archived";
   }
 ) {
   try {
@@ -217,13 +246,16 @@ export async function updateDocAction(
     const updatePayload = {
       ...data,
       ...(slug ? { slug } : {}),
+      ...(data.status ? { status: data.status } : {}),
     };
 
     const updated = await prisma.doc.update({
       where: { id },
       data: updatePayload,
     });
+    revalidatePath("/docs");
     revalidatePath(`/docs/${updated.category}/${updated.slug}`);
+    revalidatePath("/admin/docs");
     return { success: true, doc: updated };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to update documentation") };
@@ -233,6 +265,8 @@ export async function updateDocAction(
 export async function deleteDocAction(id: string) {
   try {
     await prisma.doc.delete({ where: { id } });
+    revalidatePath("/docs");
+    revalidatePath("/admin/docs");
     return { success: true };
   } catch (error: unknown) {
     return { success: false, error: getErrorMessage(error, "Failed to delete documentation") };
