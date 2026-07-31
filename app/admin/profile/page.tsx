@@ -32,7 +32,7 @@ export default async function AdminProfilePage() {
   const { user, about, contact } = result;
 
   return (
-    <div className="space-y-6 w-full pb-12">
+    <div className="p-4 sm:p-6 lg:p-6 space-y-6 w-full pb-12">
       {/* Header */}
       <div className="pb-6 border-b border-border-warm space-y-2">
         <Link
