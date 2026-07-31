@@ -24,11 +24,6 @@ export const AdminPagination: React.FC<AdminPaginationProps> = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  if (totalItems === 0) return null;
-
-  const startItem = (currentPage - 1) * pageSize + 1;
-  const endItem = Math.min(currentPage * pageSize, totalItems);
-
   const handleScrollToTop = React.useCallback(() => {
     if (typeof window === "undefined") return;
 
@@ -42,8 +37,15 @@ export const AdminPagination: React.FC<AdminPaginationProps> = ({
 
   // Trigger smooth scroll to top seamlessly when currentPage or pageSize changes
   React.useEffect(() => {
-    handleScrollToTop();
-  }, [currentPage, pageSize, handleScrollToTop]);
+    if (totalItems > 0) {
+      handleScrollToTop();
+    }
+  }, [currentPage, pageSize, totalItems, handleScrollToTop]);
+
+  if (totalItems === 0) return null;
+
+  const startItem = (currentPage - 1) * pageSize + 1;
+  const endItem = Math.min(currentPage * pageSize, totalItems);
 
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
