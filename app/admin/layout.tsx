@@ -2,6 +2,7 @@ import * as React from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { SessionProviderWrapper } from "@/components/admin/SessionProviderWrapper";
+import { SidebarProvider } from "@/components/admin/SidebarContext";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
 export const dynamic = "force-dynamic";
@@ -20,10 +21,14 @@ export default async function AdminLayout({
 
   return (
     <SessionProviderWrapper>
-      <div className="min-h-screen lg:h-screen w-full lg:overflow-hidden bg-paper text-ink flex flex-col lg:flex-row">
-        {session && <AdminSidebar user={session.user} />}
-        <main className="flex-1 min-w-0 lg:h-full lg:overflow-y-auto bg-paper flex flex-col">{children}</main>
-      </div>
+      <SidebarProvider>
+        <div className="admin-portal min-h-screen lg:h-screen w-full lg:overflow-hidden bg-paper text-ink flex flex-col lg:flex-row">
+          {session && <AdminSidebar user={session.user} />}
+          <main className="flex-1 min-w-0 lg:h-full lg:overflow-y-auto bg-paper flex flex-col transition-all duration-300 ease-in-out">
+            {children}
+          </main>
+        </div>
+      </SidebarProvider>
     </SessionProviderWrapper>
   );
 }
