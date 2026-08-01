@@ -4,15 +4,16 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { AdminPagination } from "@/components/admin/AdminPagination";
 import { DeleteButton } from "@/components/admin/DeleteButton";
-import { Plus, Edit, ArrowLeft } from "lucide-react";
+import { AdminFormHeader } from "@/components/admin/AdminFormHeader";
+import { AdminContent } from "@/components/admin/AdminContent";
+import { Prisma } from "@/app/generated/prisma/client";
+import { Plus, Edit } from "lucide-react";
 import { deleteExperienceAction } from "@/app/actions/admin";
 
 export interface AdminExperiencesPageProps {
-  searchParams?: Promise<{ page?: string; limit?: string }>;
+  searchParams?: Promise<{ page?: string; limit?: string; q?: string }>;
 }
 
 export default async function AdminExperiencesPage({
@@ -24,13 +25,25 @@ export default async function AdminExperiencesPage({
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
   const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 5);
+  const searchQuery = resolvedSearchParams.q?.trim() || "";
+
+  const where: Prisma.ExperienceWhereInput = searchQuery
+    ? {
+        OR: [
+          { role: { contains: searchQuery, mode: "insensitive" } },
+          { company: { contains: searchQuery, mode: "insensitive" } },
+          { period: { contains: searchQuery, mode: "insensitive" } },
+        ],
+      }
+    : {};
 
   let experiences: Awaited<ReturnType<typeof prisma.experience.findMany>> = [];
   let totalItems = 0;
 
   try {
-    totalItems = await prisma.experience.count();
+    totalItems = await prisma.experience.count({ where });
     experiences = await prisma.experience.findMany({
+      where,
       orderBy: { order: "asc" },
       skip: (currentPage - 1) * pageSize,
       take: pageSize,
@@ -40,132 +53,186 @@ export default async function AdminExperiencesPage({
   }
 
   const totalPages = Math.ceil(totalItems / pageSize);
+  type ExperienceItem = (typeof experiences)[number];
 
   return (
-    <div className="p-4 sm:p-6 lg:p-6 space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border-warm">
-        <div>
-          <Link
-            href="/admin"
-            className="inline-flex items-center space-x-1 text-xs font-mono text-ink-muted hover:text-primary mb-1"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Dashboard</span>
-          </Link>
-          <h1 className="text-3xl font-serif font-bold text-ink">
-            Professional Experience
-          </h1>
-        </div>
+    <>
+      <AdminFormHeader
+        backHref="/admin"
+        backLabel="Back to Dashboard"
+        title="Professional Experience"
+        showBadge={false}
+        showSaveDraft={false}
+        showSearch={true}
+        searchPlaceholder="Search role, company..."
+        primaryActionLabel="Add Experience"
+        primaryActionHref="/admin/experiences/new"
+        primaryActionIcon={<Plus className="w-3.5 h-3.5" />}
+      />
 
-        <Link href="/admin/experiences/new">
-          <Button
-            variant="primary"
-            size="md"
-            icon={<Plus className="w-4 h-4" />}
-          >
-            Add Experience
-          </Button>
-        </Link>
-      </div>
-
-      {/* Experience Table */}
-      <div className="bg-surface border border-border-warm rounded-xl overflow-hidden shadow-card">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-sm">
-            <thead>
-              <tr className="bg-primary border-b border-border-warm font-serif text-white text-xs uppercase tracking-wider">
-                <th className="p-4">#</th>
-                <th className="p-4">Role &amp; Company</th>
-                <th className="p-4">Period</th>
-                <th className="p-4">Tech Skills</th>
-                <th className="p-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-subtle">
-              {experiences.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={5}
-                    className="p-8 text-center text-ink-muted font-mono text-xs"
-                  >
-                    No experience records found. Click &quot;Add
-                    Experience&quot; to create one.
-                  </td>
-                </tr>
-              ) : (
-                experiences.map((exp) => (
-                  <tr
-                    key={exp.id}
-                    className="hover:bg-black/2 transition-colors"
-                  >
-                    <td className="p-4 text-xs font-mono font-bold text-primary">
-                      #{exp.order}
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-bold text-ink block font-serif">
-                          {exp.role}
-                        </span>
-                        {exp.isCurrent && (
-                          <Badge variant="accent" size="sm">
-                            現職
-                          </Badge>
-                        )}
-                      </div>
-                      <span className="text-xs font-mono text-ink-muted block mt-0.5">
-                        {exp.company}
-                      </span>
-                    </td>
-                    <td className="p-4 text-xs font-mono text-ink-muted">
-                      {exp.period}
-                    </td>
-                    <td className="p-4">
-                      <div className="flex flex-wrap gap-1 max-w-xs">
-                        {exp.skills.map((skill: string) => (
-                          <Badge key={skill} variant="tech" size="sm">
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="p-4 text-right">
-                      <div className="flex items-center justify-end space-x-2">
-                        <Link href={`/admin/experiences/${exp.id}/edit`}>
-                          <button
-                            type="button"
-                            className="p-1.5 rounded bg-paper border border-border-warm text-ink hover:text-primary transition-colors cursor-pointer"
-                            title="Edit Experience"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                        </Link>
-
-                        <DeleteButton
-                          itemId={exp.id}
-                          itemName={`${exp.role} at ${exp.company}`}
-                          itemType="experience record"
-                          onDeleteAction={deleteExperienceAction}
-                          buttonTitle="Delete Experience"
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Interactive Pagination */}
-        <AdminPagination
+      <div className="pt-[77px] lg:pt-[87px] px-4 sm:px-6 lg:px-6 pb-4 sm:pb-6 lg:pb-6">
+        <AdminContent<ExperienceItem>
+          items={experiences}
+          totalItems={totalItems}
           currentPage={currentPage}
           totalPages={totalPages}
-          totalItems={totalItems}
           pageSize={pageSize}
           baseUrl="/admin/experiences"
+          emptyMessage="No experience records found in database. Click 'Add Experience' to add one."
+          getItemKey={(item) => item.id}
+          columns={[
+            {
+              header: "#",
+              className: "p-4 w-12 text-center",
+              render: (exp) => (
+                <span className="font-mono font-bold text-primary text-xs">
+                  #{exp.order}
+                </span>
+              ),
+            },
+            {
+              header: "Role & Company",
+              className: "p-4",
+              render: (exp) => (
+                <div className="min-w-0">
+                  <span className="font-bold text-ink block font-serif truncate">
+                    {exp.role}
+                  </span>
+                  <span className="text-xs font-mono text-ink-muted block truncate">
+                    {exp.company}
+                  </span>
+                </div>
+              ),
+            },
+            {
+              header: "Period",
+              headerClassName: "p-4 text-white",
+              className:
+                "p-4 text-xs font-mono text-ink-muted whitespace-nowrap",
+              render: (exp) => exp.period,
+            },
+            {
+              header: "Tech Skills",
+              className: "p-4",
+              render: (exp) => (
+                <div className="flex items-center gap-1.5 flex-nowrap overflow-hidden">
+                  {exp.skills.length <= 3 ? (
+                    exp.skills.map((t: string) => (
+                      <Badge
+                        key={t}
+                        variant="tech"
+                        size="sm"
+                        className="max-w-[110px] truncate inline-block shrink-0"
+                        title={t}
+                      >
+                        <span className="truncate block">{t}</span>
+                      </Badge>
+                    ))
+                  ) : (
+                    <>
+                      {exp.skills.slice(0, 2).map((t: string) => (
+                        <Badge
+                          key={t}
+                          variant="tech"
+                          size="sm"
+                          className="max-w-[110px] truncate inline-block shrink-0"
+                          title={t}
+                        >
+                          <span className="truncate block">{t}</span>
+                        </Badge>
+                      ))}
+                      <Badge
+                        variant="tech"
+                        size="sm"
+                        className="opacity-80 shrink-0 font-mono"
+                      >
+                        +{exp.skills.length - 2} more
+                      </Badge>
+                    </>
+                  )}
+                </div>
+              ),
+            },
+            {
+              header: "Actions",
+              className: "p-4 text-right",
+              render: (exp) => (
+                <div className="flex items-center justify-end space-x-2">
+                  <Link href={`/admin/experiences/${exp.id}/edit`}>
+                    <button
+                      type="button"
+                      className="p-1.5 rounded bg-paper border border-border-warm text-ink hover:text-primary transition-colors cursor-pointer"
+                      title="Edit"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                  </Link>
+                  <DeleteButton
+                    itemId={exp.id}
+                    itemName={`${exp.role} at ${exp.company}`}
+                    itemType="experience"
+                    onDeleteAction={deleteExperienceAction}
+                  />
+                </div>
+              ),
+            },
+          ]}
+          renderMobileCard={(exp) => (
+            <div className="bg-surface border border-[#c8c5c2] rounded-xl p-4 space-y-3 shadow-card hover:border-primary/50 transition-all flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2 min-w-0">
+                  <span className="px-2 py-0.5 rounded bg-paper border border-border-warm text-xs font-mono font-bold text-primary shrink-0">
+                    #{exp.order}
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="font-serif font-bold text-sm text-ink truncate leading-snug">
+                      {exp.role}
+                    </h3>
+                    <p className="text-[11px] font-mono text-ink-muted truncate">
+                      {exp.company}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="text-xs font-mono text-ink-muted pt-1 border-t border-border-subtle/50">
+                  {exp.period}
+                </div>
+
+                <div className="flex flex-wrap gap-1 pt-1">
+                  {exp.skills.map((t: string) => (
+                    <Badge
+                      key={t}
+                      variant="tech"
+                      size="sm"
+                      className="text-[10px] px-1.5 py-0.5"
+                    >
+                      {t}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-border-subtle flex items-center justify-end space-x-2 mt-2">
+                <Link href={`/admin/experiences/${exp.id}/edit`}>
+                  <button
+                    type="button"
+                    className="p-1.5 rounded bg-paper border border-border-warm text-ink hover:text-primary transition-colors cursor-pointer flex items-center gap-1 text-xs font-mono"
+                  >
+                    <Edit className="w-3.5 h-3.5" />
+                    <span>Edit</span>
+                  </button>
+                </Link>
+                <DeleteButton
+                  itemId={exp.id}
+                  itemName={`${exp.role} at ${exp.company}`}
+                  itemType="experience"
+                  onDeleteAction={deleteExperienceAction}
+                />
+              </div>
+            </div>
+          )}
         />
       </div>
-    </div>
+    </>
   );
 }

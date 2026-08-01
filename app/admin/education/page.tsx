@@ -4,15 +4,15 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
-import { AdminPagination } from "@/components/admin/AdminPagination";
 import { DeleteButton } from "@/components/admin/DeleteButton";
-import { Plus, Edit, ArrowLeft } from "lucide-react";
+import { AdminFormHeader } from "@/components/admin/AdminFormHeader";
+import { AdminContent } from "@/components/admin/AdminContent";
+import { Prisma } from "@/app/generated/prisma/client";
+import { Plus, Edit } from "lucide-react";
 import { deleteEducationAction } from "@/app/actions/admin";
 
 export interface AdminEducationPageProps {
-  searchParams?: Promise<{ page?: string; limit?: string }>;
+  searchParams?: Promise<{ page?: string; limit?: string; q?: string }>;
 }
 
 export default async function AdminEducationPage({
@@ -24,13 +24,25 @@ export default async function AdminEducationPage({
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
   const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 5);
+  const searchQuery = resolvedSearchParams.q?.trim() || "";
+
+  const where: Prisma.EducationWhereInput = searchQuery
+    ? {
+        OR: [
+          { title: { contains: searchQuery, mode: "insensitive" } },
+          { organization: { contains: searchQuery, mode: "insensitive" } },
+          { description: { contains: searchQuery, mode: "insensitive" } },
+        ],
+      }
+    : {};
 
   let educations: Awaited<ReturnType<typeof prisma.education.findMany>> = [];
   let totalItems = 0;
 
   try {
-    totalItems = await prisma.education.count();
+    totalItems = await prisma.education.count({ where });
     educations = await prisma.education.findMany({
+      where,
       orderBy: { order: "asc" },
       skip: (currentPage - 1) * pageSize,
       take: pageSize,
@@ -40,140 +52,166 @@ export default async function AdminEducationPage({
   }
 
   const totalPages = Math.ceil(totalItems / pageSize);
+  type EducationItem = (typeof educations)[number];
 
   return (
-    <div className="p-4 sm:p-6 lg:p-6 space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border-warm">
-        <div>
-          <Link
-            href="/admin"
-            className="inline-flex items-center space-x-1 text-xs font-mono text-ink-muted hover:text-primary mb-1"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Dashboard</span>
-          </Link>
-          <h1 className="text-3xl font-serif font-bold text-ink flex items-center gap-2.5">
-            <span>Education Journey</span>
-          </h1>
-        </div>
+    <>
+      <AdminFormHeader
+        backHref="/admin"
+        backLabel="Back to Dashboard"
+        title="Education Journey"
+        showBadge={false}
+        showSaveDraft={false}
+        showSearch={true}
+        searchPlaceholder="Search degree, institution, coursework..."
+        primaryActionLabel="Add Education"
+        primaryActionHref="/admin/education/new"
+        primaryActionIcon={<Plus className="w-3.5 h-3.5" />}
+      />
 
-        <Link href="/admin/education/new">
-          <Button
-            variant="primary"
-            size="md"
-            icon={<Plus className="w-4 h-4" />}
-          >
-            Add Education
-          </Button>
-        </Link>
-      </div>
-
-      {/* Education Table */}
-      <div className="bg-surface border border-border-warm rounded-xl overflow-hidden shadow-card">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-sm">
-            <thead>
-              <tr className="bg-primary border-b border-border-warm font-serif text-white text-xs uppercase tracking-wider">
-                <th className="p-4">#</th>
-                <th className="p-4">Degree &amp; Institution</th>
-                <th className="p-4">Period &amp; Location</th>
-                <th className="p-4">Coursework / Competencies</th>
-                <th className="p-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-subtle">
-              {educations.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={5}
-                    className="p-8 text-center text-ink-muted font-mono text-xs"
-                  >
-                    No education records found. Click &quot;Add Education&quot;
-                    to create one.
-                  </td>
-                </tr>
-              ) : (
-                educations.map((edu) => (
-                  <tr
-                    key={edu.id}
-                    className="hover:bg-black/2 transition-colors"
-                  >
-                    <td className="p-4 text-xs font-mono font-bold text-primary">
-                      #{edu.order}
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-bold text-ink block font-serif">
-                          {edu.title}
-                        </span>
-                        {edu.statusBadge && (
-                          <Badge variant="accent" size="sm">
-                            {edu.statusBadge}
-                          </Badge>
-                        )}
-                      </div>
-                      <span className="text-xs font-mono text-ink-muted block mt-0.5">
-                        {edu.organization}
-                      </span>
-                      {edu.grades && (
-                        <span className="text-[11px] font-mono text-primary font-medium block mt-0.5">
-                          {edu.grades}
-                        </span>
-                      )}
-                    </td>
-                    <td className="p-4 text-xs font-mono text-ink-muted">
-                      <div>{edu.period}</div>
-                      <div className="text-[11px] text-ink-muted/80">
-                        {edu.location}
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex flex-wrap gap-1 max-w-xs">
-                        {edu.courses.map((course: string) => (
-                          <Badge key={course} variant="tech" size="sm">
-                            {course}
-                          </Badge>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="p-4 text-right">
-                      <div className="flex items-center justify-end space-x-2">
-                        <Link href={`/admin/education/${edu.id}/edit`}>
-                          <button
-                            type="button"
-                            className="p-1.5 rounded bg-paper border border-border-warm text-ink hover:text-primary transition-colors cursor-pointer"
-                            title="Edit Education Entry"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                        </Link>
-
-                        <DeleteButton
-                          itemId={edu.id}
-                          itemName={edu.title}
-                          itemType="education entry"
-                          onDeleteAction={deleteEducationAction}
-                          buttonTitle="Delete Education Entry"
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Interactive Pagination */}
-        <AdminPagination
+      <div className="pt-[77px] lg:pt-[87px] px-4 sm:px-6 lg:px-6 pb-4 sm:pb-6 lg:pb-6">
+        <AdminContent<EducationItem>
+          items={educations}
+          totalItems={totalItems}
           currentPage={currentPage}
           totalPages={totalPages}
-          totalItems={totalItems}
           pageSize={pageSize}
           baseUrl="/admin/education"
+          emptyMessage="No education records found in database. Click 'Add Education' to add one."
+          getItemKey={(item) => item.id}
+          columns={[
+            {
+              header: "#",
+              headerClassName: "p-4 w-12 text-center text-white",
+              className: "p-4 w-12 text-center",
+              render: (edu) => (
+                <span className="font-mono font-bold text-primary text-xs">
+                  #{edu.order}
+                </span>
+              ),
+            },
+            {
+              header: "Degree & Institution",
+              className: "p-4",
+              render: (edu) => (
+                <div className="min-w-0">
+                  <span className="font-bold text-ink block font-serif truncate">
+                    {edu.title}
+                  </span>
+                  <span className="text-xs font-mono text-ink-muted block truncate">
+                    {edu.organization}
+                  </span>
+                </div>
+              ),
+            },
+            {
+              header: "Period & Location",
+              className:
+                "p-4 text-xs font-mono text-ink-muted whitespace-nowrap",
+              render: (edu) => (
+                <div>
+                  <span>{edu.period}</span>
+                  {edu.location && (
+                    <span className="block text-[11px] text-primary/80">
+                      {edu.location}
+                    </span>
+                  )}
+                </div>
+              ),
+            },
+            {
+              header: "Coursework / Competencies",
+              className: "p-4",
+              render: (edu) => (
+                <div className="text-xs text-ink-muted line-clamp-2">
+                  {edu.courses && edu.courses.length > 0
+                    ? edu.courses.join(", ")
+                    : edu.description || "-"}
+                </div>
+              ),
+            },
+            {
+              header: "Actions",
+              headerClassName: "p-4 text-right text-white",
+              className: "p-4 text-right",
+              render: (edu) => (
+                <div className="flex items-center justify-end space-x-2">
+                  <Link href={`/admin/education/${edu.id}/edit`}>
+                    <button
+                      type="button"
+                      className="p-1.5 rounded bg-paper border border-border-warm text-ink hover:text-primary transition-colors cursor-pointer"
+                      title="Edit"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                  </Link>
+                  <DeleteButton
+                    itemId={edu.id}
+                    itemName={`${edu.title} at ${edu.organization}`}
+                    itemType="education record"
+                    onDeleteAction={deleteEducationAction}
+                  />
+                </div>
+              ),
+            },
+          ]}
+          renderMobileCard={(edu) => (
+            <div className="bg-surface border border-[#c8c5c2] rounded-xl p-4 space-y-3 shadow-card hover:border-primary/50 transition-all flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2 min-w-0">
+                  <span className="px-2 py-0.5 rounded bg-paper border border-border-warm text-xs font-mono font-bold text-primary shrink-0">
+                    #{edu.order}
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="font-serif font-bold text-sm text-ink truncate leading-snug">
+                      {edu.title}
+                    </h3>
+                    <p className="text-[11px] font-mono text-ink-muted truncate">
+                      {edu.organization}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="text-xs font-mono text-ink-muted pt-1 border-t border-border-subtle/50 flex justify-between items-center">
+                  <span>{edu.period}</span>
+                  {edu.location && (
+                    <span className="text-[11px] text-primary/80">
+                      {edu.location}
+                    </span>
+                  )}
+                </div>
+
+                {(edu.description ||
+                  (edu.courses && edu.courses.length > 0)) && (
+                  <p className="text-xs text-ink-muted line-clamp-2 pt-1">
+                    {edu.courses && edu.courses.length > 0
+                      ? edu.courses.join(", ")
+                      : edu.description}
+                  </p>
+                )}
+              </div>
+
+              <div className="pt-3 border-t border-border-subtle flex items-center justify-end space-x-2 mt-2">
+                <Link href={`/admin/education/${edu.id}/edit`}>
+                  <button
+                    type="button"
+                    className="p-1.5 rounded bg-paper border border-border-warm text-ink hover:text-primary transition-colors cursor-pointer flex items-center gap-1 text-xs font-mono"
+                  >
+                    <Edit className="w-3.5 h-3.5" />
+                    <span>Edit</span>
+                  </button>
+                </Link>
+                <DeleteButton
+                  itemId={edu.id}
+                  itemName={`${edu.title} at ${edu.organization}`}
+                  itemType="education record"
+                  onDeleteAction={deleteEducationAction}
+                />
+              </div>
+            </div>
+          )}
         />
       </div>
-    </div>
+    </>
   );
 }

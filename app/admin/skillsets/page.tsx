@@ -4,15 +4,16 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { AdminPagination } from "@/components/admin/AdminPagination";
 import { DeleteButton } from "@/components/admin/DeleteButton";
-import { Plus, Edit, ArrowLeft, ExternalLink } from "lucide-react";
+import { AdminFormHeader } from "@/components/admin/AdminFormHeader";
+import { AdminContent } from "@/components/admin/AdminContent";
+import { Prisma } from "@/app/generated/prisma/client";
+import { Plus, Edit, ExternalLink } from "lucide-react";
 import { deleteSkillsetAction } from "@/app/actions/admin";
 
 export interface AdminSkillsetsPageProps {
-  searchParams?: Promise<{ page?: string; limit?: string }>;
+  searchParams?: Promise<{ page?: string; limit?: string; q?: string }>;
 }
 
 export default async function AdminSkillsetsPage({
@@ -24,13 +25,24 @@ export default async function AdminSkillsetsPage({
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
   const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 5);
+  const searchQuery = resolvedSearchParams.q?.trim() || "";
+
+  const where: Prisma.SkillsetWhereInput = searchQuery
+    ? {
+        OR: [
+          { category: { contains: searchQuery, mode: "insensitive" } },
+          { skillName: { contains: searchQuery, mode: "insensitive" } },
+        ],
+      }
+    : {};
 
   let skillsets: Awaited<ReturnType<typeof prisma.skillset.findMany>> = [];
   let totalItems = 0;
 
   try {
-    totalItems = await prisma.skillset.count();
+    totalItems = await prisma.skillset.count({ where });
     skillsets = await prisma.skillset.findMany({
+      where,
       orderBy: [
         { categoryOrder: "asc" },
         { category: "asc" },
@@ -44,133 +56,154 @@ export default async function AdminSkillsetsPage({
   }
 
   const totalPages = Math.ceil(totalItems / pageSize);
+  type SkillsetItem = (typeof skillsets)[number];
 
   return (
-    <div className="p-4 sm:p-6 lg:p-6 space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border-warm">
-        <div>
-          <Link
-            href="/admin"
-            className="inline-flex items-center space-x-1 text-xs font-mono text-ink-muted hover:text-primary mb-1"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Dashboard</span>
-          </Link>
-          <h1 className="text-3xl font-serif font-bold text-ink">
-            Technical Skillsets
-          </h1>
-        </div>
+    <>
+      <AdminFormHeader
+        backHref="/admin"
+        backLabel="Back to Dashboard"
+        title="Technical Skillsets"
+        showBadge={false}
+        showSaveDraft={false}
+        showSearch={true}
+        searchPlaceholder="Search category, skill..."
+        primaryActionLabel="Add Skillset"
+        primaryActionHref="/admin/skillsets/new"
+        primaryActionIcon={<Plus className="w-3.5 h-3.5" />}
+      />
 
-        <Link href="/admin/skillsets/new">
-          <Button
-            variant="primary"
-            size="md"
-            icon={<Plus className="w-4 h-4" />}
-          >
-            Add Skillset
-          </Button>
-        </Link>
-      </div>
-
-      {/* Skillsets Table */}
-      <div className="bg-surface border border-border-warm rounded-xl overflow-hidden shadow-card">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-sm">
-            <thead>
-              <tr className="bg-primary border-b border-border-warm font-serif text-white text-xs uppercase tracking-wider">
-                <th className="p-4">Order</th>
-                <th className="p-4">Category</th>
-                <th className="p-4">Skill / Tool Name</th>
-                <th className="p-4">Link / Ref</th>
-                <th className="p-4">Description</th>
-                <th className="p-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-subtle">
-              {skillsets.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={6}
-                    className="p-8 text-center text-ink-muted font-mono text-xs"
-                  >
-                    No skillset records found. Click &quot;Add Skillset&quot; to
-                    create one.
-                  </td>
-                </tr>
-              ) : (
-                skillsets.map((skill) => (
-                  <tr
-                    key={skill.id}
-                    className="hover:bg-black/2 transition-colors"
-                  >
-                    <td className="p-4 text-xs font-mono font-bold text-primary">
-                      Card #{skill.categoryOrder}
-                    </td>
-                    <td className="p-4">
-                      <span className="font-serif font-semibold text-ink text-sm block">
-                        {skill.category}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <Badge variant="tech" size="md">
-                        {skill.skillName}
-                      </Badge>
-                    </td>
-                    <td className="p-4 text-xs font-mono text-ink-muted">
-                      {skill.link ? (
-                        <a
-                          href={skill.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline inline-flex items-center gap-1"
-                        >
-                          Link <ExternalLink className="w-3 h-3" />
-                        </a>
-                      ) : (
-                        "—"
-                      )}
-                    </td>
-                    <td className="p-4 text-xs text-ink-muted max-w-xs truncate">
-                      {skill.description || "—"}
-                    </td>
-                    <td className="p-4 text-right">
-                      <div className="flex items-center justify-end space-x-2">
-                        <Link href={`/admin/skillsets/${skill.id}/edit`}>
-                          <button
-                            type="button"
-                            className="p-1.5 rounded bg-paper border border-border-warm text-ink hover:text-primary transition-colors cursor-pointer"
-                            title="Edit Skillset"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                        </Link>
-
-                        <DeleteButton
-                          itemId={skill.id}
-                          itemName={`${skill.skillName} (${skill.category})`}
-                          itemType="skillset item"
-                          onDeleteAction={deleteSkillsetAction}
-                          buttonTitle="Delete Skillset"
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Interactive Pagination */}
-        <AdminPagination
+      <div className="pt-[77px] lg:pt-[87px] px-4 sm:px-6 lg:px-6 pb-4 sm:pb-6 lg:pb-6">
+        <AdminContent<SkillsetItem>
+          items={skillsets}
+          totalItems={totalItems}
           currentPage={currentPage}
           totalPages={totalPages}
-          totalItems={totalItems}
           pageSize={pageSize}
           baseUrl="/admin/skillsets"
+          emptyMessage="No skillsets found in database. Click 'Add Skillset' to add one."
+          getItemKey={(item) => item.id}
+          columns={[
+            {
+              header: "Order",
+              headerClassName: "p-4 w-12 text-center text-white",
+              className: "p-4 w-12 text-center",
+              render: (sk) => (
+                <span className="font-mono font-bold text-primary text-xs">
+                  #{sk.categoryOrder}
+                </span>
+              ),
+            },
+            {
+              header: "Category",
+              className: "p-4",
+              render: (sk) => (
+                <Badge variant="accent" size="sm">
+                  {sk.category}
+                </Badge>
+              ),
+            },
+            {
+              header: "Skill / Tool Name",
+              className: "p-4 font-bold text-ink font-serif text-sm",
+              render: (sk) => sk.skillName,
+            },
+            {
+              header: "Link / Ref",
+              className: "p-4 text-xs font-mono",
+              render: (sk) =>
+                sk.link ? (
+                  <a
+                    href={sk.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-primary hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>{sk.link}</span>
+                    <ExternalLink className="w-3 h-3 shrink-0" />
+                  </a>
+                ) : (
+                  <span className="text-ink-muted">-</span>
+                ),
+            },
+            {
+              header: "Actions",
+              headerClassName: "p-4 text-right text-white",
+              className: "p-4 text-right",
+              render: (sk) => (
+                <div className="flex items-center justify-end space-x-2">
+                  <Link href={`/admin/skillsets/${sk.id}/edit`}>
+                    <button
+                      type="button"
+                      className="p-1.5 rounded bg-paper border border-border-warm text-ink hover:text-primary transition-colors cursor-pointer"
+                      title="Edit"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                  </Link>
+                  <DeleteButton
+                    itemId={sk.id}
+                    itemName={sk.skillName}
+                    itemType="skillset"
+                    onDeleteAction={deleteSkillsetAction}
+                  />
+                </div>
+              ),
+            },
+          ]}
+          renderMobileCard={(sk) => (
+            <div className="bg-surface border border-[#c8c5c2] rounded-xl p-4 space-y-3 shadow-card hover:border-primary/50 transition-all flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="px-2 py-0.5 rounded bg-paper border border-border-warm text-xs font-mono font-bold text-primary shrink-0">
+                      #{sk.categoryOrder}
+                    </span>
+                    <h3 className="font-serif font-bold text-sm text-ink truncate leading-snug">
+                      {sk.skillName}
+                    </h3>
+                  </div>
+                  <Badge variant="accent" size="sm" className="shrink-0">
+                    {sk.category}
+                  </Badge>
+                </div>
+
+                {sk.link && (
+                  <div className="text-xs font-mono text-ink-muted pt-1 border-t border-border-subtle/50">
+                    <a
+                      href={sk.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-primary hover:underline inline-flex items-center gap-1 truncate max-w-full"
+                    >
+                      <span className="truncate">{sk.link}</span>
+                      <ExternalLink className="w-3 h-3 shrink-0" />
+                    </a>
+                  </div>
+                )}
+              </div>
+
+              <div className="pt-3 border-t border-border-subtle flex items-center justify-end space-x-2 mt-2">
+                <Link href={`/admin/skillsets/${sk.id}/edit`}>
+                  <button
+                    type="button"
+                    className="p-1.5 rounded bg-paper border border-border-warm text-ink hover:text-primary transition-colors cursor-pointer flex items-center gap-1 text-xs font-mono"
+                  >
+                    <Edit className="w-3.5 h-3.5" />
+                    <span>Edit</span>
+                  </button>
+                </Link>
+                <DeleteButton
+                  itemId={sk.id}
+                  itemName={sk.skillName}
+                  itemType="skillset"
+                  onDeleteAction={deleteSkillsetAction}
+                />
+              </div>
+            </div>
+          )}
         />
       </div>
-    </div>
+    </>
   );
 }
