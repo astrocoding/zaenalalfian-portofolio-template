@@ -4,7 +4,6 @@ import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
 import { Button, Badge, Container, SeigaihaPattern } from "../ui";
-import { fetchGitHubAllTimeCommits } from "@/lib/github";
 
 interface CounterNumberProps {
   from?: number;
@@ -28,7 +27,7 @@ const CounterNumber: React.FC<CounterNumberProps> = ({
   className = "",
 }) => {
   const [displayValue, setDisplayValue] = React.useState<string>(
-    prefix + from.toFixed(decimals) + suffix
+    prefix + from.toFixed(decimals) + suffix,
   );
 
   React.useEffect(() => {
@@ -38,7 +37,10 @@ const CounterNumber: React.FC<CounterNumberProps> = ({
     const timeoutId = setTimeout(() => {
       const step = (timestamp: number) => {
         if (!startTime) startTime = timestamp;
-        const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+        const progress = Math.min(
+          (timestamp - startTime) / (duration * 1000),
+          1,
+        );
 
         // Smooth Cubic Ease Out curve for fluid counting speed transition
         const easeProgress = 1 - Math.pow(1 - progress, 3);
@@ -60,7 +62,11 @@ const CounterNumber: React.FC<CounterNumberProps> = ({
     };
   }, [from, to, decimals, prefix, suffix, duration, delay]);
 
-  return <span className={className} suppressHydrationWarning>{displayValue}</span>;
+  return (
+    <span className={className} suppressHydrationWarning>
+      {displayValue}
+    </span>
+  );
 };
 
 const SeigaihaFan: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
@@ -86,9 +92,13 @@ const SeigaihaFan: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
   );
 };
 
-export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({ className = "" }) => {
+export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
   return (
-    <div className={`absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none z-20 h-[80px] ${className}`}>
+    <div
+      className={`absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none z-20 h-[80px] ${className}`}
+    >
       <svg
         className="w-full h-full text-primary/45"
         fill="none"
@@ -119,13 +129,23 @@ export const SeigaihaWaveBorder: React.FC<{ className?: string }> = ({ className
           <SeigaihaFan cx={-80} cy={80} />
           <SeigaihaFan cx={160} cy={80} />
         </pattern>
-        <rect x="0" y="0" width="100%" height="100%" fill="url(#seigaiha-hero-pattern)" />
+        <rect
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+          fill="url(#seigaiha-hero-pattern)"
+        />
       </svg>
     </div>
   );
 };
 
-const DesktopArchitectureCard: React.FC<{ name: string; role: string; status: string }> = ({ name, role, status }) => {
+const DesktopArchitectureCard: React.FC<{
+  name: string;
+  role: string;
+  status: string;
+}> = ({ name, role, status }) => {
   return (
     <div className="hidden md:block lg:col-span-5 relative pt-4 md:pt-6 lg:self-end lg:pb-4 animate-float">
       {/* Japanese Minimalist Frame Container */}
@@ -140,14 +160,16 @@ const DesktopArchitectureCard: React.FC<{ name: string; role: string; status: st
           <div className="w-2.5 h-2.5 rounded-full bg-rose-400" />
           <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-          <span className="text-xs font-mono text-ink-muted ml-2">architecture.ts</span>
+          <span className="text-xs font-mono text-ink-muted ml-2">
+            architecture.ts
+          </span>
         </div>
 
         {/* Mock Code Block */}
         <div className="space-y-1.5 font-mono text-xs text-ink leading-relaxed">
           <p className="text-primary font-semibold">{`// Personal Philosophy`}</p>
           <p>
-            <span className="text-purple-600">const</span>{" "}developer = &#123;
+            <span className="text-purple-600">const</span> developer = &#123;
           </p>
           <p className="pl-4">
             name: <span className="text-emerald-700">&quot;{name}&quot;</span>,
@@ -167,7 +189,9 @@ const DesktopArchitectureCard: React.FC<{ name: string; role: string; status: st
             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             <span>Connected</span>
           </div>
-          <span className="font-serif text-primary font-semibold italic text-xs">美と技術の融合</span>
+          <span className="font-serif text-primary font-semibold italic text-xs">
+            美と技術の融合
+          </span>
         </div>
       </div>
     </div>
@@ -180,37 +204,37 @@ export interface HeroSectionProps {
     position?: string | null;
     activity?: string | null;
     resume?: string | null;
+    experience?: string | null;
   } | null;
+  stats?: {
+    totalProjects?: number;
+    totalBlogs?: number;
+  };
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  userData,
+  stats,
+}) => {
   const name = userData?.name || "Zaenal Alfian";
   const role = userData?.position || "Full-Stack Engineer";
   const status = userData?.activity || "Building Great Products";
   const resumeUrl = userData?.resume?.trim();
-  const [gitStats, setGitStats] = React.useState<{ val: number; decimals: number; suffix: string }>({
-    val: 6.7,
-    decimals: 1,
-    suffix: "K+",
-  });
 
-  React.useEffect(() => {
-    let isMounted = true;
-    const timer = setTimeout(() => {
-      fetchGitHubAllTimeCommits("astrocoding").then((stats) => {
-        if (isMounted) {
-          setGitStats(stats.formattedDisplay);
-        }
-      });
-    }, 2000);
-    return () => {
-      isMounted = false;
-      clearTimeout(timer);
-    };
-  }, []);
+  // Extract numeric years experience from profile (e.g. "6+" or "6" -> 6)
+  const rawExperience = userData?.experience?.trim();
+  const experienceYears = rawExperience
+    ? parseInt(rawExperience.replace(/[^0-9]/g, ""), 10) || 6
+    : 6;
+
+  const totalProjects = stats?.totalProjects ?? 30;
+  const totalBlogs = stats?.totalBlogs ?? 12;
 
   return (
-    <section id="hero" className="relative w-full min-h-[90dvh] lg:h-[90dvh] lg:max-h-[90dvh] flex flex-col justify-between pt-[10px] sm:pt-[12px] lg:pt-[16px] pb-0 overflow-hidden bg-paper">
+    <section
+      id="hero"
+      className="relative w-full min-h-[85vh] sm:min-h-[90vh] lg:h-[90dvh] lg:max-h-[90dvh] flex flex-col justify-between pt-[10px] sm:pt-[12px] lg:pt-[16px] pb-0 overflow-hidden bg-paper [contain:content] transform-gpu"
+    >
       {/* Decorative Subtle Japanese Grid & Background Motifs */}
       <div className="absolute inset-0 bg-[radial-gradient(#b04749_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none" />
 
@@ -219,7 +243,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
         創造と建築
       </div>
 
-      <Container size="wide" className="relative z-10 w-full flex-1 flex flex-col justify-start pt-0 pb-16 sm:pb-20 min-h-0">
+      <Container
+        size="wide"
+        className="relative z-10 w-full flex-1 flex flex-col justify-start pt-0 pb-16 sm:pb-20 min-h-0"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 lg:items-stretch">
           {/* Main Hero Copy */}
           <div className="lg:col-span-7 space-y-3 sm:space-y-4">
@@ -238,13 +265,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
                 <div className="h-px w-12 bg-primary/30" />
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink leading-[1.14] tracking-tight">
-                Crafting Scalable Systems with <span className="text-primary italic">Optimized</span> Precision.
+                Crafting Scalable Systems with{" "}
+                <span className="text-primary italic">Optimized</span>{" "}
+                Precision.
               </h1>
             </div>
 
             {/* Sub-headline */}
             <p className="text-base sm:text-lg text-ink-muted leading-relaxed font-sans max-w-2xl">
-              I am a dedicated software engineer with a strong commitment to continuous learning and professional growth. I enjoy building scalable and optimized solutions.
+              I am a dedicated software engineer with a strong commitment to
+              continuous learning and professional growth. I enjoy building
+              scalable and optimized solutions.
             </p>
 
             {/* Professional Value Badges Row */}
@@ -259,17 +290,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
             {/* Call to Action Buttons */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link href="/projects">
-                <Button variant="primary" size="md" icon={<ArrowRight className="w-4 h-4" />}>
+                <Button
+                  variant="primary"
+                  size="md"
+                  icon={<ArrowRight className="w-4 h-4" />}
+                >
                   Explore Work
                 </Button>
               </Link>
               {resumeUrl ? (
-                <a
-                  href={resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button variant="secondary" size="md" icon={<FileText className="w-4 h-4 text-primary" />}>
+                <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    icon={<FileText className="w-4 h-4 text-primary" />}
+                  >
                     Get My Resume
                   </Button>
                 </a>
@@ -284,38 +319,61 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ userData }) => {
                     }
                   }}
                 >
-                  <Button variant="secondary" size="md" icon={<FileText className="w-4 h-4 text-primary" />}>
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    icon={<FileText className="w-4 h-4 text-primary" />}
+                  >
                     Get My Resume
                   </Button>
                 </Link>
               )}
             </div>
 
-            {/* Key Metrics Strip (Visible in single screen fold) */}
-            <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-5 border-t border-border-subtle max-w-lg">
-              <div>
-                <div className="text-2xl sm:text-3xl font-bold font-serif text-ink">
-                  <CounterNumber to={6} suffix="+" delay={0.15} duration={0.65} />
+            {/* Key Metrics Strip (Flex Justify-Between for Equal Visual Spacing) */}
+            <div className="pt-5 border-t border-border-subtle w-full max-w-md sm:max-w-[460px]">
+              <div className="flex items-start justify-between gap-3 sm:gap-6">
+                <div className="shrink-0">
+                  <div className="text-2xl sm:text-3xl font-bold font-serif text-ink">
+                    <CounterNumber
+                      to={experienceYears}
+                      suffix="+"
+                      delay={0.15}
+                      duration={0.65}
+                    />
+                  </div>
+                  <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
+                    Years Exp.
+                  </div>
                 </div>
-                <div className="text-xs text-ink-muted font-mono mt-0.5">Years Exp.</div>
-              </div>
-              <div>
-                <div className="text-2xl sm:text-3xl font-bold font-serif text-primary">
-                  <CounterNumber to={30} suffix="+" delay={0.2} duration={0.75} />
+
+                <div className="shrink-0">
+                  <div className="text-2xl sm:text-3xl font-bold font-serif text-primary">
+                    <CounterNumber
+                      to={totalProjects}
+                      suffix="+"
+                      delay={0.2}
+                      duration={0.75}
+                    />
+                  </div>
+                  <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
+                    Projects Built
+                  </div>
                 </div>
-                <div className="text-xs text-ink-muted font-mono mt-0.5">Projects Built</div>
-              </div>
-              <div>
-                <div className="text-2xl sm:text-3xl font-bold font-serif text-ink">
-                  <CounterNumber
-                    to={gitStats.val}
-                    decimals={gitStats.decimals}
-                    suffix={gitStats.suffix}
-                    delay={0.25}
-                    duration={0.85}
-                  />
+
+                <div className="shrink-0">
+                  <div className="text-2xl sm:text-3xl font-bold font-serif text-ink">
+                    <CounterNumber
+                      to={totalBlogs}
+                      suffix="+"
+                      delay={0.25}
+                      duration={0.85}
+                    />
+                  </div>
+                  <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
+                    Articles
+                  </div>
                 </div>
-                <div className="text-xs text-ink-muted font-mono mt-0.5">Git Commits</div>
               </div>
             </div>
           </div>

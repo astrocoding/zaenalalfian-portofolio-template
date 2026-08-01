@@ -243,7 +243,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             </div>
             <div>
               <h2 className="font-serif font-bold text-base text-ink">
-                User Account Credentials / アカウント設定
+                User Account Credentials
               </h2>
               <p className="text-xs text-ink-muted font-sans">
                 Update your login profile details and security password.
@@ -380,10 +380,10 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             </div>
             <div>
               <h2 className="font-serif font-bold text-base text-ink">
-                Professional Profile Attributes / 職歴・プロフィール属性
+                Professional Profile
               </h2>
               <p className="text-xs text-ink-muted font-sans">
-                Manage position, activity, experience years, location,
+                Manage position, activity, experiences, location,
                 availability status, quotes, bio, and resume link.
               </p>
             </div>
@@ -530,7 +530,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             </div>
             <div>
               <h2 className="font-serif font-bold text-base text-ink">
-                About Page Content / 自己紹介コンテンツ
+                About Page Content
               </h2>
               <p className="text-xs text-ink-muted font-sans">
                 Manage title, subtitle, excerpt summary, and full bio story
@@ -624,7 +624,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             </div>
             <div>
               <h2 className="font-serif font-bold text-base text-ink">
-                Contact &amp; Social Links / 連絡先 &amp; SNS リンク
+                Contact &amp; Social Links
               </h2>
               <p className="text-xs text-ink-muted font-sans">
                 Manage your email contact, social media profiles, and messaging

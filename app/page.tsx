@@ -7,24 +7,28 @@ import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 // Lazy load below-the-fold sections for maximum mobile performance & code splitting
 const AboutSection = nextDynamic(() =>
-  import("@/components/sections/AboutSection").then((m) => m.AboutSection)
+  import("@/components/sections/AboutSection").then((m) => m.AboutSection),
 );
 const SkillsSection = nextDynamic(() =>
-  import("@/components/sections/SkillsSection").then((m) => m.SkillsSection)
+  import("@/components/sections/SkillsSection").then((m) => m.SkillsSection),
 );
 const ExperienceSection = nextDynamic(() =>
-  import("@/components/sections/ExperienceSection").then((m) => m.ExperienceSection)
+  import("@/components/sections/ExperienceSection").then(
+    (m) => m.ExperienceSection,
+  ),
 );
 const FeaturedProjectsSection = nextDynamic(() =>
   import("@/components/sections/FeaturedProjectsSection").then(
-    (m) => m.FeaturedProjectsSection
-  )
+    (m) => m.FeaturedProjectsSection,
+  ),
 );
 const LatestBlogsSection = nextDynamic(() =>
-  import("@/components/sections/LatestBlogsSection").then((m) => m.LatestBlogsSection)
+  import("@/components/sections/LatestBlogsSection").then(
+    (m) => m.LatestBlogsSection,
+  ),
 );
 const ContactSection = nextDynamic(() =>
-  import("@/components/sections/ContactSection").then((m) => m.ContactSection)
+  import("@/components/sections/ContactSection").then((m) => m.ContactSection),
 );
 
 export const dynamic = "force-dynamic";
@@ -77,21 +81,33 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
 export default async function HomePage() {
   let dbProjects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
   let dbBlogs: Awaited<ReturnType<typeof prisma.blog.findMany>> = [];
-  let dbExperiences: Awaited<ReturnType<typeof prisma.experience.findMany>> = [];
+  let dbExperiences: Awaited<ReturnType<typeof prisma.experience.findMany>> =
+    [];
   let dbSkillsets: Awaited<ReturnType<typeof prisma.skillset.findMany>> = [];
   let dbAbout: Awaited<ReturnType<typeof prisma.about.findFirst>> = null;
-  let dbAdminUser: (Awaited<ReturnType<typeof prisma.user.findFirst>> & {
-    contact?: Awaited<ReturnType<typeof prisma.contact.findFirst>> | null;
-  }) | null = null;
+  let dbAdminUser:
+    | (Awaited<ReturnType<typeof prisma.user.findFirst>> & {
+        contact?: Awaited<ReturnType<typeof prisma.contact.findFirst>> | null;
+      })
+    | null = null;
+  let totalProjectsCount = 0;
+  let totalBlogsCount = 0;
 
   try {
+    totalProjectsCount = await prisma.project.count();
+    totalBlogsCount = await prisma.blog.count();
     dbProjects = await prisma.project.findMany({
       where: { status: "published" },
       orderBy: [{ priorityOrder: "asc" }, { createdAt: "desc" }],
@@ -143,7 +159,9 @@ export default async function HomePage() {
     category: b.category,
     description: b.description,
     thumbnail: b.thumbnail,
-    publishedAt: b.publishedAt ? new Date(b.publishedAt).toISOString().split("T")[0] : "",
+    publishedAt: b.publishedAt
+      ? new Date(b.publishedAt).toISOString().split("T")[0]
+      : "",
   }));
 
   const experiences =
@@ -164,7 +182,12 @@ export default async function HomePage() {
     {
       title: string;
       categoryOrder: number;
-      skills: { id: string; skillName: string; link?: string | null; description?: string | null }[];
+      skills: {
+        id: string;
+        skillName: string;
+        link?: string | null;
+        description?: string | null;
+      }[];
     }
   >();
 
@@ -187,7 +210,7 @@ export default async function HomePage() {
   const skillCategories =
     dbSkillsets.length > 0
       ? Array.from(skillCategoriesMap.values()).sort(
-          (a, b) => a.categoryOrder - b.categoryOrder
+          (a, b) => a.categoryOrder - b.categoryOrder,
         )
       : undefined;
 
@@ -201,9 +224,14 @@ export default async function HomePage() {
                 position: dbAdminUser.position,
                 activity: dbAdminUser.activity,
                 resume: dbAdminUser.resume,
+                experience: dbAdminUser.experience,
               }
             : undefined
         }
+        stats={{
+          totalProjects: totalProjectsCount,
+          totalBlogs: totalBlogsCount,
+        }}
       />
       <AboutSection aboutData={dbAbout} />
       <SkillsSection skillCategories={skillCategories} />

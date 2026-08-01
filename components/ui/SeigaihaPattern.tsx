@@ -37,16 +37,22 @@ export const SeigaihaPattern: React.FC<SeigaihaPatternProps> = ({
 }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      style={{ height }}
-      className={`absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none z-20 ${className}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      style={{
+        height,
+        transform: "translate3d(0,0,0)",
+        willChange: "transform, opacity",
+        backfaceVisibility: "hidden",
+      }}
+      className={`absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none z-20 transform-gpu ${className}`}
     >
       <svg
-        className="w-full h-full text-primary/45"
+        className="w-full h-full text-primary/45 transform-gpu"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        shapeRendering="geometricPrecision"
       >
         <pattern
           id="seigaiha-hero-pattern"

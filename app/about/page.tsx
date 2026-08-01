@@ -159,7 +159,7 @@ export default async function AboutPage() {
                 <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">
                   <span className="text-ink-muted shrink-0">Experience:</span>
                   <span className="text-primary font-bold text-right">
-                    {userExperience}
+                    {userExperience} Years
                   </span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">

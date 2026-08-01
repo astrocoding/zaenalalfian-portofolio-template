@@ -187,7 +187,7 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
           </div>
           <div>
             <h2 className="font-serif font-bold text-base text-ink">
-              About Cards &amp; Pillars Management / カード管理・順序変更
+              About Cards &amp; Pillars Management
             </h2>
             <p className="text-xs text-ink-muted font-sans">
               Manage engineering principles &amp; value cards displayed across
