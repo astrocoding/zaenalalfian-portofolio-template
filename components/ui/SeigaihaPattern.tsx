@@ -28,31 +28,32 @@ const SeigaihaFan: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
 
 export interface SeigaihaPatternProps {
   className?: string;
-  height?: number;
+  height?: number | string;
 }
 
 export const SeigaihaPattern: React.FC<SeigaihaPatternProps> = ({
   className = "",
-  height = 80,
+  height,
 }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       style={{
-        height,
+        ...(height ? { height } : {}),
         transform: "translate3d(0,0,0)",
         willChange: "transform, opacity",
         backfaceVisibility: "hidden",
       }}
-      className={`absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none z-20 transform-gpu ${className}`}
+      className={`absolute bottom-0 left-0 right-0 w-full h-14 sm:h-16 lg:h-20 overflow-hidden leading-none pointer-events-none z-20 transform-gpu [contain:layout_paint_style] ${className}`}
     >
       <svg
         className="w-full h-full text-primary/45 transform-gpu"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         shapeRendering="geometricPrecision"
+        preserveAspectRatio="xMidYMax slice"
       >
         <pattern
           id="seigaiha-hero-pattern"
@@ -79,7 +80,13 @@ export const SeigaihaPattern: React.FC<SeigaihaPatternProps> = ({
           <SeigaihaFan cx={-80} cy={80} />
           <SeigaihaFan cx={160} cy={80} />
         </pattern>
-        <rect x="0" y="0" width="100%" height="100%" fill="url(#seigaiha-hero-pattern)" />
+        <rect
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+          fill="url(#seigaiha-hero-pattern)"
+        />
       </svg>
     </motion.div>
   );
