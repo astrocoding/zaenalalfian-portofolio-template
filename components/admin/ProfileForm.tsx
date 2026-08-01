@@ -748,18 +748,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               />
             </div>
           </div>
-
-          <div className="pt-2 flex justify-end">
-            <Button
-              type="submit"
-              variant="primary"
-              size="md"
-              disabled={loading}
-              icon={<Save className="w-4 h-4" />}
-            >
-              {loading ? "Saving Changes..." : "Save All"}
-            </Button>
-          </div>
         </div>
       </div>
     </form>
