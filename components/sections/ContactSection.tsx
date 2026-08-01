@@ -4,7 +4,16 @@ import * as React from "react";
 import { SectionWrapper } from "../ui/SectionWrapper";
 import { Card } from "../ui/Card";
 import { Button } from "../ui/Button";
-import { Mail, MapPin, Send, CheckCircle2, Sparkles } from "lucide-react";
+import {
+  Mail,
+  MapPin,
+  Send,
+  CheckCircle2,
+  Sparkles,
+  XCircle,
+  Loader2,
+} from "lucide-react";
+import { sendContactMessageAction } from "@/app/actions/contact";
 
 export interface ContactSectionProps {
   contactData?: {
@@ -16,15 +25,20 @@ export interface ContactSectionProps {
   } | null;
 }
 
-export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) => {
+export const ContactSection: React.FC<ContactSectionProps> = ({
+  contactData,
+}) => {
   const name = contactData?.name || "Zaenal Alfian";
   const position = contactData?.position || "Full-Stack Engineer";
   const gmail = contactData?.gmail || "zaenalalfian20@gmail.com";
   const location = contactData?.location || "Karawang, Indonesia / Remote";
-  const availability = contactData?.availability || "Accepting Projects & Roles";
+  const availability =
+    contactData?.availability || "Accepting Projects & Roles";
 
   const [submitted, setSubmitted] = React.useState(false);
+  const [failed, setFailed] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [fallbackGmail, setFallbackGmail] = React.useState<string | null>(null);
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
@@ -32,15 +46,25 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) =
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setFailed(false);
 
-    setTimeout(() => {
-      setLoading(false);
+    const result = await sendContactMessageAction(formData);
+
+    setLoading(false);
+    if (result.success) {
       setSubmitted(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
-    }, 1000);
+    } else {
+      setFallbackGmail(result.gmail ?? null);
+      setFailed(true);
+    }
+  };
+
+  const handleRetry = () => {
+    setFailed(false);
   };
 
   return (
@@ -61,7 +85,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) =
                 印
               </div>
               <div>
-                <h3 className="font-serif font-bold text-lg text-ink">{name}</h3>
+                <h3 className="font-serif font-bold text-lg text-ink">
+                  {name}
+                </h3>
                 <p className="text-xs font-mono text-ink-muted">{position}</p>
               </div>
             </div>
@@ -70,7 +96,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) =
               <div className="flex items-start space-x-3">
                 <Mail className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-xs font-mono text-ink-muted block uppercase">Direct Email</span>
+                  <span className="text-xs font-mono text-ink-muted block uppercase">
+                    Direct Email
+                  </span>
                   <a
                     href={`mailto:${gmail}`}
                     className="text-[#b34c53] font-medium hover:text-primary transition-colors text-base"
@@ -83,7 +111,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) =
               <div className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-xs font-mono text-ink-muted block uppercase">Location</span>
+                  <span className="text-xs font-mono text-ink-muted block uppercase">
+                    Location
+                  </span>
                   <span className="text-ink font-medium">{location}</span>
                 </div>
               </div>
@@ -91,7 +121,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) =
               <div className="flex items-start space-x-3">
                 <Sparkles className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-xs font-mono text-ink-muted block uppercase">Availability</span>
+                  <span className="text-xs font-mono text-ink-muted block uppercase">
+                    Availability
+                  </span>
                   <span className="text-emerald-700 font-medium flex items-center gap-1.5 mt-0.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     {availability}
@@ -101,7 +133,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) =
             </div>
 
             <div className="p-4 rounded bg-[#f6e0ce]/40 border border-[#ebd9c8] text-xs text-ink-muted font-serif italic">
-              &quot;Quality is never an accident; it is always the result of high intention, sincere effort, and intelligent execution.&quot;
+              &quot;Quality is never an accident; it is always the result of
+              high intention, sincere effort, and intelligent execution.&quot;
             </div>
           </Card>
         </div>
@@ -109,14 +142,29 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) =
         {/* Right Contact Form Column */}
         <div className="lg:col-span-7">
           <Card className="p-6 sm:p-8 bg-surface">
-            {submitted ? (
+            {loading ? (
+              <div className="py-12 text-center space-y-4">
+                <div className="w-14 h-14 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center">
+                  <Loader2 className="w-8 h-8 animate-spin" />
+                </div>
+                <h3 className="text-2xl font-serif font-bold text-ink">
+                  Sending Message / 送信中...
+                </h3>
+                <p className="text-sm text-ink-muted max-w-md mx-auto">
+                  Please wait a moment. Your message is being delivered.
+                </p>
+              </div>
+            ) : submitted ? (
               <div className="py-12 text-center space-y-4">
                 <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-serif font-bold text-ink">Message Sent / 送信完了</h3>
+                <h3 className="text-2xl font-serif font-bold text-ink">
+                  Message Sent / 送信完了
+                </h3>
                 <p className="text-sm text-ink-muted max-w-md mx-auto">
-                  Thank you for reaching out. I have received your message and will respond within 24 hours.
+                  Thank you for reaching out. I have received your message and
+                  will respond within 24 hours.
                 </p>
                 <Button
                   variant="outline"
@@ -127,28 +175,65 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) =
                   Send Another Message
                 </Button>
               </div>
+            ) : failed ? (
+              <div className="py-12 text-center space-y-4">
+                <div className="w-14 h-14 rounded-full bg-rose-100 text-rose-600 mx-auto flex items-center justify-center">
+                  <XCircle className="w-8 h-8" />
+                </div>
+                <h3 className="text-2xl font-serif font-bold text-ink">
+                  Failed to Send / 送信失敗
+                </h3>
+                <p className="text-sm text-ink-muted max-w-sm mx-auto">
+                  Something went wrong while delivering your message. You can
+                  try again or reach out directly.
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                  <Button variant="outline" size="sm" onClick={handleRetry}>
+                    Try Again
+                  </Button>
+                  {fallbackGmail && (
+                    <a
+                      href={`mailto:${fallbackGmail}?subject=${encodeURIComponent(formData.subject || "Hello")}&body=${encodeURIComponent(
+                        `Hi,\n\n${formData.message}\n\nBest regards,\n${formData.name}`,
+                      )}`}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors"
+                    >
+                      <Mail className="w-4 h-4" />
+                      Email Directly
+                    </a>
+                  )}
+                </div>
+              </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-mono text-ink font-medium">Your Name / お名前 *</label>
+                    <label className="text-xs font-mono text-ink font-medium">
+                      Your Name / お名前 *
+                    </label>
                     <input
                       type="text"
                       required
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                       placeholder="e.g. Zaenal Alfian"
                       className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-mono text-ink font-medium">Email Address / メール *</label>
+                    <label className="text-xs font-mono text-ink font-medium">
+                      Email Address / メール *
+                    </label>
                     <input
                       type="email"
                       required
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                       placeholder="e.g. zaenal@example.com"
                       className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
                     />
@@ -156,24 +241,32 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ contactData }) =
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-ink font-medium">Subject / 件名 *</label>
+                  <label className="text-xs font-mono text-ink font-medium">
+                    Subject / 件名 *
+                  </label>
                   <input
                     type="text"
                     required
                     value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, subject: e.target.value })
+                    }
                     placeholder="e.g. Project Architecture Inquiry"
                     className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-ink font-medium">Message / 本文 *</label>
+                  <label className="text-xs font-mono text-ink font-medium">
+                    Message / 本文 *
+                  </label>
                   <textarea
                     required
                     rows={5}
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
                     placeholder="Tell me about your project, timeline, and product goals...."
                     className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors resize-none"
                   />
