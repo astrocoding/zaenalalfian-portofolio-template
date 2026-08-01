@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
-import { SectionWrapper, Badge, CardCornerSeigaiha } from "../ui";
-import { Briefcase, Calendar } from "lucide-react";
+import Link from "next/link";
+import { SectionWrapper, Badge, CardCornerSeigaiha, Button } from "../ui";
+import { ArrowRight, Briefcase, Calendar } from "lucide-react";
 
 export interface ExperienceItem {
   id?: string;
@@ -44,9 +44,9 @@ const fallbackExperiences: ExperienceItem[] = [
   },
 ];
 
-export const ExperienceSection: React.FC<{ experiences?: ExperienceItem[] }> = ({
-  experiences = fallbackExperiences,
-}) => {
+export const ExperienceSection: React.FC<{
+  experiences?: ExperienceItem[];
+}> = ({ experiences = fallbackExperiences }) => {
   const displayList = (
     experiences.length > 0 ? experiences : fallbackExperiences
   ).slice(0, 3);
@@ -57,6 +57,17 @@ export const ExperienceSection: React.FC<{ experiences?: ExperienceItem[] }> = (
       kanjiSubtitle="職務経歴"
       sectionTitle="Professional Journey"
       sectionDescription="A history of leading software development, architecture decisions, and engineering execution."
+      headerAction={
+        <Link href="/experiences">
+          <Button
+            variant="primary"
+            size="md"
+            icon={<ArrowRight className="w-4 h-4" />}
+          >
+            Show Experiences
+          </Button>
+        </Link>
+      }
       bgVariant="surface"
       className="pt-10 sm:pt-14 pb-16 sm:pb-24"
     >
@@ -75,7 +86,9 @@ export const ExperienceSection: React.FC<{ experiences?: ExperienceItem[] }> = (
               <div className="relative z-10 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle pb-3">
                   <div>
-                    <h3 className="text-xl font-bold font-serif text-ink">{exp.role}</h3>
+                    <h3 className="text-xl font-bold font-serif text-ink">
+                      {exp.role}
+                    </h3>
                     <div className="flex items-center space-x-2 text-sm text-primary font-medium mt-0.5">
                       <Briefcase className="w-4 h-4" />
                       <span>{exp.company}</span>
@@ -88,12 +101,17 @@ export const ExperienceSection: React.FC<{ experiences?: ExperienceItem[] }> = (
                       {exp.period}
                     </span>
                     {exp.isCurrent && (
-                      <span className="font-serif text-primary font-semibold">現職</span>
+                      <span className="font-serif text-primary font-semibold">
+                        現職
+                      </span>
                     )}
                   </div>
                 </div>
 
-                <p className="text-sm text-ink-muted leading-relaxed font-sans line-clamp-2" title={exp.description}>
+                <p
+                  className="text-sm text-ink-muted leading-relaxed font-sans line-clamp-2"
+                  title={exp.description}
+                >
                   {exp.description}
                 </p>
 

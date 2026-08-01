@@ -22,18 +22,16 @@ export interface ProjectItem {
 
 import { normalizeImageUrl } from "@/lib/seo";
 
-const ProjectCardThumbnail: React.FC<{ thumbnail: string; title: string; category: string }> = ({
-  thumbnail,
-  title,
-  category,
-}) => {
+const ProjectCardThumbnail: React.FC<{
+  thumbnail: string;
+  title: string;
+  category: string;
+}> = ({ thumbnail, title, category }) => {
   const [imageError, setImageError] = React.useState(false);
   const normalized = normalizeImageUrl(thumbnail);
 
   const isCustomImage =
-    normalized &&
-    normalized !== "/projects/preview.jpg" &&
-    !imageError;
+    normalized && normalized !== "/projects/preview.jpg" && !imageError;
 
   return (
     <div className="relative w-full h-full overflow-hidden">
@@ -83,7 +81,10 @@ export const BoxyProjectCard: React.FC<{
       <CardCornerSeigaiha cardBgColor="#ffffff" />
 
       {/* --- TOP THUMBNAIL IMAGE WITH TECH BADGES OVERLAY --- */}
-      <Link href={`/projects/${project.slug}`} className="block relative z-10 w-full h-40 sm:h-44 overflow-hidden bg-[#f6e0ce]/30 shrink-0 rounded-t-2xl">
+      <Link
+        href={`/projects/${project.slug}`}
+        className="block relative z-10 w-full h-40 sm:h-44 overflow-hidden bg-[#f6e0ce]/30 shrink-0 rounded-t-2xl"
+      >
         <ProjectCardThumbnail
           thumbnail={project.thumbnail}
           title={project.title}
@@ -123,12 +124,20 @@ export const BoxyProjectCard: React.FC<{
             <span className="text-xs font-mono font-semibold text-primary uppercase tracking-wider truncate mr-2">
               {project.category}
             </span>
-            <span className="font-serif text-xs font-bold text-primary shrink-0">実績作品</span>
+            <span className="font-serif text-xs font-bold text-primary shrink-0">
+              実績作品
+            </span>
           </div>
 
           {/* Title (Truncated to 1 line with ellipsis if exceeds) */}
-          <Link href={`/projects/${project.slug}`} className="group/title block">
-            <h3 className="text-base font-serif font-bold text-ink group-hover/title:text-primary transition-colors leading-snug truncate" title={project.title}>
+          <Link
+            href={`/projects/${project.slug}`}
+            className="group/title block"
+          >
+            <h3
+              className="text-base font-serif font-bold text-ink group-hover/title:text-primary transition-colors leading-snug truncate"
+              title={project.title}
+            >
               {project.title}
             </h3>
           </Link>
@@ -156,9 +165,9 @@ export const BoxyProjectCard: React.FC<{
   );
 };
 
-export const FeaturedProjectsSection: React.FC<{ projects?: ProjectItem[] }> = ({
-  projects = [],
-}) => {
+export const FeaturedProjectsSection: React.FC<{
+  projects?: ProjectItem[];
+}> = ({ projects = [] }) => {
   const hasProjects = projects && projects.length > 0;
 
   return (
@@ -181,7 +190,7 @@ export const FeaturedProjectsSection: React.FC<{ projects?: ProjectItem[] }> = (
         />
       ) : (
         <>
-          <div className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-4 sm:gap-5 pb-6 pt-2 items-stretch">
+          <div className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-4 sm:gap-5 pb-2 pt-2 items-stretch">
             {projects.slice(0, 4).map((project, index) => (
               <BoxyProjectCard
                 key={project.id}
@@ -192,13 +201,13 @@ export const FeaturedProjectsSection: React.FC<{ projects?: ProjectItem[] }> = (
             ))}
           </div>
 
-          <div className="mt-12 sm:mt-16 flex items-center justify-center w-full">
+          <div className="mt-6 sm:mt-8 flex items-center justify-center w-full">
             <div className="flex-1 h-px bg-border-subtle" />
             <Link href="/projects" className="mx-4 shrink-0">
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-xl px-5 py-2.5 text-xs font-mono font-semibold border-border-warm bg-surface hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+                className="rounded-xl px-5 py-2.5 text-xs font-mono font-semibold border-border-warm bg-surface text-ink hover:bg-primary hover:!text-white hover:border-primary transition-all duration-300"
                 icon={<ArrowRight className="w-3.5 h-3.5" />}
               >
                 Show More Projects

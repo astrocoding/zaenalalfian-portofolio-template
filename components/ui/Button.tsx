@@ -9,7 +9,10 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export interface ButtonProps extends Omit<HTMLMotionProps<"button">, "children"> {
+export interface ButtonProps extends Omit<
+  HTMLMotionProps<"button">,
+  "children"
+> {
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   children: React.ReactNode;
@@ -29,10 +32,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       ...props
     },
-    ref
+    ref,
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-md cursor-pointer";
+      "inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-md cursor-pointer [&_svg]:text-current [&_svg]:transition-colors [&_span]:text-inherit";
 
     const variantStyles = {
       primary:
@@ -56,16 +59,25 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         whileHover={{ scale: disabled ? 1 : 1.02 }}
         whileTap={{ scale: disabled ? 1 : 0.98 }}
-        className={cn(baseStyles, variantStyles[variant], sizeStyles[size], className)}
+        className={cn(
+          baseStyles,
+          variantStyles[variant],
+          sizeStyles[size],
+          className,
+        )}
         disabled={disabled}
         {...props}
       >
-        {icon && iconPosition === "left" && <span className="inline-flex shrink-0">{icon}</span>}
+        {icon && iconPosition === "left" && (
+          <span className="inline-flex shrink-0">{icon}</span>
+        )}
         <span>{children}</span>
-        {icon && iconPosition === "right" && <span className="inline-flex shrink-0">{icon}</span>}
+        {icon && iconPosition === "right" && (
+          <span className="inline-flex shrink-0">{icon}</span>
+        )}
       </motion.button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

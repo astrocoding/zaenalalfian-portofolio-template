@@ -50,9 +50,7 @@ const BlogCardThumbnail: React.FC<{
   const normalized = normalizeImageUrl(thumbnail);
 
   const isCustomImage =
-    normalized &&
-    normalized !== "/blogs/preview.jpg" &&
-    !imageError;
+    normalized && normalized !== "/blogs/preview.jpg" && !imageError;
 
   return (
     <div className="relative w-full h-full overflow-hidden">
@@ -174,7 +172,7 @@ export const LatestBlogsSection: React.FC<{ blogs?: BlogItem[] }> = ({
         />
       ) : (
         <>
-          <div className="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-6 sm:gap-8 lg:gap-10 pb-6 pt-2 items-stretch">
+          <div className="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none gap-6 sm:gap-8 lg:gap-10 pb-2 pt-2 items-stretch">
             {blogs.slice(0, 3).map((blog) => (
               <BlogCard
                 key={blog.id}
@@ -184,13 +182,13 @@ export const LatestBlogsSection: React.FC<{ blogs?: BlogItem[] }> = ({
             ))}
           </div>
 
-          <div className="mt-12 sm:mt-16 flex items-center justify-center w-full">
+          <div className="mt-6 sm:mt-8 flex items-center justify-center w-full">
             <div className="flex-1 h-px bg-border-subtle" />
             <Link href="/blogs" className="mx-4 shrink-0">
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-xl px-5 py-2.5 text-xs font-mono font-semibold border-border-warm bg-surface hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
+                className="rounded-xl px-5 py-2.5 text-xs font-mono font-semibold border-border-warm bg-surface text-ink hover:bg-primary hover:!text-white hover:border-primary transition-all duration-300"
                 icon={<ArrowRight className="w-3.5 h-3.5" />}
               >
                 Show More Articles

@@ -10,12 +10,16 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export interface SectionWrapperProps extends Omit<HTMLMotionProps<"section">, "children"> {
+export interface SectionWrapperProps extends Omit<
+  HTMLMotionProps<"section">,
+  "children"
+> {
   id?: string;
   bgVariant?: "paper" | "surface" | "accent";
   kanjiSubtitle?: string;
   sectionTitle?: string;
   sectionDescription?: string;
+  headerAction?: React.ReactNode;
   headerAlign?: "left" | "center";
   containerSize?: "narrow" | "default" | "wide";
   animate?: boolean;
@@ -28,6 +32,7 @@ export const SectionWrapper: React.FC<SectionWrapperProps> = ({
   kanjiSubtitle,
   sectionTitle,
   sectionDescription,
+  headerAction,
   headerAlign = "left",
   containerSize = "default",
   animate = true,
@@ -48,26 +53,48 @@ export const SectionWrapper: React.FC<SectionWrapperProps> = ({
       {(sectionTitle || kanjiSubtitle) && (
         <div
           className={cn(
-            "mb-12 relative flex flex-col space-y-2",
-            isCenter ? "items-center text-center" : "items-start text-left"
+            "mb-12 relative flex w-full",
+            isCenter
+              ? "flex-col items-center text-center space-y-2"
+              : "flex-col sm:flex-row sm:items-end justify-between gap-4",
           )}
         >
-          {kanjiSubtitle && (
-            <span className="font-serif text-primary/40 tracking-widest text-xs font-semibold uppercase block">
-              {kanjiSubtitle}
-            </span>
-          )}
-          {sectionTitle && (
-            <h2 className="text-3xl sm:text-4xl font-bold font-serif text-ink tracking-tight">
-              {sectionTitle}
-            </h2>
-          )}
-          {sectionDescription && (
-            <p className={cn("text-base text-ink-muted max-w-2xl leading-relaxed", isCenter && "mx-auto")}>
-              {sectionDescription}
-            </p>
-          )}
-          <div className={cn("w-12 h-0.5 bg-primary/40 mt-3 rounded-full", isCenter && "mx-auto")} />
+          <div
+            className={cn(
+              "flex flex-col space-y-2",
+              isCenter
+                ? "items-center text-center w-full"
+                : "items-start text-left",
+            )}
+          >
+            {kanjiSubtitle && (
+              <span className="font-serif text-primary/40 tracking-widest text-xs font-semibold uppercase block">
+                {kanjiSubtitle}
+              </span>
+            )}
+            {sectionTitle && (
+              <h2 className="text-3xl sm:text-4xl font-bold font-serif text-ink tracking-tight">
+                {sectionTitle}
+              </h2>
+            )}
+            {sectionDescription && (
+              <p
+                className={cn(
+                  "text-base text-ink-muted max-w-2xl leading-relaxed",
+                  isCenter && "mx-auto",
+                )}
+              >
+                {sectionDescription}
+              </p>
+            )}
+            <div
+              className={cn(
+                "w-12 h-0.5 bg-primary/40 mt-3 rounded-full",
+                isCenter && "mx-auto",
+              )}
+            />
+          </div>
+          {headerAction && <div className="shrink-0 pb-1">{headerAction}</div>}
         </div>
       )}
       {children}
@@ -77,7 +104,7 @@ export const SectionWrapper: React.FC<SectionWrapperProps> = ({
   const sectionClassName = cn(
     "py-16 sm:py-24 relative overflow-hidden scroll-mt-[65px]",
     bgStyles[bgVariant],
-    className
+    className,
   );
 
   if (!animate) {
