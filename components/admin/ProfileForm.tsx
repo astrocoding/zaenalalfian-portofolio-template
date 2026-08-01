@@ -222,7 +222,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         primaryActionLabel="Save All"
       />
 
-      <div className="pt-[87px] px-4 sm:px-6 lg:px-6 space-y-6 w-full">
+      <div className="pt-[77px] lg:pt-[87px] px-4 sm:px-6 lg:px-6 space-y-6 w-full">
         <AlertBanner
           variant="error"
           message={error}

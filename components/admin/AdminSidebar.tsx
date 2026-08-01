@@ -58,105 +58,111 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
 
   if (pathname === "/admin/login") return null;
 
-  const renderNavItems = () => (
-    <nav className="space-y-1" aria-label="Admin Navigation">
-      {adminNavItems.map((item) => {
-        const isActive =
-          item.href === "/admin"
-            ? pathname === "/admin"
-            : pathname.startsWith(item.href);
+  const renderNavItems = (forceExpanded = false) => {
+    const collapsed = forceExpanded ? false : isCollapsed;
+    return (
+      <nav className="space-y-1" aria-label="Admin Navigation">
+        {adminNavItems.map((item) => {
+          const isActive =
+            item.href === "/admin"
+              ? pathname === "/admin"
+              : pathname.startsWith(item.href);
 
-        const Icon = item.icon;
+          const Icon = item.icon;
 
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={() => setMobileOpen(false)}
-            title={isCollapsed ? item.label : undefined}
-            className={`group relative w-full h-11 flex items-center rounded-md transition-colors duration-200 overflow-hidden ${
-              isActive
-                ? "bg-primary text-white font-semibold shadow-2xs"
-                : "text-ink-muted hover:text-ink hover:bg-black/5"
-            }`}
-          >
-            {/* Fixed 48px Left Box for Icon: Anchors icon center at exactly 36px from sidebar border */}
-            <div className="w-12 h-11 flex items-center justify-center shrink-0">
-              <Icon className="w-5 h-5 shrink-0" />
-            </div>
-
-            {/* Text & Kanji Container: Fades out and clips gracefully during width collapse */}
-            <div
-              className={`flex items-center justify-between flex-1 min-w-0 pr-3.5 transition-all duration-300 ease-in-out ${
-                isCollapsed
-                  ? "opacity-0 w-0 overflow-hidden pointer-events-none"
-                  : "opacity-100 w-auto"
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              title={collapsed ? item.label : undefined}
+              className={`group relative w-full h-11 flex items-center rounded-md transition-colors duration-200 overflow-hidden ${
+                isActive
+                  ? "bg-primary text-white font-semibold shadow-2xs"
+                  : "text-ink-muted hover:text-ink hover:bg-black/5"
               }`}
             >
-              <span className="truncate text-sm font-medium">{item.label}</span>
-              <span
-                className={`text-[10px] font-serif shrink-0 ml-2 ${
-                  isActive ? "text-white/80" : "text-primary/50"
+              {/* Fixed 48px Left Box for Icon: Anchors icon center at exactly 36px from sidebar border */}
+              <div className="w-12 h-11 flex items-center justify-center shrink-0">
+                <Icon className="w-5 h-5 shrink-0" />
+              </div>
+
+              {/* Text & Kanji Container: Fades out and clips gracefully during width collapse */}
+              <div
+                className={`flex items-center justify-between flex-1 min-w-0 pr-3.5 transition-all duration-300 ease-in-out ${
+                  collapsed
+                    ? "opacity-0 w-0 overflow-hidden pointer-events-none"
+                    : "opacity-100 w-auto"
                 }`}
               >
-                {item.kanji}
-              </span>
-            </div>
-          </Link>
-        );
-      })}
-    </nav>
-  );
+                <span className="truncate text-sm font-medium">{item.label}</span>
+                <span
+                  className={`text-[10px] font-serif shrink-0 ml-2 ${
+                    isActive ? "text-white/80" : "text-primary/50"
+                  }`}
+                >
+                  {item.kanji}
+                </span>
+              </div>
+            </Link>
+          );
+        })}
+      </nav>
+    );
+  };
 
-  const renderUserActions = () => (
-    <div className="pt-4 border-t border-border-subtle space-y-2">
-      <Link
-        href="/"
-        target="_blank"
-        onClick={() => setMobileOpen(false)}
-        title={isCollapsed ? "View Public Site" : undefined}
-        className="w-full h-10 flex items-center rounded-md text-xs font-mono text-ink-muted hover:text-primary hover:bg-black/5 transition-colors duration-200 overflow-hidden"
-      >
-        <div className="w-12 h-10 flex items-center justify-center shrink-0">
-          <ExternalLink className="w-5 h-5 shrink-0" />
-        </div>
-        <div
-          className={`flex items-center flex-1 min-w-0 pr-3.5 transition-all duration-300 ease-in-out ${
-            isCollapsed
-              ? "opacity-0 w-0 overflow-hidden pointer-events-none"
-              : "opacity-100 w-auto"
-          }`}
+  const renderUserActions = (forceExpanded = false) => {
+    const collapsed = forceExpanded ? false : isCollapsed;
+    return (
+      <div className="pt-4 border-t border-border-subtle space-y-2">
+        <Link
+          href="/"
+          target="_blank"
+          onClick={() => setMobileOpen(false)}
+          title={collapsed ? "View Public Site" : undefined}
+          className="w-full h-10 flex items-center rounded-md text-xs font-mono text-ink-muted hover:text-primary hover:bg-black/5 transition-colors duration-200 overflow-hidden"
         >
-          <span className="truncate">View Public Site</span>
-        </div>
-      </Link>
+          <div className="w-12 h-10 flex items-center justify-center shrink-0">
+            <ExternalLink className="w-5 h-5 shrink-0" />
+          </div>
+          <div
+            className={`flex items-center flex-1 min-w-0 pr-3.5 transition-all duration-300 ease-in-out ${
+              collapsed
+                ? "opacity-0 w-0 overflow-hidden pointer-events-none"
+                : "opacity-100 w-auto"
+            }`}
+          >
+            <span className="truncate">View Public Site</span>
+          </div>
+        </Link>
 
-      <button
-        type="button"
-        onClick={() => signOut({ callbackUrl: "/admin/login" })}
-        title={isCollapsed ? "Sign Out / ログアウト" : undefined}
-        className="w-full h-10 flex items-center rounded-md text-xs font-mono text-rose-600 hover:bg-rose-50 transition-colors duration-200 cursor-pointer font-medium overflow-hidden"
-      >
-        <div className="w-12 h-10 flex items-center justify-center shrink-0">
-          <LogOut className="w-5 h-5 shrink-0" />
-        </div>
-        <div
-          className={`flex items-center flex-1 min-w-0 pr-3.5 transition-all duration-300 ease-in-out ${
-            isCollapsed
-              ? "opacity-0 w-0 overflow-hidden pointer-events-none"
-              : "opacity-100 w-auto"
-          }`}
+        <button
+          type="button"
+          onClick={() => signOut({ callbackUrl: "/admin/login" })}
+          title={collapsed ? "Sign Out / ログアウト" : undefined}
+          className="w-full h-10 flex items-center rounded-md text-xs font-mono text-rose-600 hover:bg-rose-50 transition-colors duration-200 cursor-pointer font-medium overflow-hidden"
         >
-          <span className="truncate">Sign Out / ログアウト</span>
-        </div>
-      </button>
-    </div>
-  );
+          <div className="w-12 h-10 flex items-center justify-center shrink-0">
+            <LogOut className="w-5 h-5 shrink-0" />
+          </div>
+          <div
+            className={`flex items-center flex-1 min-w-0 pr-3.5 transition-all duration-300 ease-in-out ${
+              collapsed
+                ? "opacity-0 w-0 overflow-hidden pointer-events-none"
+                : "opacity-100 w-auto"
+            }`}
+          >
+            <span className="truncate">Sign Out / ログアウト</span>
+          </div>
+        </button>
+      </div>
+    );
+  };
 
   return (
     <>
-      {/* Mobile & Tablet Header Bar (<1024px) */}
-      <div className="lg:hidden sticky top-0 z-50 bg-surface border-b border-border-warm px-4 h-[63px] flex items-center justify-between relative shadow-xs shrink-0">
+      {/* Mobile & Tablet Fixed Top Header Bar (<1024px) */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-surface border-b border-border-warm px-4 h-[63px] flex items-center justify-between shadow-none shrink-0">
         <div className="flex items-center space-x-3 min-w-0">
           <Image
             src="/zen.svg?v=2"
@@ -240,10 +246,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
                     </button>
                   </div>
 
-                  {renderNavItems()}
+                  {renderNavItems(true)}
                 </div>
 
-                {renderUserActions()}
+                {renderUserActions(true)}
               </motion.div>
             </>
           )}

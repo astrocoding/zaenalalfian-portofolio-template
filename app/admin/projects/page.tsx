@@ -69,7 +69,7 @@ export default async function AdminProjectsPage({ searchParams }: AdminProjectsP
         primaryActionIcon={<Plus className="w-3.5 h-3.5" />}
       />
 
-      <div className="pt-[87px] px-4 sm:px-6 lg:px-6 pb-4 sm:pb-6 lg:pb-6 space-y-6">
+      <div className="pt-[77px] lg:pt-[87px] px-4 sm:px-6 lg:px-6 pb-4 sm:pb-6 lg:pb-6 space-y-6">
 
         {/* Desktop Table View (lg+) */}
         <div className="hidden lg:block bg-surface border border-border-warm rounded-xl overflow-hidden shadow-card">

@@ -143,7 +143,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
         secondaryActionLabel="Save Draft"
       />
 
-      <div className="pt-[87px] px-4 sm:px-6 lg:px-6 pb-4 sm:pb-6 lg:pb-6">
+      <div className="pt-[77px] lg:pt-[87px] px-4 sm:px-6 lg:px-6 pb-4 sm:pb-6 lg:pb-6">
         <div className="space-y-5 bg-surface border border-border-warm rounded-xl p-5 sm:p-6 shadow-card">
           <AlertBanner
             variant="error"

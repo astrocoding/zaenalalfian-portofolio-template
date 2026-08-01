@@ -128,7 +128,7 @@ export default async function AdminDashboardPage() {
         primaryActionIcon={<Plus className="w-3.5 h-3.5" />}
       />
 
-      <div className="pt-[87px] px-4 sm:px-6 lg:px-6 space-y-6 w-full">
+      <div className="pt-[77px] lg:pt-[87px] px-4 sm:px-6 lg:px-6 space-y-6 w-full">
         {/* Metrics Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {metrics.map((item) => {

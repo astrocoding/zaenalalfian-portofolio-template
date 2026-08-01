@@ -15,38 +15,48 @@ const SidebarContext = React.createContext<SidebarContextType | undefined>(undef
 
 const STORAGE_KEY = "sidebar";
 
-export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = React.useState<SidebarState>("open");
+export interface SidebarProviderProps {
+  children: React.ReactNode;
+  initialState?: SidebarState;
+}
 
-  // Read initial state from localStorage on client mount
+function syncSidebarStateToStorage(newState: SidebarState) {
+  try {
+    localStorage.setItem(STORAGE_KEY, newState);
+    document.cookie = `sidebar=${newState}; path=/; max-age=31536000; SameSite=Lax`;
+  } catch {
+    // Ignore storage write errors
+  }
+}
+
+export const SidebarProvider: React.FC<SidebarProviderProps> = ({
+  children,
+  initialState = "open",
+}) => {
+  const [state, setState] = React.useState<SidebarState>(initialState);
+
+  // Sync client state with localStorage if client has saved state
   React.useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === "open" || saved === "close") {
+      if ((saved === "open" || saved === "close") && saved !== state) {
         setState(saved);
+        document.cookie = `sidebar=${saved}; path=/; max-age=31536000; SameSite=Lax`;
       }
     } catch {
-      // Fallback to "open" if localStorage is unavailable
+      // Ignore
     }
   }, []);
 
   const setSidebarState = React.useCallback((newState: SidebarState) => {
     setState(newState);
-    try {
-      localStorage.setItem(STORAGE_KEY, newState);
-    } catch {
-      // Ignore storage write errors
-    }
+    syncSidebarStateToStorage(newState);
   }, []);
 
   const toggleSidebar = React.useCallback(() => {
     setState((prev) => {
       const next = prev === "open" ? "close" : "open";
-      try {
-        localStorage.setItem(STORAGE_KEY, next);
-      } catch {
-        // Ignore
-      }
+      syncSidebarStateToStorage(next);
       return next;
     });
   }, []);

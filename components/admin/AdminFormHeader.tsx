@@ -193,7 +193,7 @@ export const AdminFormHeader: React.FC<AdminFormHeaderProps> = ({
 
   return (
     <>
-      <div className={`fixed top-[63px] lg:top-0 left-0 right-0 z-30 px-3 sm:px-6 h-[63px] bg-surface border-b border-border-warm flex items-center justify-between gap-2.5 sm:gap-3 shrink-0 transition-all duration-300 ease-in-out ${
+      <div className={`fixed top-[63px] lg:top-0 left-0 right-0 z-40 px-3 sm:px-6 h-[63px] bg-surface border-b border-border-warm shadow-none flex items-center justify-between gap-2.5 sm:gap-3 shrink-0 transition-all duration-300 ease-in-out ${
         isCollapsed ? "lg:left-[72px]" : "lg:left-64"
       }`}>
         {/* Left Section: Back Button + Title + Status Badge */}
