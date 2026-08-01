@@ -19,7 +19,6 @@
 }
 
 @layer base {
-
   *,
   ::after,
   ::before {
@@ -53,7 +52,8 @@
 
 /* Hardware-accelerated GPU Float Animation (0ms JS Main-Thread Overhead) */
 @keyframes floatAnimation {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -116,10 +116,14 @@
   cursor: pointer;
 }
 
-/* Admin Form Fields — neutral border scoped to .admin-portal */
-/* Unlayered CSS overrides Tailwind @layer utilities (border-border-warm) */
+/* Admin Form Fields — neutral border and background scoped to .admin-portal */
+/* Unlayered CSS overrides Tailwind @layer utilities */
 .admin-portal form input.bg-watermark-surface,
 .admin-portal form textarea.bg-watermark-surface,
-.admin-portal form select.bg-watermark-surface {
+.admin-portal form select.bg-watermark-surface,
+.admin-portal textarea,
+.admin-portal input,
+.admin-portal select {
   border-color: #c8c5c2;
+  background-color: var(--color-watermark-surface);
 }
