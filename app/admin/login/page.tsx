@@ -5,8 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { User, KeyRound, AlertCircle, ArrowRight, ShieldCheck, Eye, EyeOff } from "lucide-react";
+import {
+  User,
+  KeyRound,
+  ArrowRight,
+  ShieldCheck,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { AlertBanner } from "@/components/ui/AlertBanner";
 
 export default function AdminLoginPage() {
   const [identifier, setIdentifier] = React.useState("");
@@ -72,18 +80,19 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Error Alert Banner */}
-        {error && (
-          <div className="p-3.5 rounded-md bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
+        <AlertBanner
+          variant="error"
+          message={error}
+          onClose={() => setError(null)}
+          size="sm"
+        />
 
         {/* Login Form */}
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-xs font-mono text-ink font-medium">
-              Email or Username / <span className="text-secondary">ユーザー名・メール *</span>
+              Email or Username /{" "}
+              <span className="text-secondary">ユーザー名・メール *</span>
             </label>
             <div className="relative">
               <User className="w-4 h-4 text-ink-muted absolute left-3 top-1/2 -translate-y-1/2" />
@@ -118,7 +127,11 @@ export default function AdminLoginPage() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink transition-colors cursor-pointer"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
           </div>

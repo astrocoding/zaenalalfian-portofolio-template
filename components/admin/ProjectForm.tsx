@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { AlertCircle } from "lucide-react";
+import { AlertBanner } from "@/components/ui/AlertBanner";
 import { ImageUploader } from "./ImageUploader";
 import { AdminFormHeader } from "./AdminFormHeader";
 import { createProjectAction, updateProjectAction } from "@/app/actions/admin";
@@ -33,7 +33,10 @@ export interface ProjectFormProps {
   isEdit?: boolean;
 }
 
-export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = false }) => {
+export const ProjectForm: React.FC<ProjectFormProps> = ({
+  initialData,
+  isEdit = false,
+}) => {
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -43,9 +46,15 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
     slug: initialData?.slug || "",
     category: initialData?.category || "Full-Stack Web App",
     description: initialData?.description || "",
-    thumbnail: initialData?.thumbnail && initialData.thumbnail !== "/projects/preview.jpg" ? initialData.thumbnail : "",
+    thumbnail:
+      initialData?.thumbnail &&
+      initialData.thumbnail !== "/projects/preview.jpg"
+        ? initialData.thumbnail
+        : "",
     images: initialData?.images || [],
-    techstack: initialData?.techstack ? initialData.techstack.join(", ") : "Next.js 16, React 19, TypeScript",
+    techstack: initialData?.techstack
+      ? initialData.techstack.join(", ")
+      : "Next.js 16, React 19, TypeScript",
     problem: initialData?.problem || "",
     solution: initialData?.solution || "",
     architecture: initialData?.architecture || "",
@@ -54,7 +63,8 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
     repository: initialData?.repository || "",
     sourceLink: initialData?.sourceLink || "",
     priorityOrder: initialData?.priorityOrder ?? 1,
-    status: (initialData?.status || "draft") as "draft" | "published" | "archived",
+    status: (initialData?.status || "draft") as
+      "draft" | "published" | "archived",
   });
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +76,9 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
     }));
   };
 
-  const submitWithStatus = async (overrideStatus?: "draft" | "published" | "archived") => {
+  const submitWithStatus = async (
+    overrideStatus?: "draft" | "published" | "archived",
+  ) => {
     setLoading(true);
     setError(null);
 
@@ -133,17 +145,18 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
 
       <div className="pt-[87px] px-4 sm:px-6 lg:px-6 pb-4 sm:pb-6 lg:pb-6">
         <div className="space-y-5 bg-surface border border-border-warm rounded-xl p-5 sm:p-6 shadow-card">
-          {error && (
-            <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
+          <AlertBanner
+            variant="error"
+            message={error}
+            onClose={() => setError(null)}
+          />
 
           {/* Title & Category Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-xs font-mono font-medium text-ink">Title / <span className="text-primary">タイトル *</span></label>
+              <label className="text-xs font-mono font-medium text-ink">
+                Title / <span className="text-primary">タイトル *</span>
+              </label>
               <input
                 type="text"
                 required
@@ -167,12 +180,16 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-mono font-medium text-ink">Category / <span className="text-primary">カテゴリ *</span></label>
+              <label className="text-xs font-mono font-medium text-ink">
+                Category / <span className="text-primary">カテゴリ *</span>
+              </label>
               <input
                 type="text"
                 required
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
                 placeholder="e.g. Full-Stack Web App"
                 className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
@@ -182,25 +199,38 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
           {/* Techstack & Priority Order Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
             <div className="space-y-1.5 md:col-span-8">
-              <label className="text-xs font-mono font-medium text-ink">Tech Stack <span className="text-primary">(comma separated) *</span></label>
+              <label className="text-xs font-mono font-medium text-ink">
+                Tech Stack{" "}
+                <span className="text-primary">(comma separated) *</span>
+              </label>
               <input
                 type="text"
                 required
                 value={formData.techstack}
-                onChange={(e) => setFormData({ ...formData, techstack: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, techstack: e.target.value })
+                }
                 placeholder="Next.js 16, React 19, TypeScript, PostgreSQL"
                 className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
 
             <div className="space-y-1.5 md:col-span-4">
-              <label className="text-xs font-mono font-medium text-ink">Priority Order / <span className="text-primary">優先順位 * </span></label>
+              <label className="text-xs font-mono font-medium text-ink">
+                Priority Order /{" "}
+                <span className="text-primary">優先順位 * </span>
+              </label>
               <input
                 type="number"
                 required
                 min={1}
                 value={formData.priorityOrder}
-                onChange={(e) => setFormData({ ...formData, priorityOrder: Number(e.target.value) })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    priorityOrder: Number(e.target.value),
+                  })
+                }
                 placeholder="1"
                 className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
@@ -209,12 +239,16 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
 
           {/* Description */}
           <div className="space-y-1.5">
-            <label className="text-xs font-mono font-medium text-ink">Description / <span className="text-primary">概要 *</span></label>
+            <label className="text-xs font-mono font-medium text-ink">
+              Description / <span className="text-primary">概要 *</span>
+            </label>
             <textarea
               required
               rows={3}
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               placeholder="Brief summary of the project architecture and features..."
               className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
             />
@@ -223,22 +257,30 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
           {/* Repository URL & Live Demo URL Grid (Below Description) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-xs font-mono font-medium text-ink">Repository URL</label>
+              <label className="text-xs font-mono font-medium text-ink">
+                Repository URL
+              </label>
               <input
                 type="text"
                 value={formData.repository}
-                onChange={(e) => setFormData({ ...formData, repository: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, repository: e.target.value })
+                }
                 placeholder="https://github.com/username/repo"
                 className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-xs placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-mono font-medium text-ink">Live Demo URL</label>
+              <label className="text-xs font-mono font-medium text-ink">
+                Live Demo URL
+              </label>
               <input
                 type="text"
                 value={formData.sourceLink}
-                onChange={(e) => setFormData({ ...formData, sourceLink: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, sourceLink: e.target.value })
+                }
                 placeholder="https://app.domain.com"
                 className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-xs placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
@@ -267,7 +309,9 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
                 label="Showcase Carousel Images (Max 3)"
                 sublabel="/ 実績詳細カルーセル (WebP)"
                 value={formData.images}
-                onChange={(newUrls) => setFormData({ ...formData, images: newUrls })}
+                onChange={(newUrls) =>
+                  setFormData({ ...formData, images: newUrls })
+                }
                 maxFiles={3}
               />
             </div>
@@ -276,20 +320,28 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
           {/* Case Study Details Grid */}
           <div className="space-y-4 pt-2">
             <div className="flex items-center justify-between border-b border-border-subtle pb-2">
-              <h4 className="font-serif font-bold text-sm text-primary uppercase">Case Study Details / ケーススタディ詳細</h4>
+              <h4 className="font-serif font-bold text-sm text-primary uppercase">
+                Case Study Details / ケーススタディ詳細
+              </h4>
             </div>
 
             {/* Row 1: Problem Statement & Solution Architecture (2 Cols) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-mono font-medium text-ink">Problem Statement</label>
-                  <span className="text-[10px] font-mono text-ink-muted">Enter per item</span>
+                  <label className="text-xs font-mono font-medium text-ink">
+                    Problem Statement
+                  </label>
+                  <span className="text-[10px] font-mono text-ink-muted">
+                    Enter per item
+                  </span>
                 </div>
                 <textarea
                   rows={4}
                   value={formData.problem}
-                  onChange={(e) => setFormData({ ...formData, problem: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, problem: e.target.value })
+                  }
                   placeholder={`Legacy monolithic code caused slow response times\nHigh database lock contention during peak operations\nManual reconciliation delays across partner networks`}
                   className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-xs leading-relaxed placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y font-sans"
                 />
@@ -297,13 +349,19 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-mono font-medium text-ink">Solution Architecture</label>
-                  <span className="text-[10px] font-mono text-ink-muted">Enter per item</span>
+                  <label className="text-xs font-mono font-medium text-ink">
+                    Solution Architecture
+                  </label>
+                  <span className="text-[10px] font-mono text-ink-muted">
+                    Enter per item
+                  </span>
                 </div>
                 <textarea
                   rows={4}
                   value={formData.solution}
-                  onChange={(e) => setFormData({ ...formData, solution: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, solution: e.target.value })
+                  }
                   placeholder={`Architected decoupled 3-tier REST API services\nImplemented Redis caching reducing database reads by 70%\nAdopted Next.js 16 App Router & Server Actions`}
                   className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-xs leading-relaxed placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y font-sans"
                 />
@@ -314,13 +372,19 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-mono font-medium text-ink">System Architecture</label>
-                  <span className="text-[10px] font-mono text-ink-muted">Enter per item</span>
+                  <label className="text-xs font-mono font-medium text-ink">
+                    System Architecture
+                  </label>
+                  <span className="text-[10px] font-mono text-ink-muted">
+                    Enter per item
+                  </span>
                 </div>
                 <textarea
                   rows={4}
                   value={formData.architecture}
-                  onChange={(e) => setFormData({ ...formData, architecture: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, architecture: e.target.value })
+                  }
                   placeholder={`Node.js API Gateway & Hapi microservices\nPostgreSQL database cluster with indexed tables\nRedis caching layer & Edge CDN distribution`}
                   className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-xs leading-relaxed placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y font-sans"
                 />
@@ -328,13 +392,19 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-mono font-medium text-ink">Key Challenge</label>
-                  <span className="text-[10px] font-mono text-ink-muted">Enter per item</span>
+                  <label className="text-xs font-mono font-medium text-ink">
+                    Key Challenge
+                  </label>
+                  <span className="text-[10px] font-mono text-ink-muted">
+                    Enter per item
+                  </span>
                 </div>
                 <textarea
                   rows={4}
                   value={formData.challenge}
-                  onChange={(e) => setFormData({ ...formData, challenge: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, challenge: e.target.value })
+                  }
                   placeholder={`Optimizing multi-table SQL join queries\nDesigning real-time cache invalidation strategies\nManaging multi-role permissions securely`}
                   className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-xs leading-relaxed placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y font-sans"
                 />
@@ -344,13 +414,19 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, isEdit = 
             {/* Row 3: Result / Outcome (Below Architecture & Challenge) */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-mono font-medium text-ink">Result / Outcome</label>
-                <span className="text-[10px] font-mono text-ink-muted">Enter per item</span>
+                <label className="text-xs font-mono font-medium text-ink">
+                  Result / Outcome
+                </label>
+                <span className="text-[10px] font-mono text-ink-muted">
+                  Enter per item
+                </span>
               </div>
               <textarea
                 rows={4}
                 value={formData.result}
-                onChange={(e) => setFormData({ ...formData, result: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, result: e.target.value })
+                }
                 placeholder={`Achieved 150% throughput improvement\nSub-100ms response time across primary endpoints\nStreamlined tracking across 500+ vocational students`}
                 className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-xs leading-relaxed placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y font-sans"
               />
