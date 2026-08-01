@@ -64,20 +64,31 @@ export const AdminPagination: React.FC<AdminPaginationProps> = ({
   const startItem = (currentPage - 1) * pageSize + 1;
   const endItem = Math.min(currentPage * pageSize, totalItems);
 
+  // Dynamic adaptive ellipsis logic
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
     const maxPages = Math.max(1, totalPages);
-    if (maxPages <= 7) {
+
+    if (maxPages <= 5) {
       for (let i = 1; i <= maxPages; i++) pages.push(i);
     } else {
       pages.push(1);
-      if (currentPage > 3) pages.push("...");
-      const start = Math.max(2, currentPage - 1);
-      const end = Math.min(maxPages - 1, currentPage + 1);
-      for (let i = start; i <= end; i++) pages.push(i);
-      if (currentPage < maxPages - 2) pages.push("...");
-      pages.push(maxPages);
+
+      if (currentPage <= 3) {
+        pages.push(2, 3);
+        if (maxPages > 4) pages.push("...");
+        pages.push(maxPages);
+      } else if (currentPage >= maxPages - 2) {
+        pages.push("...");
+        pages.push(maxPages - 2, maxPages - 1, maxPages);
+      } else {
+        pages.push("...");
+        pages.push(currentPage - 1, currentPage, currentPage + 1);
+        pages.push("...");
+        pages.push(maxPages);
+      }
     }
+
     return pages;
   };
 
@@ -107,7 +118,7 @@ export const AdminPagination: React.FC<AdminPaginationProps> = ({
   };
 
   return (
-    <div className="px-4 py-3 sm:px-6 sm:py-4 bg-surface border-t border-border-warm flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs font-mono select-none">
+    <div className="bg-surface rounded-xl border border-border-warm lg:rounded-none lg:border-0 lg:border-t p-4 sm:px-6 sm:py-4 shadow-card lg:shadow-none flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs font-mono select-none">
       {/* Items count summary */}
       <div className="text-ink-muted text-center sm:text-left">
         Showing <span className="font-bold text-ink">{startItem}</span>–
