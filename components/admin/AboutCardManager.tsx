@@ -23,6 +23,7 @@ import {
   reorderAboutCardsAction,
 } from "@/app/actions/admin";
 import { DeleteConfirmModal } from "./DeleteConfirmModal";
+import { DynamicIcon, getLucideIcon } from "@/components/ui/DynamicIcon";
 
 export interface AboutCardItem {
   id: string;
@@ -45,8 +46,12 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
   const router = useRouter();
   const [cards, setCards] = React.useState<AboutCardItem[]>(initialCards);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [editingCard, setEditingCard] = React.useState<AboutCardItem | null>(null);
-  const [cardToDelete, setCardToDelete] = React.useState<AboutCardItem | null>(null);
+  const [editingCard, setEditingCard] = React.useState<AboutCardItem | null>(
+    null,
+  );
+  const [cardToDelete, setCardToDelete] = React.useState<AboutCardItem | null>(
+    null,
+  );
   const [loading, setLoading] = React.useState(false);
   const [deleteLoading, setDeleteLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -61,9 +66,11 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
   });
 
   // Keep cards synced when initialCards prop updates from server revalidation
-  React.useEffect(() => {
+  const [prevInitialCards, setPrevInitialCards] = React.useState(initialCards);
+  if (prevInitialCards !== initialCards) {
+    setPrevInitialCards(initialCards);
     setCards(initialCards);
-  }, [initialCards]);
+  }
 
   const handleOpenAddModal = () => {
     setEditingCard(null);
@@ -108,7 +115,7 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
       setSuccess(
         editingCard
           ? "About Card updated! / カードを更新しました。"
-          : "New About Card created! / カードを追加しました。"
+          : "New About Card created! / カードを追加しました。",
       );
       handleCloseModal();
       router.refresh();
@@ -126,7 +133,9 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
     setDeleteLoading(false);
 
     if (res.success) {
-      setSuccess(`Card "${cardToDelete.title}" deleted! / カードを削除しました。`);
+      setSuccess(
+        `Card "${cardToDelete.title}" deleted! / カードを削除しました。`,
+      );
       setCardToDelete(null);
       router.refresh();
     } else {
@@ -158,7 +167,7 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
     setError(null);
 
     const res = await reorderAboutCardsAction(
-      reordered.map((c) => ({ id: c.id, order: c.order }))
+      reordered.map((c) => ({ id: c.id, order: c.order })),
     );
 
     if (!res.success) {
@@ -181,7 +190,8 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
               About Cards &amp; Pillars Management / カード管理・順序変更
             </h2>
             <p className="text-xs text-ink-muted font-sans">
-              Manage engineering principles &amp; value cards displayed across /about and landing pages.
+              Manage engineering principles &amp; value cards displayed across
+              /about and landing pages.
             </p>
           </div>
         </div>
@@ -213,7 +223,10 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
 
       {cards.length === 0 ? (
         <div className="text-center py-10 px-4 bg-paper rounded-lg border border-dashed border-border-warm">
-          <p className="text-xs font-mono text-ink-muted">No About Cards found. Click &quot;Add About Card&quot; to create one.</p>
+          <p className="text-xs font-mono text-ink-muted">
+            No About Cards found. Click &quot;Add About Card&quot; to create
+            one.
+          </p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -224,8 +237,12 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
             >
               <div className="flex items-start space-x-3.5 flex-1 min-w-0">
                 <div className="flex flex-col items-center justify-center shrink-0">
-                  <span className="text-[10px] font-mono text-ink-muted uppercase">Order</span>
-                  <span className="font-serif font-bold text-sm text-primary">#{index + 1}</span>
+                  <span className="text-[10px] font-mono text-ink-muted uppercase">
+                    Order
+                  </span>
+                  <span className="font-serif font-bold text-sm text-primary">
+                    #{index + 1}
+                  </span>
                 </div>
 
                 <div className="flex-1 min-w-0 space-y-1">
@@ -236,11 +253,17 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
                       </Badge>
                     )}
                     {card.icon && (
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/10 text-primary font-bold">
-                        Icon: {card.icon}
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/10 text-primary font-bold inline-flex items-center gap-1">
+                        <DynamicIcon
+                          name={card.icon}
+                          className="w-3.5 h-3.5 text-primary"
+                        />
+                        <span>Icon: {card.icon}</span>
                       </span>
                     )}
-                    <h3 className="font-serif font-bold text-sm text-ink truncate">{card.title}</h3>
+                    <h3 className="font-serif font-bold text-sm text-ink truncate">
+                      {card.title}
+                    </h3>
                   </div>
                   <p className="text-xs text-ink-muted line-clamp-2 font-sans leading-relaxed">
                     {card.subtitle}
@@ -315,7 +338,9 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
           <div className="bg-surface border border-border-warm rounded-xl p-6 shadow-2xl w-full max-w-lg space-y-5 animate-in fade-in zoom-in duration-200">
             <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
               <h3 className="font-serif font-bold text-base text-ink">
-                {editingCard ? "Edit About Card / カード編集" : "Create About Card / カード追加"}
+                {editingCard
+                  ? "Edit About Card / カード編集"
+                  : "Create About Card / カード追加"}
               </h3>
               <button
                 type="button"
@@ -329,23 +354,31 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
             <form onSubmit={handleSaveCard} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="sm:col-span-2 space-y-1.5">
-                  <label className="text-xs font-mono font-medium text-ink">Card Title / タイトル *</label>
+                  <label className="text-xs font-mono font-medium text-ink">
+                    Card Title / タイトル *
+                  </label>
                   <input
                     type="text"
                     required
                     value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
                     placeholder="e.g. Clean Architecture"
                     className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-mono font-medium text-ink">Badge / Kanji</label>
+                  <label className="text-xs font-mono font-medium text-ink">
+                    Badge / Kanji
+                  </label>
                   <input
                     type="text"
                     value={formData.badge}
-                    onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, badge: e.target.value })
+                    }
                     placeholder="e.g. 建築 or 01"
                     className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
@@ -354,32 +387,70 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-mono font-medium text-ink">Icon Name (Lucide React)</label>
-                  <span className="text-[10px] font-mono text-ink-muted">Optional</span>
+                  <label className="text-xs font-mono font-medium text-ink">
+                    Icon Name (Lucide React)
+                  </label>
+                  {formData.icon && getLucideIcon(formData.icon) ? (
+                    <span className="text-[10px] font-mono text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold inline-flex items-center gap-1">
+                      <DynamicIcon
+                        name={formData.icon}
+                        className="w-3 h-3 text-emerald-700"
+                      />
+                      <span>Valid Icon</span>
+                    </span>
+                  ) : formData.icon ? (
+                    <span className="text-[10px] font-mono text-amber-700 bg-amber-100 px-2 py-0.5 rounded font-semibold">
+                      Custom / Default Fallback
+                    </span>
+                  ) : (
+                    <span className="text-[10px] font-mono text-ink-muted">
+                      Optional
+                    </span>
+                  )}
                 </div>
-                <input
-                  type="text"
-                  value={formData.icon}
-                  onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
-                  placeholder="e.g. Cpu, Zap, Layout, ShieldCheck, Code, Sparkles, Layers"
-                  className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
-                />
+                <div className="flex items-center gap-2">
+                  <div className="p-2.5 rounded-md bg-paper border border-border-warm shrink-0 flex items-center justify-center min-w-[42px] min-h-[42px]">
+                    <DynamicIcon
+                      name={formData.icon}
+                      fallback={Layers}
+                      className="w-5 h-5 text-primary"
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    value={formData.icon}
+                    onChange={(e) =>
+                      setFormData({ ...formData, icon: e.target.value })
+                    }
+                    placeholder="e.g. Cpu, Zap, Layout, ShieldCheck, Code, Sparkles, Terminal, Rocket"
+                    className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono"
+                  />
+                </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-mono font-medium text-ink">Subtitle / Card Description *</label>
+                <label className="text-xs font-mono font-medium text-ink">
+                  Subtitle / Card Description *
+                </label>
                 <textarea
                   required
                   rows={4}
                   value={formData.subtitle}
-                  onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, subtitle: e.target.value })
+                  }
                   placeholder="Strict separation of concerns, domain-driven boundaries..."
                   className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-watermark-surface text-ink text-sm placeholder:text-ink-muted/60 focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans leading-relaxed"
                 />
               </div>
 
               <div className="pt-3 flex items-center justify-end space-x-3 border-t border-border-subtle">
-                <Button type="button" variant="outline" size="sm" onClick={handleCloseModal}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCloseModal}
+                >
                   Cancel
                 </Button>
                 <Button
@@ -389,7 +460,11 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
                   disabled={loading}
                   icon={<Check className="w-4 h-4" />}
                 >
-                  {loading ? "Saving..." : editingCard ? "Update Card" : "Add Card"}
+                  {loading
+                    ? "Saving..."
+                    : editingCard
+                      ? "Update Card"
+                      : "Add Card"}
                 </Button>
               </div>
             </form>

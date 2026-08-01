@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ActionFooter } from "@/components/ui/ActionFooter";
+import { DynamicIcon } from "@/components/ui/DynamicIcon";
 import { FileText, Layers } from "lucide-react";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
@@ -33,13 +34,21 @@ export const metadata: Metadata = {
     title: "About & Engineering Philosophy | Zaenal Alfian",
     description:
       "Senior Full-Stack Engineer & Frontend Architect — 6+ years building scalable web platforms with optimized precision.",
-    images: [{ url: DEFAULT_OG_IMAGE(), width: 1200, height: 630, alt: "Zaenal Alfian About" }],
+    images: [
+      {
+        url: DEFAULT_OG_IMAGE(),
+        width: 1200,
+        height: 630,
+        alt: "Zaenal Alfian About",
+      },
+    ],
     siteName: "Zaenal Alfian Portfolio",
   },
   twitter: {
     card: "summary_large_image",
     title: "About & Engineering Philosophy | Zaenal Alfian",
-    description: "Senior Full-Stack Engineer & Frontend Architect — building scalable systems with optimized precision.",
+    description:
+      "Senior Full-Stack Engineer & Frontend Architect — building scalable systems with optimized precision.",
     images: [DEFAULT_OG_IMAGE()],
     creator: "@zaenalalfian",
   },
@@ -73,7 +82,8 @@ export default async function AboutPage() {
   const resumeUrl = adminUser?.resume?.trim();
 
   const title = aboutData?.title || "Behind the Architecture";
-  const subtitle = aboutData?.subtitle || "Bridging Design Vision & Technical Execution";
+  const subtitle =
+    aboutData?.subtitle || "Bridging Design Vision & Technical Execution";
   const excerpt =
     aboutData?.excerpt ||
     "I am Zaenal Alfian, a Senior Full-Stack Engineer and Frontend Architect with over 6 years of experience building mission-critical web applications, enterprise design systems, and high-performance serverless backends.";
@@ -130,19 +140,27 @@ export default async function AboutPage() {
                   className="w-10 h-10 object-contain"
                 />
                 <div>
-                  <h3 className="font-serif font-bold text-base text-ink">{userName}</h3>
-                  <p className="text-xs font-mono text-ink-muted">{userPosition}</p>
+                  <h3 className="font-serif font-bold text-base text-ink">
+                    {userName}
+                  </h3>
+                  <p className="text-xs font-mono text-ink-muted">
+                    {userPosition}
+                  </p>
                 </div>
               </div>
 
               <div className="space-y-3 text-xs font-mono">
                 <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">
                   <span className="text-ink-muted shrink-0">Location:</span>
-                  <span className="text-ink font-bold text-right">{userLocation}</span>
+                  <span className="text-ink font-bold text-right">
+                    {userLocation}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">
                   <span className="text-ink-muted shrink-0">Experience:</span>
-                  <span className="text-primary font-bold text-right">{userExperience}</span>
+                  <span className="text-primary font-bold text-right">
+                    {userExperience}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">
                   <span className="text-ink-muted shrink-0">Availability:</span>
@@ -161,13 +179,23 @@ export default async function AboutPage() {
                     rel="noopener noreferrer"
                     className="w-full block"
                   >
-                    <Button variant="primary" size="md" className="w-full justify-center" icon={<FileText className="w-4 h-4" />}>
+                    <Button
+                      variant="primary"
+                      size="md"
+                      className="w-full justify-center"
+                      icon={<FileText className="w-4 h-4" />}
+                    >
                       Get My Resume
                     </Button>
                   </a>
                 ) : (
                   <Link href="/#contact" className="w-full block">
-                    <Button variant="primary" size="md" className="w-full justify-center" icon={<FileText className="w-4 h-4" />}>
+                    <Button
+                      variant="primary"
+                      size="md"
+                      className="w-full justify-center"
+                      icon={<FileText className="w-4 h-4" />}
+                    >
                       Get My Resume
                     </Button>
                   </Link>
@@ -197,19 +225,44 @@ export default async function AboutPage() {
               />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {cards.map((pillar: { id?: string; badge?: string | null; title: string; subtitle: string }, idx: number) => (
-                  <Card key={pillar.id || idx} hoverEffect className="bg-surface p-6 space-y-3">
-                    {pillar.badge && (
-                      <span className="text-2xl font-serif font-bold text-primary/40 block">
-                        {pillar.badge}
-                      </span>
-                    )}
-                    <h3 className="text-lg font-serif font-bold text-ink">{pillar.title}</h3>
-                    <p className="text-xs text-ink-muted leading-relaxed font-sans">
-                      {pillar.subtitle}
-                    </p>
-                  </Card>
-                ))}
+                {cards.map(
+                  (
+                    pillar: {
+                      id?: string;
+                      badge?: string | null;
+                      title: string;
+                      subtitle: string;
+                      icon?: string | null;
+                    },
+                    idx: number,
+                  ) => (
+                    <Card
+                      key={pillar.id || idx}
+                      hoverEffect
+                      className="bg-surface p-6 space-y-3"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        {pillar.badge && (
+                          <span className="text-2xl font-serif font-bold text-primary/40 block">
+                            {pillar.badge}
+                          </span>
+                        )}
+                        <div className="p-2 rounded-md bg-[#f6e0ce]/30 border border-[#ebd9c8]/50 shrink-0">
+                          <DynamicIcon
+                            name={pillar.icon}
+                            className="w-5 h-5 text-primary"
+                          />
+                        </div>
+                      </div>
+                      <h3 className="text-lg font-serif font-bold text-ink">
+                        {pillar.title}
+                      </h3>
+                      <p className="text-xs text-ink-muted leading-relaxed font-sans">
+                        {pillar.subtitle}
+                      </p>
+                    </Card>
+                  ),
+                )}
               </div>
             )}
           </div>

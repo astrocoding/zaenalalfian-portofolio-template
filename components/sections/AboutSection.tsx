@@ -3,31 +3,15 @@
 import * as React from "react";
 import Link from "next/link";
 import { SectionWrapper } from "../ui/SectionWrapper";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui/Card";
-import { Button } from "../ui/Button";
 import {
-  ArrowRight,
-  Cpu,
-  Layout,
-  ShieldCheck,
-  Zap,
-  Code,
-  Sparkles,
-  Layers,
-  Compass,
-  Terminal,
-  Wrench,
-  GraduationCap,
-  Award,
-  BookOpen,
-  FileText,
-  Database,
-  Globe,
-  Server,
-  Lock,
-  Workflow,
-  LucideIcon,
-} from "lucide-react";
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "../ui/Card";
+import { Button } from "../ui/Button";
+import { ArrowRight, Cpu, Layout, ShieldCheck, Zap } from "lucide-react";
 
 export interface AboutCardData {
   id?: string;
@@ -46,29 +30,12 @@ export interface AboutSectionProps {
   } | null;
 }
 
-const ICON_MAP: Record<string, LucideIcon> = {
-  Cpu,
-  Zap,
-  Layout,
-  ShieldCheck,
-  Code,
-  Sparkles,
-  Layers,
-  Compass,
-  Terminal,
-  Wrench,
-  GraduationCap,
-  Award,
-  BookOpen,
-  FileText,
-  Database,
-  Globe,
-  Server,
-  Lock,
-  Workflow,
-};
-
-const defaultCoreValues: { icon: React.ReactNode; title: string; kanji: string; description: string }[] = [
+const defaultCoreValues: {
+  icon: React.ReactNode;
+  title: string;
+  kanji: string;
+  description: string;
+}[] = [
   {
     icon: <Cpu className="w-5 h-5 text-primary" />,
     title: "Clean Architecture",
@@ -99,22 +66,32 @@ const defaultCoreValues: { icon: React.ReactNode; title: string; kanji: string; 
   },
 ];
 
-const renderCardIcon = (iconName?: string | null, badge?: string | null, index: number = 0) => {
-  if (iconName && iconName.trim() !== "") {
-    const trimmed = iconName.trim();
-    const MatchedIcon = ICON_MAP[trimmed] || ICON_MAP[trimmed.charAt(0).toUpperCase() + trimmed.slice(1)];
-    if (MatchedIcon) return <MatchedIcon className="w-5 h-5 text-primary" />;
+import { getLucideIcon } from "../ui/DynamicIcon";
+
+const renderCardIcon = (
+  iconName?: string | null,
+  badge?: string | null,
+  index: number = 0,
+) => {
+  const DynamicLucideIcon = getLucideIcon(iconName);
+  if (DynamicLucideIcon) {
+    return <DynamicLucideIcon className="w-5 h-5 text-primary" />;
   }
 
-  if (badge === "建築" || index === 0) return <Cpu className="w-5 h-5 text-primary" />;
-  if (badge === "高速" || index === 1) return <Zap className="w-5 h-5 text-primary" />;
-  if (badge === "美学" || index === 2) return <Layout className="w-5 h-5 text-primary" />;
-  if (badge === "信頼" || index === 3) return <ShieldCheck className="w-5 h-5 text-primary" />;
+  if (badge === "建築" || index === 0)
+    return <Cpu className="w-5 h-5 text-primary" />;
+  if (badge === "高速" || index === 1)
+    return <Zap className="w-5 h-5 text-primary" />;
+  if (badge === "美学" || index === 2)
+    return <Layout className="w-5 h-5 text-primary" />;
+  if (badge === "信頼" || index === 3)
+    return <ShieldCheck className="w-5 h-5 text-primary" />;
   return <Cpu className="w-5 h-5 text-primary" />;
 };
 
 export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
-  const subtitle = aboutData?.subtitle || "Build Products with clarity & longevity.";
+  const subtitle =
+    aboutData?.subtitle || "Build Products with clarity & longevity.";
   const excerpt =
     aboutData?.excerpt ||
     "I am a senior full-stack engineer with over 6 years of experience engineering complex web applications, design systems, and cloud infrastructure.";
@@ -130,7 +107,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
       : defaultCoreValues.slice(0, 4);
 
   return (
-    <SectionWrapper id="about" bgVariant="surface" className="pt-10 sm:pt-14 pb-16 sm:pb-24 relative overflow-hidden">
+    <SectionWrapper
+      id="about"
+      bgVariant="surface"
+      className="pt-10 sm:pt-14 pb-16 sm:pb-24 relative overflow-hidden"
+    >
       {/* Subtle Japanese Vertical Watermark Accent ("生き甲斐") matching surface bg */}
       <div
         className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-3 sm:left-6 lg:left-8 xl:left-12 2xl:left-20 font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-[0.2em] whitespace-nowrap select-none pointer-events-none z-0 leading-none text-[var(--color-watermark-surface)] opacity-75"
@@ -162,7 +143,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
             </p>
             <div className="pt-2">
               <Link href="/about">
-                <Button variant="primary" size="md" icon={<ArrowRight className="w-4 h-4" />}>
+                <Button
+                  variant="primary"
+                  size="md"
+                  icon={<ArrowRight className="w-4 h-4" />}
+                >
                   Read Full Bio &amp; Background
                 </Button>
               </Link>
@@ -173,7 +158,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
         {/* Right Column: Cards Grid */}
         <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {cardsList.map((val, idx) => (
-            <Card key={val.title + idx} hoverEffect className="p-4 sm:p-5 bg-paper">
+            <Card
+              key={val.title + idx}
+              hoverEffect
+              className="p-4 sm:p-5 bg-paper"
+            >
               <CardHeader className="mb-1.5">
                 <div className="flex items-center justify-between">
                   <div className="p-2 rounded-md bg-[#f6e0ce]/40 border border-[#ebd9c8]">
