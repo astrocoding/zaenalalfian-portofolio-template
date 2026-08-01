@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { Container } from "../ui/Container";
 
@@ -17,14 +18,46 @@ export interface NavItem {
 
 const getNavItems = (isHomePage: boolean): NavItem[] => [
   { label: "Home", href: "/", id: "home", kanji: "ホーム" },
-  { label: "About", href: isHomePage ? "/#about" : "/about", id: "about", kanji: "概要" },
-  { label: "Experience", href: isHomePage ? "/#experience" : "/experiences", id: "experience", kanji: "経歴" },
-  { label: "Projects", href: isHomePage ? "/#projects" : "/projects", id: "projects", kanji: "実績" },
-  { label: "Blog", href: isHomePage ? "/#blogs" : "/blogs", id: "blogs", kanji: "記事" },
-  { label: "Contact", href: isHomePage ? "/#contact" : "/", id: "contact", kanji: "連絡" },
+  {
+    label: "About",
+    href: isHomePage ? "/#about" : "/about",
+    id: "about",
+    kanji: "概要",
+  },
+  {
+    label: "Experience",
+    href: isHomePage ? "/#experience" : "/experiences",
+    id: "experience",
+    kanji: "経歴",
+  },
+  {
+    label: "Projects",
+    href: isHomePage ? "/#projects" : "/projects",
+    id: "projects",
+    kanji: "実績",
+  },
+  {
+    label: "Blog",
+    href: isHomePage ? "/#blogs" : "/blogs",
+    id: "blogs",
+    kanji: "記事",
+  },
+  {
+    label: "Contact",
+    href: isHomePage ? "/#contact" : "/",
+    id: "contact",
+    kanji: "連絡",
+  },
 ];
 
-const observedSectionIds = ["about", "skills", "experience", "projects", "blogs", "contact"];
+const observedSectionIds = [
+  "about",
+  "skills",
+  "experience",
+  "projects",
+  "blogs",
+  "contact",
+];
 const sectionToNavMap: Record<string, string> = {
   about: "about",
   skills: "about",
@@ -38,7 +71,8 @@ const getSectionForPath = (path: string) => {
   if (path.startsWith("/about")) return "about";
   if (path.startsWith("/projects")) return "projects";
   if (path.startsWith("/blogs")) return "blogs";
-  if (path.startsWith("/experiences") || path.startsWith("/experience")) return "experience";
+  if (path.startsWith("/experiences") || path.startsWith("/experience"))
+    return "experience";
   if (path.startsWith("/docs")) return "docs";
   if (path === "/") return "home";
   return "";
@@ -52,7 +86,7 @@ const useIsMounted = () =>
   React.useSyncExternalStore(
     emptySubscribe,
     () => true,
-    () => false
+    () => false,
   );
 
 export const Navbar: React.FC = () => {
@@ -60,6 +94,8 @@ export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { data: session } = useSession();
+  const isAdmin = Boolean(session?.user && session.user.role === "ADMIN");
 
   const isHomePage = pathname === "/";
   const navItems = getNavItems(isHomePage);
@@ -69,7 +105,7 @@ export const Navbar: React.FC = () => {
 
   const [prevPathname, setPrevPathname] = React.useState(pathname);
   const [activeSection, setActiveSection] = React.useState<string>(() =>
-    getSectionForPath(pathname)
+    getSectionForPath(pathname),
   );
 
   // Sync state on route change without cascading effect renders
@@ -105,12 +141,14 @@ export const Navbar: React.FC = () => {
               setActiveSection(pendingSection);
               const headerOffset = 65;
               const elementPosition = el.getBoundingClientRect().top;
-              const offsetPosition = elementPosition + window.scrollY - headerOffset;
+              const offsetPosition =
+                elementPosition + window.scrollY - headerOffset;
               window.scrollTo({
                 top: offsetPosition,
                 behavior: "smooth",
               });
-              if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
+              if (scrollEndTimerRef.current)
+                clearTimeout(scrollEndTimerRef.current);
               scrollEndTimerRef.current = setTimeout(unlockScrollSpy, 1000);
             }
           }, 150);
@@ -175,7 +213,7 @@ export const Navbar: React.FC = () => {
   // Event-driven smooth scroll handler ONLY on explicit user link clicks (Mobile & Desktop)
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    item: NavItem
+    item: NavItem,
   ) => {
     const wasOpen = isOpen;
     setIsOpen(false);
@@ -193,7 +231,8 @@ export const Navbar: React.FC = () => {
           if (targetEl) {
             const headerOffset = 65; // Exact 65px scrolled header height
             const elementPosition = targetEl.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.scrollY - headerOffset;
+            const offsetPosition =
+              elementPosition + window.scrollY - headerOffset;
 
             window.scrollTo({
               top: offsetPosition,
@@ -224,7 +263,12 @@ export const Navbar: React.FC = () => {
   };
 
   const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    handleNavClick(e, { label: "Contact", href: "/#contact", id: "contact", kanji: "連絡" });
+    handleNavClick(e, {
+      label: "Contact",
+      href: "/#contact",
+      id: "contact",
+      kanji: "連絡",
+    });
   };
 
   return (
@@ -236,11 +280,21 @@ export const Navbar: React.FC = () => {
       }`}
     >
       <Container size="wide">
-        <nav className="flex items-center justify-between" aria-label="Main Navigation">
+        <nav
+          className="flex items-center justify-between"
+          aria-label="Main Navigation"
+        >
           {/* Logo Branding */}
           <Link
             href="/"
-            onClick={(e) => handleNavClick(e, { label: "Home", href: "/", id: "home", kanji: "ホーム" })}
+            onClick={(e) =>
+              handleNavClick(e, {
+                label: "Home",
+                href: "/",
+                id: "home",
+                kanji: "ホーム",
+              })
+            }
             className="group flex items-center space-x-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md p-1"
           >
             <Image
@@ -285,7 +339,11 @@ export const Navbar: React.FC = () => {
                     <motion.div
                       layoutId="activeNavIndicator"
                       className="absolute bottom-0 left-3 right-3 h-0.5 bg-primary rounded-full"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
                     />
                   )}
                 </Link>
@@ -294,14 +352,24 @@ export const Navbar: React.FC = () => {
 
             <div className="h-4 w-px bg-border-warm mx-2" />
 
-            <Link
-              href={isHomePage ? "/#contact" : "/"}
-              onClick={handleContactClick}
-              className="inline-flex items-center justify-center text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-primary text-white hover:bg-[#993b3d] transition-colors shadow-2xs space-x-1"
-            >
-              <span>Get in Touch</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
+            {isAdmin ? (
+              <Link
+                href="/admin"
+                className="inline-flex items-center justify-center text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-primary text-white hover:bg-[#993b3d] transition-colors shadow-2xs space-x-1"
+              >
+                <span>Dashboard</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
+            ) : (
+              <Link
+                href={isHomePage ? "/#contact" : "/"}
+                onClick={handleContactClick}
+                className="inline-flex items-center justify-center text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-primary text-white hover:bg-[#993b3d] transition-colors shadow-2xs space-x-1"
+              >
+                <span>Get in Touch</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
+            )}
           </div>
 
           {/* Mobile & Tablet Navigation Toggle Button (Visible up to LG screens <1024px) */}
@@ -309,7 +377,9 @@ export const Navbar: React.FC = () => {
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             className="lg:hidden p-2 rounded-md text-ink hover:bg-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            aria-label={isOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
+            aria-label={
+              isOpen ? "Close Navigation Menu" : "Open Navigation Menu"
+            }
             aria-expanded={isOpen}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -338,25 +408,40 @@ export const Navbar: React.FC = () => {
                       href={item.href}
                       onClick={(e) => handleNavClick(e, item)}
                       className={`flex items-center justify-between py-3 px-3.5 rounded-md font-medium transition-colors ${
-                        isActive ? "bg-primary/10 text-primary font-bold" : "text-ink hover:bg-[#f6e0ce]/40"
+                        isActive
+                          ? "bg-primary/10 text-primary font-bold"
+                          : "text-ink hover:bg-[#f6e0ce]/40"
                       }`}
                     >
                       <span className="text-base">{item.label}</span>
-                      <span className="text-xs font-serif text-primary/60">{item.kanji}</span>
+                      <span className="text-xs font-serif text-primary/60">
+                        {item.kanji}
+                      </span>
                     </Link>
                   );
                 })}
               </div>
 
               <div className="pt-4 border-t border-border-subtle flex flex-col space-y-3">
-                <Link
-                  href={isHomePage ? "/#contact" : "/"}
-                  onClick={handleContactClick}
-                  className="w-full py-3 px-4 bg-primary text-white text-center font-medium rounded-md text-sm shadow-xs flex items-center justify-center space-x-2"
-                >
-                  <span>Get in Touch</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </Link>
+                {isAdmin ? (
+                  <Link
+                    href="/admin"
+                    onClick={() => setIsOpen(false)}
+                    className="w-full py-3 px-4 bg-primary text-white text-center font-medium rounded-md text-sm shadow-xs flex items-center justify-center space-x-2"
+                  >
+                    <span>Dashboard</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </Link>
+                ) : (
+                  <Link
+                    href={isHomePage ? "/#contact" : "/"}
+                    onClick={handleContactClick}
+                    className="w-full py-3 px-4 bg-primary text-white text-center font-medium rounded-md text-sm shadow-xs flex items-center justify-center space-x-2"
+                  >
+                    <span>Get in Touch</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </Link>
+                )}
               </div>
             </Container>
           </motion.div>
@@ -365,4 +450,3 @@ export const Navbar: React.FC = () => {
     </header>
   );
 };
-

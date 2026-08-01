@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Newsreader, JetBrains_Mono } from "next/font/google";
+import {
+  Plus_Jakarta_Sans,
+  Newsreader,
+  JetBrains_Mono,
+} from "next/font/google";
 import "./globals.css";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getSiteUrl } from "@/lib/seo";
@@ -23,7 +27,6 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 const baseUrl = getSiteUrl();
-
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -76,6 +79,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { SessionProviderWrapper } from "@/components/admin/SessionProviderWrapper";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -92,7 +97,7 @@ export default function RootLayout({
         <JsonLd />
       </head>
       <body className="min-h-full flex flex-col bg-paper text-ink selection:bg-[#dac0ca] selection:text-[#121212]">
-        {children}
+        <SessionProviderWrapper>{children}</SessionProviderWrapper>
       </body>
     </html>
   );
