@@ -15,13 +15,15 @@ export interface AdminDocsPageProps {
   searchParams?: Promise<{ page?: string; limit?: string }>;
 }
 
-export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps) {
+export default async function AdminDocsPage({
+  searchParams,
+}: AdminDocsPageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
-  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 5);
 
   let docs: Awaited<ReturnType<typeof prisma.doc.findMany>> = [];
   let totalItems = 0;
@@ -52,13 +54,17 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
             <span>Back to Dashboard</span>
           </Link>
           <h1 className="text-3xl font-serif font-bold text-ink">
-            Documentation Guides Management / 文書管理
+            Documentations
           </h1>
         </div>
 
         <Link href="/admin/docs/new">
-          <Button variant="primary" size="md" icon={<Plus className="w-4 h-4" />}>
-            Create Doc Guide / 新規文書
+          <Button
+            variant="primary"
+            size="md"
+            icon={<Plus className="w-4 h-4" />}
+          >
+            Create Doc
           </Button>
         </Link>
       </div>
@@ -68,9 +74,9 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="bg-paper border-b border-border-warm font-serif text-ink text-xs uppercase tracking-wider">
-                <th className="p-4">Order</th>
-                <th className="p-4">Guide Title</th>
+              <tr className="bg-primary border-b border-border-warm font-serif text-white text-xs uppercase tracking-wider">
+                <th className="p-4">#</th>
+                <th className="p-4">Title</th>
                 <th className="p-4">Category</th>
                 <th className="p-4">Status</th>
                 <th className="p-4 text-right">Actions</th>
@@ -79,18 +85,26 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
             <tbody className="divide-y divide-border-subtle">
               {docs.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-ink-muted font-mono text-xs">
-                    No database docs found. Click &quot;Create Doc Guide&quot; to add one.
+                  <td
+                    colSpan={5}
+                    className="p-8 text-center text-ink-muted font-mono text-xs"
+                  >
+                    No docs found. Click &quot;Create Doc&quot; to add one.
                   </td>
                 </tr>
               ) : (
                 docs.map((doc) => (
-                  <tr key={doc.id} className="hover:bg-black/2 transition-colors">
+                  <tr
+                    key={doc.id}
+                    className="hover:bg-black/2 transition-colors"
+                  >
                     <td className="p-4 text-xs font-mono font-bold text-primary">
                       #{doc.order}
                     </td>
                     <td className="p-4">
-                      <span className="font-bold text-ink block font-serif">{doc.title}</span>
+                      <span className="font-bold text-ink block font-serif">
+                        {doc.title}
+                      </span>
                       <span className="text-xs font-mono text-ink-muted">
                         /docs/{doc.category.toLowerCase()}/{doc.slug}
                       </span>
@@ -106,8 +120,8 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
                           doc.status === "published"
                             ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
                             : doc.status === "draft"
-                            ? "bg-amber-100 text-amber-800 border border-amber-300"
-                            : "bg-slate-100 text-slate-700 border border-slate-300"
+                              ? "bg-amber-100 text-amber-800 border border-amber-300"
+                              : "bg-slate-100 text-slate-700 border border-slate-300"
                         }`}
                       >
                         {doc.status}
@@ -128,7 +142,7 @@ export default async function AdminDocsPage({ searchParams }: AdminDocsPageProps
                         <DeleteButton
                           itemId={doc.id}
                           itemName={doc.title}
-                          itemType="documentation guide"
+                          itemType="documentation"
                           onDeleteAction={deleteDocAction}
                         />
                       </div>

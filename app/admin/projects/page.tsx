@@ -23,7 +23,7 @@ export default async function AdminProjectsPage({ searchParams }: AdminProjectsP
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
-  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 5);
   const searchQuery = resolvedSearchParams.q?.trim() || "";
 
   const where: Prisma.ProjectWhereInput = searchQuery

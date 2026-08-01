@@ -15,13 +15,15 @@ export interface AdminUsersPageProps {
   searchParams?: Promise<{ page?: string; limit?: string }>;
 }
 
-export default async function AdminUsersPage({ searchParams }: AdminUsersPageProps) {
+export default async function AdminUsersPage({
+  searchParams,
+}: AdminUsersPageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
-  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 5);
 
   let users: Awaited<ReturnType<typeof prisma.user.findMany>> = [];
   let totalItems = 0;
@@ -52,13 +54,17 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
             <span>Back to Dashboard</span>
           </Link>
           <h1 className="text-3xl font-serif font-bold text-ink">
-            Admin User Management / ユーザー管理
+            Users Management
           </h1>
         </div>
 
         <Link href="/admin/users/new">
-          <Button variant="primary" size="md" icon={<UserPlus className="w-4 h-4" />}>
-            Create Admin User / ユーザー追加
+          <Button
+            variant="primary"
+            size="md"
+            icon={<UserPlus className="w-4 h-4" />}
+          >
+            Create Admin
           </Button>
         </Link>
       </div>
@@ -68,7 +74,7 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="bg-paper border-b border-border-warm font-serif text-ink text-xs uppercase tracking-wider">
+              <tr className="bg-primary border-b border-border-warm font-serif text-white text-xs uppercase tracking-wider">
                 <th className="p-4">User</th>
                 <th className="p-4">Username</th>
                 <th className="p-4">Email</th>
@@ -79,22 +85,34 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
             <tbody className="divide-y divide-border-subtle">
               {users.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-ink-muted font-mono text-xs">
-                    No users found in database. Click &quot;Create Admin User&quot; to add one.
+                  <td
+                    colSpan={5}
+                    className="p-8 text-center text-ink-muted font-mono text-xs"
+                  >
+                    No users found in database. Click &quot;Create Admin
+                    User&quot; to add one.
                   </td>
                 </tr>
               ) : (
                 users.map((usr) => (
-                  <tr key={usr.id} className="hover:bg-black/2 transition-colors">
+                  <tr
+                    key={usr.id}
+                    className="hover:bg-black/2 transition-colors"
+                  >
                     <td className="p-4">
                       <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-xs font-serif">
                           {usr.name ? usr.name.charAt(0) : "U"}
                         </div>
                         <div>
-                          <span className="font-bold text-ink block font-serif">{usr.name}</span>
+                          <span className="font-bold text-ink block font-serif">
+                            {usr.name}
+                          </span>
                           <span className="text-[10px] font-mono text-ink-muted">
-                            Joined {new Date(usr.createdAt).toLocaleDateString("en-US")}
+                            Joined{" "}
+                            {new Date(usr.createdAt).toLocaleDateString(
+                              "en-US",
+                            )}
                           </span>
                         </div>
                       </div>

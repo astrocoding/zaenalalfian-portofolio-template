@@ -15,13 +15,15 @@ export interface AdminExperiencesPageProps {
   searchParams?: Promise<{ page?: string; limit?: string }>;
 }
 
-export default async function AdminExperiencesPage({ searchParams }: AdminExperiencesPageProps) {
+export default async function AdminExperiencesPage({
+  searchParams,
+}: AdminExperiencesPageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
-  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 5);
 
   let experiences: Awaited<ReturnType<typeof prisma.experience.findMany>> = [];
   let totalItems = 0;
@@ -52,13 +54,17 @@ export default async function AdminExperiencesPage({ searchParams }: AdminExperi
             <span>Back to Dashboard</span>
           </Link>
           <h1 className="text-3xl font-serif font-bold text-ink">
-            Experience Management / 職務経歴管理
+            Professional Experience
           </h1>
         </div>
 
         <Link href="/admin/experiences/new">
-          <Button variant="primary" size="md" icon={<Plus className="w-4 h-4" />}>
-            Add Experience / 職歴追加
+          <Button
+            variant="primary"
+            size="md"
+            icon={<Plus className="w-4 h-4" />}
+          >
+            Add Experience
           </Button>
         </Link>
       </div>
@@ -68,8 +74,8 @@ export default async function AdminExperiencesPage({ searchParams }: AdminExperi
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="bg-paper border-b border-border-warm font-serif text-ink text-xs uppercase tracking-wider">
-                <th className="p-4">Order</th>
+              <tr className="bg-primary border-b border-border-warm font-serif text-white text-xs uppercase tracking-wider">
+                <th className="p-4">#</th>
                 <th className="p-4">Role &amp; Company</th>
                 <th className="p-4">Period</th>
                 <th className="p-4">Tech Skills</th>
@@ -79,19 +85,28 @@ export default async function AdminExperiencesPage({ searchParams }: AdminExperi
             <tbody className="divide-y divide-border-subtle">
               {experiences.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-ink-muted font-mono text-xs">
-                    No experience records found. Click &quot;Add Experience&quot; to create one.
+                  <td
+                    colSpan={5}
+                    className="p-8 text-center text-ink-muted font-mono text-xs"
+                  >
+                    No experience records found. Click &quot;Add
+                    Experience&quot; to create one.
                   </td>
                 </tr>
               ) : (
                 experiences.map((exp) => (
-                  <tr key={exp.id} className="hover:bg-black/2 transition-colors">
+                  <tr
+                    key={exp.id}
+                    className="hover:bg-black/2 transition-colors"
+                  >
                     <td className="p-4 text-xs font-mono font-bold text-primary">
                       #{exp.order}
                     </td>
                     <td className="p-4">
                       <div className="flex items-center space-x-2">
-                        <span className="font-bold text-ink block font-serif">{exp.role}</span>
+                        <span className="font-bold text-ink block font-serif">
+                          {exp.role}
+                        </span>
                         {exp.isCurrent && (
                           <Badge variant="accent" size="sm">
                             現職

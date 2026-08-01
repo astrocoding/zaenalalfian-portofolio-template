@@ -15,13 +15,15 @@ export interface AdminBlogsPageProps {
   searchParams?: Promise<{ page?: string; limit?: string }>;
 }
 
-export default async function AdminBlogsPage({ searchParams }: AdminBlogsPageProps) {
+export default async function AdminBlogsPage({
+  searchParams,
+}: AdminBlogsPageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
-  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 5);
 
   let blogs: Awaited<ReturnType<typeof prisma.blog.findMany>> = [];
   let totalItems = 0;
@@ -52,13 +54,17 @@ export default async function AdminBlogsPage({ searchParams }: AdminBlogsPagePro
             <span>Back to Dashboard</span>
           </Link>
           <h1 className="text-3xl font-serif font-bold text-ink">
-            Blog Articles Management / 記事管理
+            Blog Articles
           </h1>
         </div>
 
         <Link href="/admin/blogs/new">
-          <Button variant="primary" size="md" icon={<Plus className="w-4 h-4" />}>
-            Create Article / 新規記事
+          <Button
+            variant="primary"
+            size="md"
+            icon={<Plus className="w-4 h-4" />}
+          >
+            Create Article
           </Button>
         </Link>
       </div>
@@ -68,7 +74,7 @@ export default async function AdminBlogsPage({ searchParams }: AdminBlogsPagePro
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="bg-paper border-b border-border-warm font-serif text-ink text-xs uppercase tracking-wider">
+              <tr className="bg-primary border-b border-border-warm font-serif text-white text-xs uppercase tracking-wider">
                 <th className="p-4">Article Title</th>
                 <th className="p-4">Category</th>
                 <th className="p-4">Status</th>
@@ -79,15 +85,24 @@ export default async function AdminBlogsPage({ searchParams }: AdminBlogsPagePro
             <tbody className="divide-y divide-border-subtle">
               {blogs.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-ink-muted font-mono text-xs">
-                    No blog posts found in database. Click &quot;Create Article&quot; to add one.
+                  <td
+                    colSpan={5}
+                    className="p-8 text-center text-ink-muted font-mono text-xs"
+                  >
+                    No blog posts found in database. Click &quot;Create
+                    Article&quot; to add one.
                   </td>
                 </tr>
               ) : (
                 blogs.map((blog) => (
-                  <tr key={blog.id} className="hover:bg-black/2 transition-colors">
+                  <tr
+                    key={blog.id}
+                    className="hover:bg-black/2 transition-colors"
+                  >
                     <td className="p-4">
-                      <span className="font-bold text-ink block font-serif">{blog.title}</span>
+                      <span className="font-bold text-ink block font-serif">
+                        {blog.title}
+                      </span>
                       <span className="text-xs font-mono text-ink-muted">
                         /blogs/{blog.category.toLowerCase()}/{blog.slug}
                       </span>
@@ -103,8 +118,8 @@ export default async function AdminBlogsPage({ searchParams }: AdminBlogsPagePro
                           blog.status === "published"
                             ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
                             : blog.status === "draft"
-                            ? "bg-amber-100 text-amber-800 border border-amber-300"
-                            : "bg-slate-100 text-slate-700 border border-slate-300"
+                              ? "bg-amber-100 text-amber-800 border border-amber-300"
+                              : "bg-slate-100 text-slate-700 border border-slate-300"
                         }`}
                       >
                         {blog.status}
@@ -114,11 +129,14 @@ export default async function AdminBlogsPage({ searchParams }: AdminBlogsPagePro
                       <div className="flex items-center space-x-1">
                         <Calendar className="w-3.5 h-3.5" />
                         <span>
-                          {new Date(blog.publishedAt).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
+                          {new Date(blog.publishedAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            },
+                          )}
                         </span>
                       </div>
                     </td>

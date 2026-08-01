@@ -15,13 +15,15 @@ export interface AdminSkillsetsPageProps {
   searchParams?: Promise<{ page?: string; limit?: string }>;
 }
 
-export default async function AdminSkillsetsPage({ searchParams }: AdminSkillsetsPageProps) {
+export default async function AdminSkillsetsPage({
+  searchParams,
+}: AdminSkillsetsPageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
-  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 5);
 
   let skillsets: Awaited<ReturnType<typeof prisma.skillset.findMany>> = [];
   let totalItems = 0;
@@ -29,7 +31,11 @@ export default async function AdminSkillsetsPage({ searchParams }: AdminSkillset
   try {
     totalItems = await prisma.skillset.count();
     skillsets = await prisma.skillset.findMany({
-      orderBy: [{ categoryOrder: "asc" }, { category: "asc" }, { createdAt: "asc" }],
+      orderBy: [
+        { categoryOrder: "asc" },
+        { category: "asc" },
+        { createdAt: "asc" },
+      ],
       skip: (currentPage - 1) * pageSize,
       take: pageSize,
     });
@@ -52,13 +58,17 @@ export default async function AdminSkillsetsPage({ searchParams }: AdminSkillset
             <span>Back to Dashboard</span>
           </Link>
           <h1 className="text-3xl font-serif font-bold text-ink">
-            Technical Skillsets / 技能管理
+            Technical Skillsets
           </h1>
         </div>
 
         <Link href="/admin/skillsets/new">
-          <Button variant="primary" size="md" icon={<Plus className="w-4 h-4" />}>
-            Add Skillset / スキル追加
+          <Button
+            variant="primary"
+            size="md"
+            icon={<Plus className="w-4 h-4" />}
+          >
+            Add Skillset
           </Button>
         </Link>
       </div>
@@ -68,8 +78,8 @@ export default async function AdminSkillsetsPage({ searchParams }: AdminSkillset
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="bg-paper border-b border-border-warm font-serif text-ink text-xs uppercase tracking-wider">
-                <th className="p-4">Card Order</th>
+              <tr className="bg-primary border-b border-border-warm font-serif text-white text-xs uppercase tracking-wider">
+                <th className="p-4">Order</th>
                 <th className="p-4">Category</th>
                 <th className="p-4">Skill / Tool Name</th>
                 <th className="p-4">Link / Ref</th>
@@ -80,13 +90,20 @@ export default async function AdminSkillsetsPage({ searchParams }: AdminSkillset
             <tbody className="divide-y divide-border-subtle">
               {skillsets.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-ink-muted font-mono text-xs">
-                    No skillset records found. Click &quot;Add Skillset&quot; to create one.
+                  <td
+                    colSpan={6}
+                    className="p-8 text-center text-ink-muted font-mono text-xs"
+                  >
+                    No skillset records found. Click &quot;Add Skillset&quot; to
+                    create one.
                   </td>
                 </tr>
               ) : (
                 skillsets.map((skill) => (
-                  <tr key={skill.id} className="hover:bg-black/2 transition-colors">
+                  <tr
+                    key={skill.id}
+                    className="hover:bg-black/2 transition-colors"
+                  >
                     <td className="p-4 text-xs font-mono font-bold text-primary">
                       Card #{skill.categoryOrder}
                     </td>

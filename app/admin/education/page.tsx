@@ -8,20 +8,22 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { AdminPagination } from "@/components/admin/AdminPagination";
 import { DeleteButton } from "@/components/admin/DeleteButton";
-import { Plus, Edit, ArrowLeft, GraduationCap } from "lucide-react";
+import { Plus, Edit, ArrowLeft } from "lucide-react";
 import { deleteEducationAction } from "@/app/actions/admin";
 
 export interface AdminEducationPageProps {
   searchParams?: Promise<{ page?: string; limit?: string }>;
 }
 
-export default async function AdminEducationPage({ searchParams }: AdminEducationPageProps) {
+export default async function AdminEducationPage({
+  searchParams,
+}: AdminEducationPageProps) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const currentPage = Math.max(1, Number(resolvedSearchParams.page) || 1);
-  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 10);
+  const pageSize = Math.max(1, Number(resolvedSearchParams.limit) || 5);
 
   let educations: Awaited<ReturnType<typeof prisma.education.findMany>> = [];
   let totalItems = 0;
@@ -52,14 +54,17 @@ export default async function AdminEducationPage({ searchParams }: AdminEducatio
             <span>Back to Dashboard</span>
           </Link>
           <h1 className="text-3xl font-serif font-bold text-ink flex items-center gap-2.5">
-            <GraduationCap className="w-7 h-7 text-primary shrink-0" />
-            <span>Education Management / 学歴管理</span>
+            <span>Education Journey</span>
           </h1>
         </div>
 
         <Link href="/admin/education/new">
-          <Button variant="primary" size="md" icon={<Plus className="w-4 h-4" />}>
-            Add Education / 学歴追加
+          <Button
+            variant="primary"
+            size="md"
+            icon={<Plus className="w-4 h-4" />}
+          >
+            Add Education
           </Button>
         </Link>
       </div>
@@ -69,8 +74,8 @@ export default async function AdminEducationPage({ searchParams }: AdminEducatio
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="bg-paper border-b border-border-warm font-serif text-ink text-xs uppercase tracking-wider">
-                <th className="p-4">Order</th>
+              <tr className="bg-primary border-b border-border-warm font-serif text-white text-xs uppercase tracking-wider">
+                <th className="p-4">#</th>
                 <th className="p-4">Degree &amp; Institution</th>
                 <th className="p-4">Period &amp; Location</th>
                 <th className="p-4">Coursework / Competencies</th>
@@ -80,19 +85,28 @@ export default async function AdminEducationPage({ searchParams }: AdminEducatio
             <tbody className="divide-y divide-border-subtle">
               {educations.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-ink-muted font-mono text-xs">
-                    No education records found. Click &quot;Add Education&quot; to create one.
+                  <td
+                    colSpan={5}
+                    className="p-8 text-center text-ink-muted font-mono text-xs"
+                  >
+                    No education records found. Click &quot;Add Education&quot;
+                    to create one.
                   </td>
                 </tr>
               ) : (
                 educations.map((edu) => (
-                  <tr key={edu.id} className="hover:bg-black/2 transition-colors">
+                  <tr
+                    key={edu.id}
+                    className="hover:bg-black/2 transition-colors"
+                  >
                     <td className="p-4 text-xs font-mono font-bold text-primary">
                       #{edu.order}
                     </td>
                     <td className="p-4">
                       <div className="flex items-center space-x-2">
-                        <span className="font-bold text-ink block font-serif">{edu.title}</span>
+                        <span className="font-bold text-ink block font-serif">
+                          {edu.title}
+                        </span>
                         {edu.statusBadge && (
                           <Badge variant="accent" size="sm">
                             {edu.statusBadge}
@@ -110,7 +124,9 @@ export default async function AdminEducationPage({ searchParams }: AdminEducatio
                     </td>
                     <td className="p-4 text-xs font-mono text-ink-muted">
                       <div>{edu.period}</div>
-                      <div className="text-[11px] text-ink-muted/80">{edu.location}</div>
+                      <div className="text-[11px] text-ink-muted/80">
+                        {edu.location}
+                      </div>
                     </td>
                     <td className="p-4">
                       <div className="flex flex-wrap gap-1 max-w-xs">

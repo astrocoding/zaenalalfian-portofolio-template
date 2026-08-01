@@ -42,6 +42,23 @@ export const AdminPagination: React.FC<AdminPaginationProps> = ({
     }
   }, [currentPage, pageSize, totalItems, handleScrollToTop]);
 
+  // Synchronize URL parameters if page or limit are missing from searchParams (idle/default visit)
+  React.useEffect(() => {
+    if (!searchParams) return;
+
+    const hasPage = searchParams.has("page");
+    const hasLimit = searchParams.has("limit");
+
+    if (!hasPage || !hasLimit) {
+      const params = new URLSearchParams(searchParams.toString());
+      if (!hasPage) params.set("page", currentPage.toString());
+      if (!hasLimit) params.set("limit", pageSize.toString());
+
+      const targetPath = baseUrl.split("?")[0] || pathname;
+      router.replace(`${targetPath}?${params.toString()}`, { scroll: false });
+    }
+  }, [searchParams, currentPage, pageSize, baseUrl, pathname, router]);
+
   if (totalItems === 0) return null;
 
   const startItem = (currentPage - 1) * pageSize + 1;
@@ -67,7 +84,9 @@ export const AdminPagination: React.FC<AdminPaginationProps> = ({
   const pages = getPageNumbers();
 
   const createQueryString = (page: number, limit: number) => {
-    const params = new URLSearchParams(searchParams ? searchParams.toString() : "");
+    const params = new URLSearchParams(
+      searchParams ? searchParams.toString() : "",
+    );
     params.set("page", page.toString());
     params.set("limit", limit.toString());
     return params.toString();
