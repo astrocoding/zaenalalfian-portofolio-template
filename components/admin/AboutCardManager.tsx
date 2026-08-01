@@ -13,8 +13,6 @@ import {
   Trash2,
   X,
   Check,
-  AlertCircle,
-  CheckCircle2,
 } from "lucide-react";
 import {
   createAboutCardAction,
@@ -24,6 +22,7 @@ import {
 } from "@/app/actions/admin";
 import { DeleteConfirmModal } from "./DeleteConfirmModal";
 import { DynamicIcon, getLucideIcon } from "@/components/ui/DynamicIcon";
+import { AlertBanner } from "@/components/ui/AlertBanner";
 
 export interface AboutCardItem {
   id: string;
@@ -207,19 +206,17 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
         </Button>
       </div>
 
-      {error && (
-        <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center space-x-2">
-          <AlertCircle className="w-4 h-4 shrink-0" />
-          <span>{error}</span>
-        </div>
-      )}
+      <AlertBanner
+        variant="error"
+        message={error}
+        onClose={() => setError(null)}
+      />
 
-      {success && (
-        <div className="p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center space-x-2">
-          <CheckCircle2 className="w-4 h-4 shrink-0" />
-          <span>{success}</span>
-        </div>
-      )}
+      <AlertBanner
+        variant="success"
+        message={success}
+        onClose={() => setSuccess(null)}
+      />
 
       {cards.length === 0 ? (
         <div className="text-center py-10 px-4 bg-paper rounded-lg border border-dashed border-border-warm">
@@ -352,6 +349,11 @@ export const AboutCardManager: React.FC<AboutCardManagerProps> = ({
             </div>
 
             <form onSubmit={handleSaveCard} className="space-y-4">
+              <AlertBanner
+                variant="error"
+                message={error}
+                onClose={() => setError(null)}
+              />
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="sm:col-span-2 space-y-1.5">
                   <label className="text-xs font-mono font-medium text-ink">
