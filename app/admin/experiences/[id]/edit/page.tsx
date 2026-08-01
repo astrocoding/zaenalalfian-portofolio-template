@@ -1,11 +1,13 @@
 import * as React from "react";
-import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { ArrowLeft } from "lucide-react";
 import { ExperienceForm } from "@/components/admin/ExperienceForm";
+
+export const metadata = {
+  title: "Edit Experience | Admin Portal",
+};
 
 export default async function EditExperiencePage({
   params,
@@ -23,20 +25,7 @@ export default async function EditExperiencePage({
   if (!experience) notFound();
 
   return (
-    <div className="p-4 sm:p-6 lg:p-6 space-y-6">
-      <div>
-        <Link
-          href="/admin/experiences"
-          className="inline-flex items-center space-x-1 text-xs font-mono text-ink-muted hover:text-primary mb-1"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Back to Experience Management</span>
-        </Link>
-        <h1 className="text-3xl font-serif font-bold text-ink">
-          Edit Experience: {experience.role} at {experience.company}
-        </h1>
-      </div>
-
+    <div className="w-full pb-12">
       <ExperienceForm initialData={experience} isEdit />
     </div>
   );
