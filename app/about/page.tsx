@@ -7,10 +7,16 @@ import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
+import { CardCornerSeigaiha } from "@/components/ui/CardCornerSeigaiha";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ActionFooter } from "@/components/ui/ActionFooter";
 import { DynamicIcon } from "@/components/ui/DynamicIcon";
-import { FileText, Layers } from "lucide-react";
+import {
+  CATEGORY_META,
+  DEFAULT_SKILL_CATEGORIES,
+} from "@/components/sections/SkillsSection";
+import { Code, FileText, Layers } from "lucide-react";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -57,6 +63,7 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   let aboutData = null;
   let adminUser = null;
+  let dbSkillsets: Awaited<ReturnType<typeof prisma.skillset.findMany>> = [];
 
   try {
     aboutData = await prisma.about.findFirst({
@@ -70,8 +77,14 @@ export default async function AboutPage() {
       where: { role: "ADMIN" },
       orderBy: { createdAt: "asc" },
     });
+    dbSkillsets = await prisma.skillset.findMany({
+      orderBy: [{ categoryOrder: "asc" }, { createdAt: "asc" }],
+    });
   } catch (e) {
-    console.warn("Failed to fetch About/User record from database:", e);
+    console.warn(
+      "Failed to fetch About/User/Skillsets record from database:",
+      e,
+    );
   }
 
   const userName = adminUser?.name || "Zaenal Alfian";
@@ -83,11 +96,10 @@ export default async function AboutPage() {
 
   const title = aboutData?.title || "Behind the Architecture";
   const subtitle =
-    aboutData?.subtitle || "Bridging Design Vision & Technical Execution";
+    aboutData?.subtitle || "Building products with clarity & longevity";
   const excerpt =
     aboutData?.excerpt ||
-    "I am Zaenal Alfian, a Senior Full-Stack Engineer and Frontend Architect with over 6 years of experience building mission-critical web applications, enterprise design systems, and high-performance serverless backends.";
-
+    "I am a dedicated software engineer with a strong commitment to continuous learning and professional growth. I enjoy building scalable and optimized solutions.";
   const rawDescription =
     aboutData?.description ||
     "My journey in software development is rooted in a passion for craftsmanship. Over the past 6+ years, I have architected web platforms that serve millions of requests, led engineering teams in adopting modern frameworks like Next.js 16 and React 19, and built domain-driven design systems from scratch.\n\nMy philosophy is heavily influenced by traditional Japanese minimalism (*Wabi-Sabi* & *Ma*) — eliminating unnecessary clutter to let core function and performance shine. Every line of code, database query, and UI component is crafted with intentionality.\n\nWhether designing micro-frontends, optimizing PostgreSQL query access with Prisma 7, or fine-tuning Core Web Vitals to 99/100 scores, I focus on delivering long-term architectural longevity and delightful user experiences.";
@@ -96,6 +108,43 @@ export default async function AboutPage() {
     .split("\n")
     .map((p: string) => p.trim())
     .filter(Boolean);
+
+  const skillCategoriesMap = new Map<
+    string,
+    {
+      title: string;
+      categoryOrder: number;
+      skills: {
+        id: string;
+        skillName: string;
+        link?: string | null;
+        description?: string | null;
+      }[];
+    }
+  >();
+
+  dbSkillsets.forEach((item) => {
+    if (!skillCategoriesMap.has(item.category)) {
+      skillCategoriesMap.set(item.category, {
+        title: item.category,
+        categoryOrder: item.categoryOrder,
+        skills: [],
+      });
+    }
+    skillCategoriesMap.get(item.category)?.skills.push({
+      id: item.id,
+      skillName: item.skillName,
+      link: item.link,
+      description: item.description,
+    });
+  });
+
+  const skillCategories =
+    dbSkillsets.length > 0
+      ? Array.from(skillCategoriesMap.values()).sort(
+        (a, b) => a.categoryOrder - b.categoryOrder,
+      )
+      : DEFAULT_SKILL_CATEGORIES;
 
   const cards = aboutData?.cards || [];
 
@@ -121,7 +170,7 @@ export default async function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             {/* Left Column: Extended Bio Story */}
             <div className="lg:col-span-7 space-y-6 text-ink-muted leading-relaxed font-sans text-base">
-              <h2 className="text-2xl font-serif font-bold text-ink">
+              <h2 className="text-2xl font-serif font-bold text-primary">
                 {subtitle}
               </h2>
               {paragraphs.map((paragraph: string, index: number) => (
@@ -204,7 +253,7 @@ export default async function AboutPage() {
             </div>
           </div>
 
-          {/* Philosophy Pillars Section */}
+          {/* SECTION 1: Philosophy Pillars Section (About Cards: Clean Architecture, High Performance, Ma, Wabi-Sabi) */}
           <div className="space-y-6 pt-6 border-t border-border-warm">
             <div>
               <span className="font-serif text-primary/60 tracking-widest text-xs font-semibold uppercase block">
@@ -224,7 +273,7 @@ export default async function AboutPage() {
                 className="my-0"
               />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {cards.map(
                   (
                     pillar: {
@@ -254,7 +303,7 @@ export default async function AboutPage() {
                           />
                         </div>
                       </div>
-                      <h3 className="text-lg font-serif font-bold text-ink">
+                      <h3 className="text-lg font-serif font-bold text-primary">
                         {pillar.title}
                       </h3>
                       <p className="text-xs text-ink-muted leading-relaxed font-sans">
@@ -263,6 +312,93 @@ export default async function AboutPage() {
                     </Card>
                   ),
                 )}
+              </div>
+            )}
+          </div>
+
+          {/* SECTION 2: Technical Skillsets Section (Skill Categories Cards) */}
+          <div className="space-y-6 pt-10 border-t border-border-warm">
+            <div>
+              <span className="font-serif text-primary/60 tracking-widest text-xs font-semibold uppercase block">
+                技術 • TECHNICAL SKILLSETS
+              </span>
+              <h2 className="text-3xl font-serif font-bold text-ink mt-1">
+                Technical Skillset &amp; Competencies
+              </h2>
+            </div>
+
+            {skillCategories.length === 0 ? (
+              <EmptyState
+                icon={Layers}
+                title="There are no skills or competencies posted yet"
+                subtitleKanji="データなし"
+                description="Technical skills will appear here once published."
+                className="my-0"
+              />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {skillCategories.map((category) => {
+                  const meta = CATEGORY_META[category.title] || {
+                    kanji:
+                      "kanji" in category ? (category.kanji as string) : "技能",
+                    icon:
+                      "icon" in category ? (
+                        (category.icon as React.ReactNode)
+                      ) : (
+                        <Code className="w-5 h-5 text-primary" />
+                      ),
+                  };
+
+                  return (
+                    <Card
+                      key={category.title}
+                      hoverEffect
+                      className="relative overflow-hidden p-6 bg-surface"
+                    >
+                      {/* Bottom-right diagonal Seigaiha wave accent */}
+                      <CardCornerSeigaiha cardBgColor="#ffffff" />
+
+                      <div className="relative z-10 space-y-4">
+                        <div className="flex items-center justify-between pb-4 mb-2 border-b border-border-subtle">
+                          <div className="flex items-center space-x-3">
+                            <div className="p-2 rounded bg-[#f6e0ce]/50 border border-border-warm">
+                              {"icon" in category && category.icon
+                                ? (category.icon as React.ReactNode)
+                                : meta.icon}
+                            </div>
+                            <h3 className="text-lg font-bold font-serif text-ink">
+                              {category.title}
+                            </h3>
+                          </div>
+                          <span className="font-serif text-xs text-primary font-semibold uppercase">
+                            {"kanji" in category && category.kanji
+                              ? (category.kanji as string)
+                              : meta.kanji}
+                          </span>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {category.skills.map((skill) => {
+                            const skillName =
+                              typeof skill === "string"
+                                ? skill
+                                : skill.skillName;
+                            const skillKey =
+                              typeof skill === "string"
+                                ? skill
+                                : skill.id || skill.skillName;
+
+                            return (
+                              <Badge key={skillKey} variant="tech" size="md">
+                                {skillName}
+                              </Badge>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </div>

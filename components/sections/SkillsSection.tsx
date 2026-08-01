@@ -23,7 +23,10 @@ export interface SkillsSectionProps {
   skillCategories?: SkillCategoryGroup[];
 }
 
-const CATEGORY_META: Record<string, { kanji: string; icon: React.ReactNode }> = {
+export const CATEGORY_META: Record<
+  string,
+  { kanji: string; icon: React.ReactNode }
+> = {
   "Frontend Engineering": {
     kanji: "フロントエンド",
     icon: <Code className="w-5 h-5 text-primary" />,
@@ -46,7 +49,7 @@ const CATEGORY_META: Record<string, { kanji: string; icon: React.ReactNode }> = 
   },
 };
 
-const DEFAULT_SKILL_CATEGORIES: SkillCategoryGroup[] = [
+export const DEFAULT_SKILL_CATEGORIES: SkillCategoryGroup[] = [
   {
     title: "Frontend Engineering",
     kanji: "フロントエンド",
@@ -143,7 +146,11 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
           };
 
           return (
-            <Card key={category.title} hoverEffect className="relative overflow-hidden p-6">
+            <Card
+              key={category.title}
+              hoverEffect
+              className="relative overflow-hidden p-6"
+            >
               {/* Bottom-right diagonal Seigaiha wave accent - identical to experience cards */}
               <CardCornerSeigaiha cardBgColor="#ffffff" />
 
@@ -153,7 +160,9 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
                     <div className="p-2 rounded bg-[#f6e0ce]/50 border border-border-warm">
                       {category.icon || meta.icon}
                     </div>
-                    <h3 className="text-lg font-bold font-serif text-ink">{category.title}</h3>
+                    <h3 className="text-lg font-bold font-serif text-ink">
+                      {category.title}
+                    </h3>
                   </div>
                   <span className="font-serif text-xs text-primary font-semibold uppercase">
                     {category.kanji || meta.kanji}
@@ -162,8 +171,12 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
 
                 <div className="flex flex-wrap gap-2">
                   {category.skills.slice(0, 5).map((skill) => {
-                    const skillName = typeof skill === "string" ? skill : skill.skillName;
-                    const skillKey = typeof skill === "string" ? skill : skill.id || skill.skillName;
+                    const skillName =
+                      typeof skill === "string" ? skill : skill.skillName;
+                    const skillKey =
+                      typeof skill === "string"
+                        ? skill
+                        : skill.id || skill.skillName;
 
                     return (
                       <Badge key={skillKey} variant="tech" size="md">
@@ -172,7 +185,11 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
                     );
                   })}
                   {category.skills.length > 5 && (
-                    <Badge variant="ghost" size="md" className="font-mono text-xs font-bold text-primary/90 bg-primary/10 border border-primary/20 hover:bg-primary/15 transition-colors select-none">
+                    <Badge
+                      variant="ghost"
+                      size="md"
+                      className="font-mono text-xs font-bold text-primary/90 bg-primary/10 border border-primary/20 hover:bg-primary/15 transition-colors select-none"
+                    >
                       +{category.skills.length - 5} more
                     </Badge>
                   )}
