@@ -15,6 +15,7 @@ import {
   Plus,
   ArrowRight,
   Database,
+  Eye,
 } from "lucide-react";
 
 import { AdminFormHeader } from "@/components/admin/AdminFormHeader";
@@ -37,6 +38,9 @@ export default async function AdminDashboardPage() {
     educationRes,
     skillsetRes,
     userRes,
+    projViewsRes,
+    blogViewsRes,
+    docViewsRes,
   ] = await Promise.allSettled([
     prisma.project.count(),
     prisma.blog.count(),
@@ -45,6 +49,9 @@ export default async function AdminDashboardPage() {
     prisma.education.count(),
     prisma.skillset.count(),
     prisma.user.count(),
+    prisma.project.aggregate({ _sum: { views: true } }),
+    prisma.blog.aggregate({ _sum: { views: true } }),
+    prisma.doc.aggregate({ _sum: { views: true } }),
   ]);
 
   const projectCount = projectRes.status === "fulfilled" ? projectRes.value : 0;
@@ -55,7 +62,20 @@ export default async function AdminDashboardPage() {
   const skillsetCount = skillsetRes.status === "fulfilled" ? skillsetRes.value : 0;
   const userCount = userRes.status === "fulfilled" ? userRes.value : 0;
 
+  const projViews = projViewsRes.status === "fulfilled" ? projViewsRes.value._sum.views || 0 : 0;
+  const blogViews = blogViewsRes.status === "fulfilled" ? blogViewsRes.value._sum.views || 0 : 0;
+  const docViews = docViewsRes.status === "fulfilled" ? docViewsRes.value._sum.views || 0 : 0;
+  const totalOrganicViews = projViews + blogViews + docViews;
+
   const metrics = [
+    {
+      title: "Total Organic Readers",
+      count: totalOrganicViews,
+      kanji: "閲覧",
+      href: "/admin/projects",
+      newHref: "/admin/blogs",
+      icon: Eye,
+    },
     {
       title: "Showcase Projects",
       count: projectCount,

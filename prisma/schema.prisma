@@ -62,6 +62,7 @@ model Project {
   sourceLink    String?       @map("source_link")
   priorityOrder Int           @default(1) @map("priority_order")
   status        ContentStatus @default(published) @map("status")
+  views         Int           @default(0)
   createdAt     DateTime      @default(now()) @map("created_at")
   updatedAt     DateTime      @updatedAt @map("updated_at")
 
@@ -78,6 +79,7 @@ model Blog {
   thumbnail   String?
   keywords    String[]
   status      ContentStatus @default(published) @map("status")
+  views       Int           @default(0)
   publishedAt DateTime      @default(now()) @map("published_at")
   createdAt   DateTime      @default(now()) @map("created_at")
   updatedAt   DateTime      @updatedAt @map("updated_at")
@@ -94,10 +96,22 @@ model Doc {
   content     String
   order       Int           @default(99)
   status      ContentStatus @default(published) @map("status")
+  views       Int           @default(0)
   createdAt   DateTime      @default(now()) @map("created_at")
   updatedAt   DateTime      @updatedAt @map("updated_at")
 
   @@map("docs")
+}
+
+model PageView {
+  id          String   @id @default(cuid())
+  targetType  String   @map("target_type")
+  targetId    String   @map("target_id")
+  fingerprint String
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([targetType, targetId, fingerprint])
+  @@map("page_views")
 }
 
 model Experience {

@@ -76,6 +76,8 @@ export async function generateMetadata({
   };
 }
 
+import { recordPageView } from "@/lib/viewCounter";
+
 export default async function ProjectDetailPage({
   params,
 }: {
@@ -95,6 +97,9 @@ export default async function ProjectDetailPage({
   if (!project) {
     notFound();
   }
+
+  // Record organic page view for this project
+  await recordPageView("project", project.id);
 
   return (
     <MainLayout>

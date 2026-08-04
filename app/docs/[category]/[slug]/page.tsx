@@ -59,6 +59,8 @@ export async function generateMetadata({
   };
 }
 
+import { recordPageView } from "@/lib/viewCounter";
+
 export default async function DocumentationDetailPage({
   params,
 }: {
@@ -70,6 +72,9 @@ export default async function DocumentationDetailPage({
   if (!doc) {
     notFound();
   }
+
+  // Record organic page view for this documentation guide
+  await recordPageView("doc", resolvedParams.slug, resolvedParams.category);
 
   return (
     <MainLayout>

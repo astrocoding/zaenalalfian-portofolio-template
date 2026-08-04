@@ -68,6 +68,8 @@ export async function generateMetadata({
   };
 }
 
+import { recordPageView } from "@/lib/viewCounter";
+
 export default async function BlogDetailPage({
   params,
 }: {
@@ -79,6 +81,9 @@ export default async function BlogDetailPage({
   if (!post) {
     notFound();
   }
+
+  // Record organic page view for this blog post
+  await recordPageView("blog", resolvedParams.slug, resolvedParams.category);
 
   const relatedPosts = await getRelatedPosts(
     resolvedParams.category,

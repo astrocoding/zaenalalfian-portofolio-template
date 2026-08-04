@@ -9,7 +9,7 @@ import { DeleteButton } from "@/components/admin/DeleteButton";
 import { AdminFormHeader } from "@/components/admin/AdminFormHeader";
 import { AdminContent } from "@/components/admin/AdminContent";
 import { Prisma } from "@/app/generated/prisma/client";
-import { Plus, Edit, Calendar } from "lucide-react";
+import { Plus, Edit, Calendar, Eye } from "lucide-react";
 import { deleteBlogAction } from "@/app/actions/admin";
 
 export interface AdminBlogsPageProps {
@@ -119,6 +119,16 @@ export default async function AdminBlogsPage({
                 >
                   {blog.status}
                 </span>
+              ),
+            },
+            {
+              header: "Views",
+              className: "p-4 text-xs font-mono text-ink-muted",
+              render: (blog) => (
+                <div className="flex items-center space-x-1" title={`${blog.views ?? 0} organic views`}>
+                  <Eye className="w-3.5 h-3.5 text-primary shrink-0" />
+                  <span className="font-bold text-ink">{(blog.views ?? 0).toLocaleString()}</span>
+                </div>
               ),
             },
             {

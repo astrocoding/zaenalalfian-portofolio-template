@@ -9,7 +9,7 @@ import { DeleteButton } from "@/components/admin/DeleteButton";
 import { Prisma } from "@/app/generated/prisma/client";
 import { AdminFormHeader } from "@/components/admin/AdminFormHeader";
 import { AdminContent } from "@/components/admin/AdminContent";
-import { Plus, Edit, ExternalLink, Code2 } from "lucide-react";
+import { Plus, Edit, ExternalLink, Code2, Eye } from "lucide-react";
 import { deleteProjectAction } from "@/app/actions/admin";
 
 export interface AdminProjectsPageProps {
@@ -183,6 +183,16 @@ export default async function AdminProjectsPage({
                       </Badge>
                     </>
                   )}
+                </div>
+              ),
+            },
+            {
+              header: "Views",
+              className: "p-4 text-xs font-mono text-ink-muted",
+              render: (proj) => (
+                <div className="flex items-center space-x-1" title={`${proj.views ?? 0} organic views`}>
+                  <Eye className="w-3.5 h-3.5 text-primary shrink-0" />
+                  <span className="font-bold text-ink">{(proj.views ?? 0).toLocaleString()}</span>
                 </div>
               ),
             },

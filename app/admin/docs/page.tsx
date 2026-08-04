@@ -9,7 +9,7 @@ import { DeleteButton } from "@/components/admin/DeleteButton";
 import { AdminFormHeader } from "@/components/admin/AdminFormHeader";
 import { AdminContent } from "@/components/admin/AdminContent";
 import { Prisma } from "@/app/generated/prisma/client";
-import { Plus, Edit } from "lucide-react";
+import { Plus, Edit, Eye } from "lucide-react";
 import { deleteDocAction } from "@/app/actions/admin";
 
 export interface AdminDocsPageProps {
@@ -129,6 +129,16 @@ export default async function AdminDocsPage({
                 >
                   {doc.status}
                 </span>
+              ),
+            },
+            {
+              header: "Views",
+              className: "p-4 text-xs font-mono text-ink-muted",
+              render: (doc) => (
+                <div className="flex items-center space-x-1" title={`${doc.views ?? 0} organic views`}>
+                  <Eye className="w-3.5 h-3.5 text-primary shrink-0" />
+                  <span className="font-bold text-ink">{(doc.views ?? 0).toLocaleString()}</span>
+                </div>
               ),
             },
             {
