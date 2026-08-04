@@ -166,7 +166,7 @@ export const DocsPageLayout: React.FC<{ docs: DocItem[] }> = ({ docs }) => {
                       <Badge variant="accent" size="sm">
                         {doc.category}
                       </Badge>
-                      <span className="font-serif text-xs text-primary/50 font-semibold">
+                      <span className="font-serif text-xs text-primary font-semibold">
                         文書
                       </span>
                     </div>

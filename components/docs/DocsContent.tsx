@@ -22,7 +22,7 @@ export const DocsContent: React.FC<DocsContentProps> = ({
           <Badge variant="accent" size="sm">
             {category}
           </Badge>
-          <span className="font-serif text-xs text-primary/50 font-semibold">公式ドキュメント</span>
+          <span className="font-serif text-xs text-primary font-semibold">公式ドキュメント</span>
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-serif font-bold text-ink leading-tight">

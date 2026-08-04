@@ -254,7 +254,7 @@ export default async function AboutPage() {
           {/* SECTION 1: Philosophy Pillars Section (About Cards: Clean Architecture, High Performance, Ma, Wabi-Sabi) */}
           <div className="space-y-6 pt-6 border-t border-border-warm">
             <div>
-              <span className="font-serif text-primary/60 tracking-widest text-xs font-semibold uppercase block">
+              <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
                 {contentData.about.page.philosophyKanji}
               </span>
               <h2 className="text-3xl font-serif font-bold text-ink mt-1">
@@ -290,7 +290,7 @@ export default async function AboutPage() {
                     >
                       <div className="flex items-center justify-between gap-2">
                         {pillar.badge && (
-                          <span className="text-2xl font-serif font-bold text-primary/40 block">
+                          <span className="text-2xl font-serif font-bold text-primary block">
                             {pillar.badge}
                           </span>
                         )}
@@ -317,7 +317,7 @@ export default async function AboutPage() {
           {/* SECTION 2: Technical Skillsets Section (Skill Categories Cards) */}
           <div className="space-y-6 pt-10 border-t border-border-warm">
             <div>
-              <span className="font-serif text-primary/60 tracking-widest text-xs font-semibold uppercase block">
+              <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
                 {contentData.about.page.skillsKanji}
               </span>
               <h2 className="text-3xl font-serif font-bold text-ink mt-1">

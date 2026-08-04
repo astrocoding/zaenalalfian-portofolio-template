@@ -159,7 +159,7 @@ export default async function AdminDashboardPage() {
                   <div className="p-2 rounded-md bg-[#f6e0ce]/40 border border-[#ebd9c8]">
                     <Icon className="w-4 h-4 text-primary" />
                   </div>
-                  <span className="font-serif text-xs font-semibold text-primary/50">
+                  <span className="font-serif text-xs font-semibold text-primary">
                     {item.kanji}
                   </span>
                 </div>

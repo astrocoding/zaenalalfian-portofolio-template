@@ -134,7 +134,7 @@ export const Footer: React.FC<FooterProps> = async ({
             {/* Quick Navigation Links */}
             <div className="space-y-3">
               <h2 className="font-serif font-bold text-sm text-ink uppercase tracking-wider">
-                Navigation / ナビゲーション
+                Navigation
               </h2>
               <ul className="space-y-2 text-sm font-medium text-ink-muted">
                 <li>

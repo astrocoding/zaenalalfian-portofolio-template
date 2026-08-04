@@ -34,7 +34,7 @@ export const DocHeader: React.FC<DocHeaderProps> = ({
             <BookOpen className="w-3.5 h-3.5 text-primary" />
             Technical Guide
           </span>
-          <span className="font-serif text-xs text-primary/50 font-semibold">公式ドキュメント</span>
+          <span className="font-serif text-xs text-primary font-semibold">公式ドキュメント</span>
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink leading-tight">

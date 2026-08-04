@@ -42,7 +42,7 @@ export const Typography: React.FC<TypographyProps> = ({
     body: "text-base leading-relaxed text-ink-muted",
     lead: "text-lg sm:text-xl font-light text-ink-muted leading-relaxed font-serif italic",
     caption: "text-xs font-mono tracking-wider uppercase text-ink-muted",
-    kanji: "font-serif text-primary/30 tracking-widest select-none pointer-events-none text-sm uppercase font-semibold",
+    kanji: "font-serif text-primary tracking-widest text-sm uppercase font-semibold",
   };
 
   return (

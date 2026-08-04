@@ -439,7 +439,7 @@ export const Navbar: React.FC = () => {
                         }`}
                     >
                       <span className="text-base">{item.label}</span>
-                      <span className="text-xs font-serif text-primary/60">
+                      <span className="text-xs font-serif text-primary font-semibold">
                         {item.kanji}
                       </span>
                     </Link>
