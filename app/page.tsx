@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { prisma } from "@/lib/prisma";
+import { getAllBlogPosts } from "@/lib/blogs";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 // Lazy load below-the-fold sections for maximum mobile performance & code splitting
@@ -92,7 +93,6 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   let dbProjects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
-  let dbBlogs: Awaited<ReturnType<typeof prisma.blog.findMany>> = [];
   let dbExperiences: Awaited<ReturnType<typeof prisma.experience.findMany>> =
     [];
   let dbSkillsets: Awaited<ReturnType<typeof prisma.skillset.findMany>> = [];
@@ -112,11 +112,6 @@ export default async function HomePage() {
       where: { status: "published" },
       orderBy: [{ priorityOrder: "asc" }, { createdAt: "desc" }],
       take: 4,
-    });
-    dbBlogs = await prisma.blog.findMany({
-      where: { status: "published" },
-      orderBy: { publishedAt: "desc" },
-      take: 3,
     });
     dbExperiences = await prisma.experience.findMany({
       orderBy: { order: "asc" },
@@ -152,16 +147,16 @@ export default async function HomePage() {
     solution: p.solution ?? undefined,
   }));
 
-  const blogs = dbBlogs.map((b) => ({
-    id: b.id,
-    title: b.title,
-    slug: b.slug,
-    category: b.category,
-    description: b.description,
-    thumbnail: b.thumbnail,
-    publishedAt: b.publishedAt
-      ? new Date(b.publishedAt).toISOString().split("T")[0]
-      : "",
+  const allBlogPosts = await getAllBlogPosts();
+  const blogs = allBlogPosts.slice(0, 5).map((b) => ({
+    id: b.frontmatter.slug,
+    title: b.frontmatter.title,
+    slug: b.frontmatter.slug,
+    category: b.frontmatter.category,
+    description: b.frontmatter.description,
+    thumbnail: b.frontmatter.thumbnail,
+    publishedAt: b.frontmatter.publishedAt,
+    readingTime: b.readingTime,
   }));
 
   const experiences =
