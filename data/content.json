@@ -1,0 +1,281 @@
+{
+    "site": {
+        "name": "Zaenal Alfian Portfolio",
+        "handle": "@zaenalalfian",
+        "twitterCreator": "@zaenalalfian"
+    },
+    "nav": {
+        "logoAlt": "Zaenal Alfian Logo",
+        "items": [
+            {
+                "label": "Home",
+                "kanji": "ホーム",
+                "id": "home",
+                "href": "/"
+            },
+            {
+                "label": "About",
+                "kanji": "概要",
+                "id": "about",
+                "href": "/about"
+            },
+            {
+                "label": "Experience",
+                "kanji": "経歴",
+                "id": "experience",
+                "href": "/experiences"
+            },
+            {
+                "label": "Projects",
+                "kanji": "実績",
+                "id": "projects",
+                "href": "/projects"
+            },
+            {
+                "label": "Blog",
+                "kanji": "記事",
+                "id": "blogs",
+                "href": "/blogs"
+            },
+            {
+                "label": "Contact",
+                "kanji": "連絡",
+                "id": "contact",
+                "href": "/#contact"
+            }
+        ],
+        "cta": {
+            "getInTouch": "Get in Touch",
+            "dashboard": "Dashboard",
+            "viewPublicSite": "View Public Site",
+            "signOut": "Sign Out / ログアウト"
+        }
+    },
+    "hero": {
+        "availablePill": "Available",
+        "kanjiAccent": "創造と設計",
+        "craftLabel": "職人精神 • Craftsmanship",
+        "headline": "Crafting Scalable Systems with Optimized Precision.",
+        "headlineAccent": "Optimized",
+        "subheadline": "I am a dedicated software engineer with a strong commitment to continuous learning and professional growth. I enjoy building scalable and optimized solutions.",
+        "badges": [
+            "Best-Practice",
+            "Passionate",
+            "Detail-Oriented",
+            "Customer-Oriented",
+            "Problem-Solver"
+        ],
+        "ctaExploreWork": "Explore Work",
+        "ctaResume": "Get My Resume",
+        "statsYearsExp": "Years Exp.",
+        "statsProjects": "Projects Built",
+        "statsArticles": "Articles",
+        "architectureCard": {
+            "fileLabel": "architecture.ts",
+            "comment": "// Personal Philosophy",
+            "connectedLabel": "Connected",
+            "kanjiFooter": "美と技術の融合",
+            "hankoGlyph": "印"
+        }
+    },
+    "about": {
+        "kanjiSubtitle": "自己紹介 • ABOUT ME",
+        "sectionTitle": "About & Code Philosophy",
+        "watermarkKanji": "生き甲斐",
+        "ctaReadFullBio": "Read Full Bio & Background",
+        "page": {
+            "kanjiLabel": "自己紹介 • BIOGRAPHY & PHILOSOPHY",
+            "philosophyKanji": "美学 • PHILOSOPHY PILLARS",
+            "philosophyTitle": "Core Engineering Principles",
+            "skillsKanji": "技術 • TECHNICAL SKILLSETS",
+            "skillsTitle": "Technical Skillset & Competencies",
+            "resumeButton": "Get My Resume",
+            "locationLabel": "Location:",
+            "experienceLabel": "Experience:",
+            "availabilityLabel": "Availability:",
+            "statsYearsSuffix": "Years",
+            "actionFooter": {
+                "title": "Interested in working together?",
+                "description": "Let's discuss architecture consulting, senior engineering roles, or custom web development projects.",
+                "primaryText": "Start Conversation",
+                "primaryHref": "/#contact",
+                "secondaryText": "My Projects",
+                "secondaryHref": "/projects"
+            }
+        }
+    },
+    "skills": {
+        "kanjiSubtitle": "技術スキル",
+        "sectionTitle": "Technical Skillset",
+        "sectionDescription": "Comprehensive toolset honed across years of full-stack engineering and product deployment.",
+        "watermarkKanji": "技術スキル",
+        "moreLabel": "+{n} more",
+        "categoryMeta": {
+            "Frontend Engineering": {
+                "kanji": "フロントエンド"
+            },
+            "Backend & Database": {
+                "kanji": "バックエンド"
+            },
+            "Backend & Databases": {
+                "kanji": "バックエンド"
+            },
+            "Architecture & DevOps": {
+                "kanji": "アーキテクチャ"
+            },
+            "Tools & Methodologies": {
+                "kanji": "ツール"
+            }
+        }
+    },
+    "experience": {
+        "kanjiSubtitle": "職務経歴",
+        "sectionTitle": "Professional Journey",
+        "sectionDescription": "A history of leading software development, architecture decisions, and engineering execution.",
+        "ctaShowAll": "Show Experiences",
+        "currentGlyph": "現職"
+    },
+    "projects": {
+        "kanjiSubtitle": "主要実績",
+        "sectionTitle": "Featured Projects",
+        "sectionDescription": "Production web applications, architectural platforms, and technical open-source contributions.",
+        "ctaShowMore": "Show More Projects",
+        "ctaViewProject": "View Project",
+        "cardKanjiLabel": "実績作品",
+        "cardKanjiNumbers": [
+            "一",
+            "二",
+            "三",
+            "四",
+            "五",
+            "六"
+        ],
+        "backLink": "Back to Projects / 実績一覧へ戻る",
+        "caseStudy": {
+            "heading": "Project Case Study / ケーススタディ",
+            "sections": {
+                "problem": "The Problem / 課題",
+                "solution": "Proposed Solution / 解決策",
+                "architecture": "System Architecture / システム構成",
+                "challenge": "Key Challenges / 技術的挑戦",
+                "result": "Quantifiable Results / 成果"
+            }
+        },
+        "page": {
+            "kanjiLabel": "主要実績",
+            "title": "Featured Projects",
+            "description": "Production web applications, architectural platforms, and technical open-source contributions."
+        }
+    },
+    "blogs": {
+        "kanjiSubtitle": "最新記事",
+        "sectionTitle": "Latest Technical Insights",
+        "sectionDescription": "Articles on modern frontend engineering, system design, performance, and editorial UI craftsmanship.",
+        "ctaShowMore": "Show More Articles",
+        "backLink": "Back to Articles / 記事一覧へ戻る",
+        "defaultAuthor": "Zaenal Alfian",
+        "defaultReadTime": "5 min read",
+        "page": {
+            "kanjiLabel": "最新記事",
+            "title": "Latest Technical Insights",
+            "description": "Articles on modern frontend engineering, system design, performance, and editorial UI craftsmanship."
+        }
+    },
+    "contact": {
+        "kanjiSubtitle": "お問い合わせ",
+        "sectionTitle": "Let's Build Something Great!",
+        "sectionDescription": "Open for senior engineering leadership, frontend architecture consulting, and high-impact web product development.",
+        "infoCard": {
+            "hankoGlyph": "印",
+            "labelDirectEmail": "Direct Email",
+            "labelLocation": "Location",
+            "labelAvailability": "Availability",
+            "quote": "Quality is never an accident; it is always the result of high intention, sincere effort, and intelligent execution."
+        },
+        "form": {
+            "labelName": "Your Name / お名前 *",
+            "labelEmail": "Email Address / メール *",
+            "labelSubject": "Subject / 件名 *",
+            "labelMessage": "Message / 本文 *",
+            "placeholderName": "e.g. Zaenal Alfian",
+            "placeholderEmail": "e.g. zaenal@example.com",
+            "placeholderSubject": "e.g. Project Architecture Inquiry",
+            "placeholderMessage": "Tell me about your project, timeline, and product goals....",
+            "submitSending": "Sending Message...",
+            "submitLabel": "Send Message"
+        },
+        "states": {
+            "loading": {
+                "title": "Sending Message / 送信中...",
+                "description": "Please wait a moment. Your message is being delivered."
+            },
+            "success": {
+                "title": "Message Sent / 送信完了",
+                "description": "Thank you for reaching out. I have received your message and will respond within 24 hours.",
+                "ctaSendAnother": "Send Another Message"
+            },
+            "failed": {
+                "title": "Failed to Send / 送信失敗",
+                "description": "Something went wrong while delivering your message. You can try again or reach out directly.",
+                "ctaRetry": "Try Again",
+                "ctaEmailDirect": "Email Directly"
+            }
+        }
+    },
+    "scrollToTop": {
+        "ariaLabel": "Scroll back to top",
+        "title": "Back to Top / ページ上部へ戻る"
+    },
+    "notFound": {
+        "badgeKanji": "見つかりません • PAGE NOT FOUND",
+        "heading": "NOT FOUND",
+        "description": "The page or resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
+        "backToHome": "Back to Home",
+        "backToAdmin": "Back to Admin",
+        "supportText": "If you need assistance or believe this is an error, feel free to reach out:",
+        "contactLabel": "Contact"
+    },
+    "adminLogin": {
+        "heading": "Admin Authentication",
+        "subheading": "Enter your email/username and password to access dashboard",
+        "labelIdentifier": "Email or Username / ユーザー名・メール *",
+        "labelPassword": "Password / パスワード *",
+        "placeholderIdentifier": "admin@zaenalalfian.dev or admin",
+        "placeholderPassword": "••••••••••••",
+        "showPassword": "Show password",
+        "hidePassword": "Hide password",
+        "submitLabel": "Sign In to Admin",
+        "submittingLabel": "Authenticating...",
+        "footerText": "Encrypted Session • Zaenal Alfian"
+    },
+    "emptyStates": {
+        "projects": {
+            "title": "No projects posted yet",
+            "kanjiSubtitle": "実績作品はまだありません",
+            "description": "Production web applications, architecture platforms, and technical contributions will be showcased here once published.",
+            "subtitleKanji": "実績作品はまだありません"
+        },
+        "blogs": {
+            "title": "No blogs posted yet",
+            "kanjiSubtitle": "投稿された記事はまだありません",
+            "description": "Technical insights, articles, and architecture breakdowns will appear here once published.",
+            "subtitleKanji": "投稿された記事はまだありません"
+        },
+        "caseStudy": {
+            "title": "No case study details posted yet / ケーススタディはまだありません",
+            "description": "Detailed problem statements, architecture blueprints, and quantifiable results will be displayed here once published from the admin panel."
+        },
+        "pillars": {
+            "title": "There are no values or pillars posted yet",
+            "kanjiSubtitle": "データなし",
+            "description": "Engineering principles and core values will appear here once published from the admin panel.",
+            "subtitleKanji": "データなし"
+        },
+        "skills": {
+            "title": "There are no skills or competencies posted yet",
+            "kanjiSubtitle": "データなし",
+            "description": "Technical skills will appear here once published.",
+            "subtitleKanji": "データなし"
+        }
+    }
+}

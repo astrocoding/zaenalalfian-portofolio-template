@@ -13,6 +13,10 @@ import {
 import { Button } from "../ui/Button";
 import { ArrowRight, Cpu, Layout, ShieldCheck, Zap } from "lucide-react";
 
+import contentData from "@/data/content.json";
+import mockupData from "@/data/mockup.json";
+import { getLucideIcon } from "../ui/DynamicIcon";
+
 export interface AboutCardData {
   id?: string;
   title: string;
@@ -35,38 +39,20 @@ const defaultCoreValues: {
   title: string;
   kanji: string;
   description: string;
-}[] = [
-  {
-    icon: <Cpu className="w-5 h-5 text-primary" />,
-    title: "Clean Architecture",
-    kanji: "建築",
-    description:
-      "Strict separation of concerns, domain-driven boundaries, and maintainable codebases built to scale smoothly.",
-  },
-  {
-    icon: <Zap className="w-5 h-5 text-primary" />,
-    title: "High Performance",
-    kanji: "高速",
-    description:
-      "Sub-second page loads, Server Component optimization, minimal bundle sizes, and pristine Core Web Vitals.",
-  },
-  {
-    icon: <Layout className="w-5 h-5 text-primary" />,
-    title: "Editorial UI/UX",
-    kanji: "美学",
-    description:
-      "Thoughtful Japanese minimalist aesthetics, soft paper palettes, typography hierarchy, and smooth micro-interactions.",
-  },
-  {
-    icon: <ShieldCheck className="w-5 h-5 text-primary" />,
-    title: "Technical Credibility",
-    kanji: "信頼",
-    description:
-      "Type-safe contracts, automated testing, reliable database migrations, and production-ready deployments.",
-  },
-];
-
-import { getLucideIcon } from "../ui/DynamicIcon";
+}[] = mockupData.about.cards.map((card, idx) => {
+  const icons = [
+    <Cpu key="cpu" className="w-5 h-5 text-primary" />,
+    <Zap key="zap" className="w-5 h-5 text-primary" />,
+    <Layout key="layout" className="w-5 h-5 text-primary" />,
+    <ShieldCheck key="shield" className="w-5 h-5 text-primary" />,
+  ];
+  return {
+    icon: icons[idx] || <Cpu key={idx} className="w-5 h-5 text-primary" />,
+    title: card.title,
+    kanji: card.badge,
+    description: card.subtitle,
+  };
+});
 
 const renderCardIcon = (
   iconName?: string | null,
@@ -90,11 +76,8 @@ const renderCardIcon = (
 };
 
 export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
-  const subtitle =
-    aboutData?.subtitle || "Build Products with clarity & longevity.";
-  const excerpt =
-    aboutData?.excerpt ||
-    "I am a senior full-stack engineer with over 6 years of experience engineering complex web applications, design systems, and cloud infrastructure.";
+  const subtitle = aboutData?.subtitle || mockupData.about.subtitle;
+  const excerpt = aboutData?.excerpt || mockupData.about.excerpt;
 
   const cardsList =
     aboutData?.cards && aboutData.cards.length > 0
@@ -112,13 +95,13 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
       bgVariant="surface"
       className="pt-10 sm:pt-14 pb-16 sm:pb-24 relative overflow-hidden"
     >
-      {/* Subtle Japanese Vertical Watermark Accent ("生き甲斐") matching surface bg */}
+      {/* Subtle Japanese Vertical Watermark Accent matching surface bg */}
       <div
         className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-3 sm:left-6 lg:left-8 xl:left-12 2xl:left-20 font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-[0.2em] whitespace-nowrap select-none pointer-events-none z-0 leading-none text-[var(--color-watermark-surface)] opacity-75"
         style={{ writingMode: "vertical-rl", textOrientation: "upright" }}
         aria-hidden="true"
       >
-        生き甲斐
+        {contentData.about.watermarkKanji}
       </div>
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
@@ -126,7 +109,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
         <div className="lg:col-span-5 space-y-6">
           <div className="space-y-2">
             <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
-              自己紹介 • ABOUT ME
+              {contentData.about.kanjiSubtitle}
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-serif text-ink tracking-tight leading-tight">
               About &amp; <span className="text-primary">Code Philosophy</span>
@@ -148,7 +131,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
                   size="md"
                   icon={<ArrowRight className="w-4 h-4" />}
                 >
-                  Read Full Bio &amp; Background
+                  {contentData.about.ctaReadFullBio}
                 </Button>
               </Link>
             </div>

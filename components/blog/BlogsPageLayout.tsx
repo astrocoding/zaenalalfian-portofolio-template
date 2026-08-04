@@ -5,6 +5,8 @@ import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
 import { BlogCard, BlogItem } from "@/components/sections/LatestBlogsSection";
 import { EmptyState } from "@/components/ui/EmptyState";
 
+import contentData from "@/data/content.json";
+
 const POSTS_PER_PAGE = 6;
 
 // ─── Pagination ───────────────────────────────────────────────────────────────
@@ -112,14 +114,13 @@ export const BlogsPageLayout: React.FC<{ blogs: BlogItem[] }> = ({ blogs }) => {
       {/* ── Header ── */}
       <div className="text-center space-y-3 pb-10 sm:pb-14">
         <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
-          最新記事
+          {contentData.blogs.page.kanjiLabel}
         </span>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink tracking-tight">
-          Latest Technical Insights
+          {contentData.blogs.page.title}
         </h1>
         <p className="text-sm sm:text-base text-ink-muted max-w-xl mx-auto leading-relaxed font-sans">
-          Articles on modern frontend engineering, system design, performance,
-          and editorial UI craftsmanship.
+          {contentData.blogs.page.description}
         </p>
         {/* decorative rule */}
         <div className="flex items-center justify-center pt-1">
@@ -134,9 +135,9 @@ export const BlogsPageLayout: React.FC<{ blogs: BlogItem[] }> = ({ blogs }) => {
       {!hasBlogs ? (
         <EmptyState
           icon={BookOpen}
-          title="No blogs posted yet"
-          subtitleKanji="投稿された記事はまだありません"
-          description="Technical insights, articles, and architecture breakdowns will appear here once published."
+          title={contentData.emptyStates.blogs.title}
+          subtitleKanji={contentData.emptyStates.blogs.subtitleKanji}
+          description={contentData.emptyStates.blogs.description}
         />
       ) : (
         <>

@@ -5,6 +5,10 @@ import Link from "next/link";
 import { SectionWrapper } from "../ui/SectionWrapper";
 import { Button } from "../ui/Button";
 import { ArrowRight, ArrowUpRight, BookOpen } from "lucide-react";
+import Image from "next/image";
+import { EmptyState } from "../ui/EmptyState";
+import { normalizeImageUrl } from "@/lib/seo";
+import contentData from "@/data/content.json";
 
 export interface BlogItem {
   id: string;
@@ -21,9 +25,6 @@ export interface BlogItem {
   illustration?: "castle" | "fox" | "fuji" | "pagoda";
 }
 
-import Image from "next/image";
-import { EmptyState } from "../ui/EmptyState";
-
 function formatDate(dateStr: string): string {
   try {
     const dateObj = new Date(dateStr);
@@ -38,8 +39,6 @@ function formatDate(dateStr: string): string {
     return dateStr;
   }
 }
-
-import { normalizeImageUrl } from "@/lib/seo";
 
 const BlogCardThumbnail: React.FC<{
   thumbnail?: string | null;
@@ -84,8 +83,8 @@ export const BlogCard: React.FC<{
   blog: BlogItem;
   className?: string;
 }> = ({ blog, className = "" }) => {
-  const authorName = blog.author || "Zaenal Alfian";
-  const readTime = blog.readingTime || "5 min read";
+  const authorName = blog.author || contentData.blogs.defaultAuthor;
+  const readTime = blog.readingTime || contentData.blogs.defaultReadTime;
 
   return (
     <div
@@ -155,9 +154,9 @@ export const LatestBlogsSection: React.FC<{ blogs?: BlogItem[] }> = ({
   return (
     <SectionWrapper
       id="blogs"
-      kanjiSubtitle="最新記事"
-      sectionTitle="Latest Technical Insights"
-      sectionDescription="Articles on modern frontend engineering, system design, performance, and editorial UI craftsmanship."
+      kanjiSubtitle={contentData.blogs.kanjiSubtitle}
+      sectionTitle={contentData.blogs.sectionTitle}
+      sectionDescription={contentData.blogs.sectionDescription}
       headerAlign="center"
       bgVariant="surface"
       containerSize="wide"
@@ -166,9 +165,9 @@ export const LatestBlogsSection: React.FC<{ blogs?: BlogItem[] }> = ({
       {!hasBlogs ? (
         <EmptyState
           icon={BookOpen}
-          title="No blogs posted yet"
-          subtitleKanji="投稿された記事はまだありません"
-          description="Technical insights, articles, and architecture breakdowns will appear here once published."
+          title={contentData.emptyStates.blogs.title}
+          subtitleKanji={contentData.emptyStates.blogs.subtitleKanji}
+          description={contentData.emptyStates.blogs.description}
         />
       ) : (
         <>
@@ -191,7 +190,7 @@ export const LatestBlogsSection: React.FC<{ blogs?: BlogItem[] }> = ({
                 className="rounded-xl px-5 py-2.5 text-xs font-mono font-semibold border-border-warm bg-surface text-ink hover:bg-primary hover:!text-white hover:border-primary transition-all duration-300"
                 icon={<ArrowRight className="w-3.5 h-3.5" />}
               >
-                Show More Articles
+                {contentData.blogs.ctaShowMore}
               </Button>
             </Link>
             <div className="flex-1 h-px bg-border-subtle" />

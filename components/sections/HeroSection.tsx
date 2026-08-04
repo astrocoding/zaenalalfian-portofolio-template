@@ -4,6 +4,8 @@ import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
 import { Button, Badge, Container, SeigaihaPattern } from "../ui";
+import contentData from "@/data/content.json";
+import mockupData from "@/data/mockup.json";
 
 interface CounterNumberProps {
   from?: number;
@@ -161,13 +163,13 @@ const DesktopArchitectureCard: React.FC<{
           <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
           <span className="text-xs font-mono text-ink-muted ml-2">
-            architecture.ts
+            {contentData.hero.architectureCard.fileLabel}
           </span>
         </div>
 
         {/* Mock Code Block */}
         <div className="space-y-1.5 font-mono text-xs text-ink leading-relaxed">
-          <p className="text-primary font-semibold">{`// Personal Philosophy`}</p>
+          <p className="text-primary font-semibold">{contentData.hero.architectureCard.comment}</p>
           <p>
             <span className="text-purple-600">const</span> developer = &#123;
           </p>
@@ -187,10 +189,10 @@ const DesktopArchitectureCard: React.FC<{
         <div className="mt-5 pt-3 border-t border-border-subtle flex items-center justify-between text-xs text-ink-muted">
           <div className="flex items-center space-x-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <span>Connected</span>
+            <span>{contentData.hero.architectureCard.connectedLabel}</span>
           </div>
           <span className="font-serif text-primary font-semibold italic text-xs">
-            美と技術の融合
+            {contentData.hero.architectureCard.kanjiFooter}
           </span>
         </div>
       </div>
@@ -216,19 +218,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   userData,
   stats,
 }) => {
-  const name = userData?.name || "Zaenal Alfian";
-  const role = userData?.position || "Full-Stack Engineer";
-  const status = userData?.activity || "Building Great Products";
+  const name = userData?.name || mockupData.user.name;
+  const role = userData?.position || mockupData.user.position;
+  const status = userData?.activity || mockupData.user.activity;
   const resumeUrl = userData?.resume?.trim();
 
   // Extract numeric years experience from profile (e.g. "6+" or "6" -> 6)
   const rawExperience = userData?.experience?.trim();
   const experienceYears = rawExperience
-    ? parseInt(rawExperience.replace(/[^0-9]/g, ""), 10) || 6
-    : 6;
+    ? parseInt(rawExperience.replace(/[^0-9]/g, ""), 10) || mockupData.stats.experienceYears
+    : mockupData.stats.experienceYears;
 
-  const totalProjects = stats?.totalProjects ?? 30;
-  const totalBlogs = stats?.totalBlogs ?? 12;
+  const totalProjects = stats?.totalProjects ?? mockupData.stats.totalProjects;
+  const totalBlogs = stats?.totalBlogs ?? mockupData.stats.totalBlogs;
 
   return (
     <section
@@ -240,7 +242,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
       {/* Floating Vertical Kanji Accent (Right Side) */}
       <div className="hidden lg:block absolute top-16 right-12 font-serif text-primary/10 text-8xl font-bold tracking-widest pointer-events-none select-none writing-mode-vertical">
-        創造と建築
+        {contentData.hero.kanjiAccent}
       </div>
 
       <Container
@@ -253,38 +255,34 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             {/* Status Pill Badge */}
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#f6e0ce]/60 border border-border-warm text-ink text-xs font-mono">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Available</span>
+              <span>{contentData.hero.availablePill}</span>
             </div>
 
             {/* Headline */}
             <div className="space-y-2">
               <div className="flex items-center space-x-3">
                 <span className="font-serif text-primary font-bold text-xs sm:text-sm tracking-widest uppercase">
-                  職人精神 • Craftsmanship
+                  {contentData.hero.craftLabel}
                 </span>
                 <div className="h-px w-12 bg-primary/30" />
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink leading-[1.14] tracking-tight">
                 Crafting Scalable Systems with{" "}
-                <span className="text-primary italic">Optimized</span>{" "}
+                <span className="text-primary italic">{contentData.hero.headlineAccent}</span>{" "}
                 Precision.
               </h1>
             </div>
 
             {/* Sub-headline */}
             <p className="text-base sm:text-lg text-ink-muted leading-relaxed font-sans max-w-2xl">
-              I am a dedicated software engineer with a strong commitment to
-              continuous learning and professional growth. I enjoy building
-              scalable and optimized solutions.
+              {contentData.hero.subheadline}
             </p>
 
             {/* Professional Value Badges Row */}
             <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
-              <Badge variant="tech">Best-Practice</Badge>
-              <Badge variant="tech">Passionate</Badge>
-              <Badge variant="tech">Detail-Oriented</Badge>
-              <Badge variant="tech">Customer-Oriented</Badge>
-              <Badge variant="tech">Problem-Solver</Badge>
+              {contentData.hero.badges.map((badgeText) => (
+                <Badge key={badgeText} variant="tech">{badgeText}</Badge>
+              ))}
             </div>
 
             {/* Call to Action Buttons */}
@@ -295,7 +293,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   size="md"
                   icon={<ArrowRight className="w-4 h-4" />}
                 >
-                  Explore Work
+                  {contentData.hero.ctaExploreWork}
                 </Button>
               </Link>
               {resumeUrl ? (
@@ -305,7 +303,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     size="md"
                     icon={<FileText className="w-4 h-4 text-primary" />}
                   >
-                    Get My Resume
+                    {contentData.hero.ctaResume}
                   </Button>
                 </a>
               ) : (
@@ -324,7 +322,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     size="md"
                     icon={<FileText className="w-4 h-4 text-primary" />}
                   >
-                    Get My Resume
+                    {contentData.hero.ctaResume}
                   </Button>
                 </Link>
               )}
@@ -343,7 +341,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     />
                   </div>
                   <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
-                    Years Exp.
+                    {contentData.hero.statsYearsExp}
                   </div>
                 </div>
 
@@ -357,7 +355,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     />
                   </div>
                   <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
-                    Projects Built
+                    {contentData.hero.statsProjects}
                   </div>
                 </div>
 
@@ -371,7 +369,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     />
                   </div>
                   <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
-                    Articles
+                    {contentData.hero.statsArticles}
                   </div>
                 </div>
               </div>

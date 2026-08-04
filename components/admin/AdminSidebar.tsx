@@ -34,14 +34,44 @@ export interface AdminSidebarProps {
 
 const adminNavItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard, kanji: "概要" },
-  { label: "Profile & About", href: "/admin/profile", icon: UserCheck, kanji: "設定" },
-  { label: "Projects", href: "/admin/projects", icon: FolderGit2, kanji: "実績" },
+  {
+    label: "Profile & About",
+    href: "/admin/profile",
+    icon: UserCheck,
+    kanji: "設定",
+  },
+  {
+    label: "Projects",
+    href: "/admin/projects",
+    icon: FolderGit2,
+    kanji: "実績",
+  },
   { label: "Blogs", href: "/admin/blogs", icon: BookOpen, kanji: "記事" },
-  { label: "Documentation", href: "/admin/docs", icon: FileCode, kanji: "文書" },
-  { label: "Experiences", href: "/admin/experiences", icon: Briefcase, kanji: "経歴" },
-  { label: "Education", href: "/admin/education", icon: GraduationCap, kanji: "学歴" },
+  {
+    label: "Documentation",
+    href: "/admin/docs",
+    icon: FileCode,
+    kanji: "文書",
+  },
+  {
+    label: "Experiences",
+    href: "/admin/experiences",
+    icon: Briefcase,
+    kanji: "経歴",
+  },
+  {
+    label: "Education",
+    href: "/admin/education",
+    icon: GraduationCap,
+    kanji: "学歴",
+  },
   { label: "Skillsets", href: "/admin/skillsets", icon: Wrench, kanji: "技能" },
-  { label: "Users & Access", href: "/admin/users", icon: Users, kanji: "ユーザー" },
+  {
+    label: "Users & Access",
+    href: "/admin/users",
+    icon: Users,
+    kanji: "ユーザー",
+  },
 ];
 
 export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
@@ -95,7 +125,9 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
                     : "opacity-100 w-auto"
                 }`}
               >
-                <span className="truncate text-sm font-medium">{item.label}</span>
+                <span className="truncate text-sm font-medium">
+                  {item.label}
+                </span>
                 <span
                   className={`text-[10px] font-serif shrink-0 ml-2 ${
                     isActive ? "text-white/80" : "text-primary/50"
@@ -163,32 +195,44 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
     <>
       {/* Mobile & Tablet Fixed Top Header Bar (<1024px) */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-surface border-b border-border-warm px-4 h-[63px] flex items-center justify-between shadow-none shrink-0">
-        <div className="flex items-center space-x-3 min-w-0">
+        <Link
+          href="/admin"
+          onClick={() => setMobileOpen(false)}
+          className="flex items-center space-x-3 min-w-0 group"
+        >
           <Image
             src="/zen.svg?v=2"
             alt="Zaenal Alfian Logo"
             width={34}
             height={34}
-            className="w-8.5 h-8.5 object-contain shrink-0"
+            className="w-8.5 h-8.5 object-contain shrink-0 group-hover:opacity-80 transition-opacity"
           />
           <div className="flex-1 min-w-0 flex flex-col justify-center">
-            <h2 className="font-serif font-bold text-sm text-ink leading-snug truncate">
+            <h2 className="font-serif font-bold text-sm text-ink leading-snug truncate group-hover:text-primary transition-colors">
               {user?.name || "Admin User"}
             </h2>
             <p className="text-[10px] font-mono text-ink-muted truncate -mt-0.5">
               @{user?.username || "admin"}
             </p>
           </div>
-        </div>
+        </Link>
 
         <button
           type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
           className="p-2 rounded-md text-ink hover:bg-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer border border-border-warm bg-paper shrink-0 ml-2"
-          aria-label={mobileOpen ? "Close Admin Navigation Menu" : "Open Admin Navigation Menu"}
+          aria-label={
+            mobileOpen
+              ? "Close Admin Navigation Menu"
+              : "Open Admin Navigation Menu"
+          }
           aria-expanded={mobileOpen}
         >
-          {mobileOpen ? <X className="w-5 h-5 text-ink" /> : <Menu className="w-5 h-5 text-ink" />}
+          {mobileOpen ? (
+            <X className="w-5 h-5 text-ink" />
+          ) : (
+            <Menu className="w-5 h-5 text-ink" />
+          )}
         </button>
 
         {/* Mobile Slide-Over Drawer (Left-to-Right Slide Animation) */}
@@ -218,23 +262,27 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
                 <div className="space-y-6">
                   {/* Drawer Header */}
                   <div className="flex items-center justify-between pb-4 border-b border-border-subtle shrink-0">
-                    <div className="flex items-center space-x-3 min-w-0">
+                    <Link
+                      href="/admin"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center space-x-3 min-w-0 group"
+                    >
                       <Image
                         src="/zen.svg?v=2"
                         alt="Zaenal Alfian Logo"
                         width={34}
                         height={34}
-                        className="w-8.5 h-8.5 object-contain shrink-0"
+                        className="w-8.5 h-8.5 object-contain shrink-0 group-hover:opacity-80 transition-opacity"
                       />
                       <div className="flex-1 min-w-0 flex flex-col justify-center">
-                        <h2 className="font-serif font-bold text-sm text-ink leading-snug truncate">
+                        <h2 className="font-serif font-bold text-sm text-ink leading-snug truncate group-hover:text-primary transition-colors">
                           {user?.name || "Admin User"}
                         </h2>
                         <p className="text-[10px] font-mono text-ink-muted truncate -mt-0.5">
                           @{user?.username || "admin"}
                         </p>
                       </div>
-                    </div>
+                    </Link>
 
                     <button
                       type="button"
@@ -299,31 +347,39 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
                     </div>
                   </button>
                 ) : (
-                  <Image
-                    src="/zen.svg?v=2"
-                    alt="Zaenal Alfian Logo"
-                    width={34}
-                    height={34}
-                    className="w-8.5 h-8.5 object-contain shrink-0"
-                  />
+                  <Link
+                    href="/admin"
+                    title="Go to Dashboard"
+                    className="group relative w-9 h-9 rounded-md flex items-center justify-center hover:opacity-80 transition-opacity"
+                  >
+                    <Image
+                      src="/zen.svg?v=2"
+                      alt="Zaenal Alfian Logo"
+                      width={34}
+                      height={34}
+                      className="w-8.5 h-8.5 object-contain shrink-0"
+                    />
+                  </Link>
                 )}
               </div>
 
               {/* User info (Smooth fade/clip) */}
-              <div
-                className={`flex flex-col justify-center min-w-0 transition-all duration-300 ease-in-out ${
+              <Link
+                href="/admin"
+                title="Go to Dashboard"
+                className={`flex flex-col justify-center min-w-0 transition-all duration-300 ease-in-out group ${
                   isCollapsed
                     ? "opacity-0 w-0 overflow-hidden pointer-events-none"
                     : "opacity-100 w-auto"
                 }`}
               >
-                <h2 className="font-serif font-bold text-sm text-ink leading-snug truncate">
+                <h2 className="font-serif font-bold text-sm text-ink leading-snug truncate group-hover:text-primary transition-colors">
                   {user?.name || "Admin User"}
                 </h2>
                 <p className="text-[10px] font-mono text-ink-muted truncate -mt-0.5">
                   @{user?.username || "admin"}
                 </p>
-              </div>
+              </Link>
             </div>
 
             {/* Collapse button (Visible in open mode) */}
@@ -364,6 +420,3 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ user }) => {
     </>
   );
 };
-
-
-

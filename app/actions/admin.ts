@@ -490,46 +490,28 @@ export async function deleteSkillsetAction(id: string) {
 
 const DEFAULT_ABOUT_CARDS = [
   {
-    title: "Ma (間) — Intentional Space",
-    subtitle: "Codebases and user interfaces thrive when clutter is removed. By honoring negative space and clean domain boundaries, software becomes easier to reason about, maintain, and scale.",
-    badge: "01",
-    order: 1,
-  },
-  {
-    title: "Wabi-Sabi (侘寂) — Elegant Simplicity",
-    subtitle: "Perfection in software isn't achieved when there's nothing more to add, but when there's nothing left to take away. Simple, type-safe architecture beats complex abstractions every time.",
-    badge: "02",
-    order: 2,
-  },
-  {
-    title: "Shokunin (職人) — Technical Craftsmanship",
-    subtitle: "Approaching software development as a lifelong craft. Every database index, API payload, and UI component is executed with meticulous care for performance and accessibility.",
-    badge: "03",
-    order: 3,
-  },
-  {
     title: "Clean Architecture",
     subtitle: "Strict separation of concerns, domain-driven boundaries, and maintainable codebases built to scale smoothly.",
     badge: "建築",
-    order: 4,
+    order: 1,
   },
   {
     title: "High Performance",
     subtitle: "Sub-second page loads, Server Component optimization, minimal bundle sizes, and pristine Core Web Vitals.",
     badge: "高速",
-    order: 5,
+    order: 2,
   },
   {
     title: "Editorial UI/UX",
     subtitle: "Thoughtful Japanese minimalist aesthetics, soft paper palettes, typography hierarchy, and smooth micro-interactions.",
     badge: "美学",
-    order: 6,
+    order: 3,
   },
   {
     title: "Technical Credibility",
     subtitle: "Type-safe contracts, automated testing, reliable database migrations, and production-ready deployments.",
     badge: "信頼",
-    order: 7,
+    order: 4,
   },
 ];
 

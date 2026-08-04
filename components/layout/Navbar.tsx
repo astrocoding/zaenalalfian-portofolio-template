@@ -9,6 +9,8 @@ import { useSession } from "next-auth/react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { Container } from "../ui/Container";
 
+import contentData from "@/data/content.json";
+
 export interface NavItem {
   label: string;
   href: string;
@@ -16,39 +18,20 @@ export interface NavItem {
   kanji: string;
 }
 
-const getNavItems = (isHomePage: boolean): NavItem[] => [
-  { label: "Home", href: "/", id: "home", kanji: "ホーム" },
-  {
-    label: "About",
-    href: isHomePage ? "/#about" : "/about",
-    id: "about",
-    kanji: "概要",
-  },
-  {
-    label: "Experience",
-    href: isHomePage ? "/#experience" : "/experiences",
-    id: "experience",
-    kanji: "経歴",
-  },
-  {
-    label: "Projects",
-    href: isHomePage ? "/#projects" : "/projects",
-    id: "projects",
-    kanji: "実績",
-  },
-  {
-    label: "Blog",
-    href: isHomePage ? "/#blogs" : "/blogs",
-    id: "blogs",
-    kanji: "記事",
-  },
-  {
-    label: "Contact",
-    href: isHomePage ? "/#contact" : "/",
-    id: "contact",
-    kanji: "連絡",
-  },
-];
+const getNavItems = (isHomePage: boolean): NavItem[] =>
+  contentData.nav.items.map((item) => {
+    let href = item.href;
+    if (isHomePage) {
+      if (item.id === "about") href = "/#about";
+      if (item.id === "experience") href = "/#experience";
+      if (item.id === "projects") href = "/#projects";
+      if (item.id === "blogs") href = "/#blogs";
+      if (item.id === "contact") href = "/#contact";
+    } else {
+      if (item.id === "contact") href = "/";
+    }
+    return { ...item, href };
+  });
 
 const observedSectionIds = [
   "about",
@@ -364,7 +347,7 @@ export const Navbar: React.FC = () => {
                 href="/admin"
                 className="inline-flex items-center justify-center text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-primary text-white hover:bg-[#993b3d] transition-colors shadow-2xs space-x-1"
               >
-                <span>Dashboard</span>
+                <span>{contentData.nav.cta.dashboard}</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             ) : (
@@ -373,7 +356,7 @@ export const Navbar: React.FC = () => {
                 onClick={handleContactClick}
                 className="inline-flex items-center justify-center text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-primary text-white hover:bg-[#993b3d] transition-colors shadow-2xs space-x-1"
               >
-                <span>Get in Touch</span>
+                <span>{contentData.nav.cta.getInTouch}</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             )}
@@ -442,7 +425,7 @@ export const Navbar: React.FC = () => {
                     onClick={() => setIsOpen(false)}
                     className="w-full py-3 px-4 bg-primary text-white text-center font-medium rounded-md text-sm shadow-xs flex items-center justify-center space-x-2"
                   >
-                    <span>Dashboard</span>
+                    <span>{contentData.nav.cta.dashboard}</span>
                     <ArrowUpRight className="w-4 h-4" />
                   </Link>
                 ) : (
@@ -451,7 +434,7 @@ export const Navbar: React.FC = () => {
                     onClick={handleContactClick}
                     className="w-full py-3 px-4 bg-primary text-white text-center font-medium rounded-md text-sm shadow-xs flex items-center justify-center space-x-2"
                   >
-                    <span>Get in Touch</span>
+                    <span>{contentData.nav.cta.getInTouch}</span>
                     <ArrowUpRight className="w-4 h-4" />
                   </Link>
                 )}

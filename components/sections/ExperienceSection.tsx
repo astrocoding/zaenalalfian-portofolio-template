@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { SectionWrapper, Badge, CardCornerSeigaiha, Button } from "../ui";
 import { ArrowRight, Briefcase, Calendar } from "lucide-react";
+import contentData from "@/data/content.json";
+import mockupData from "@/data/mockup.json";
 
 export interface ExperienceItem {
   id?: string;
@@ -14,35 +16,7 @@ export interface ExperienceItem {
   skills: string[];
 }
 
-const fallbackExperiences: ExperienceItem[] = [
-  {
-    role: "Lead & Full-Stack Developer",
-    company: "Cipta Grafika, Karawang (On-site)",
-    period: "Dec 2024 — Present",
-    isCurrent: true,
-    description:
-      "Architected a three-tier architecture for ERP system using Node.js & Hapi, React, PostgreSQL, and Redis, improving system performance by 150% compared to legacy code. Developed and deployed a web-based employee attendance system using barcode scanning integrated with payroll management in Laravel, reducing HR's time spent on attendance reconciliation by 65%.",
-    skills: ["Node.js", "Hapi.js", "React", "Laravel", "PostgreSQL", "Redis"],
-  },
-  {
-    role: "Backend Developer Intern",
-    company: "SchoolTech Indonesia, Malang (Remote)",
-    period: "Aug 2024 — Dec 2024",
-    isCurrent: false,
-    description:
-      "Contributed to backend development of InternPro, a web-based internship platform for vocational high school students, using Laravel. Collaborated closely with Frontend Developers, System Analysts, Project Managers, and QA teams to deliver features aligned with specifications and timelines.",
-    skills: ["Laravel", "PHP", "REST API", "MySQL", "Agile"],
-  },
-  {
-    role: "Full-Stack Developer",
-    company: "Kodetopia Indonesia, Karawang (Hybrid)",
-    period: "Feb 2023 — Mar 2024",
-    isCurrent: false,
-    description:
-      "Developed custom web applications based on client requirements using diverse technology stacks including Laravel, React, Express, MySQL, and PostgreSQL. Involved in end-to-end development from requirements analysis to deployment with a strong focus on deadlines, coding standards, sprint planning, and code reviews in Agile teams.",
-    skills: ["Laravel", "React", "Express.js", "MySQL", "PostgreSQL", "CI/CD"],
-  },
-];
+const fallbackExperiences: ExperienceItem[] = mockupData.experiences;
 
 export const ExperienceSection: React.FC<{
   experiences?: ExperienceItem[];
@@ -54,9 +28,9 @@ export const ExperienceSection: React.FC<{
   return (
     <SectionWrapper
       id="experience"
-      kanjiSubtitle="職務経歴"
-      sectionTitle="Professional Journey"
-      sectionDescription="A history of leading software development, architecture decisions, and engineering execution."
+      kanjiSubtitle={contentData.experience.kanjiSubtitle}
+      sectionTitle={contentData.experience.sectionTitle}
+      sectionDescription={contentData.experience.sectionDescription}
       headerAction={
         <Link href="/experiences">
           <Button
@@ -64,7 +38,7 @@ export const ExperienceSection: React.FC<{
             size="md"
             icon={<ArrowRight className="w-4 h-4" />}
           >
-            Show Experiences
+            {contentData.experience.ctaShowAll}
           </Button>
         </Link>
       }
@@ -102,7 +76,7 @@ export const ExperienceSection: React.FC<{
                     </span>
                     {exp.isCurrent && (
                       <span className="font-serif text-primary font-semibold">
-                        現職
+                        {contentData.experience.currentGlyph}
                       </span>
                     )}
                   </div>

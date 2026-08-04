@@ -54,7 +54,7 @@ export default async function ExperiencesPage() {
       organization: item.company,
       period: item.period,
       isCurrent: item.isCurrent,
-      statusBadge: item.isCurrent ? "現職 • Present" : "完了 • Completed",
+      statusBadge: item.isCurrent ? "現職 • Present" : "職歴 • Past Role",
       type: "experience",
       description: item.description,
       highlights: item.accomplishments && item.accomplishments.length > 0 ? item.accomplishments : undefined,

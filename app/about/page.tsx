@@ -19,6 +19,9 @@ import {
 import { Code, FileText, Layers } from "lucide-react";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
+import contentData from "@/data/content.json";
+import mockupData from "@/data/mockup.json";
+
 export const metadata: Metadata = {
   title: "About & Engineering Philosophy | Zaenal Alfian",
   description:
@@ -87,22 +90,17 @@ export default async function AboutPage() {
     );
   }
 
-  const userName = adminUser?.name || "Zaenal Alfian";
-  const userPosition = adminUser?.position || "Full-Stack Engineer";
-  const userLocation = adminUser?.location || "Indonesia (Remote Worldwide)";
-  const userExperience = adminUser?.experience || "6+ Years Engineering";
-  const userAvailability = adminUser?.availability || "Available";
+  const userName = adminUser?.name || mockupData.user.name;
+  const userPosition = adminUser?.position || mockupData.user.position;
+  const userLocation = adminUser?.location || mockupData.user.location;
+  const userExperience = adminUser?.experience || `${mockupData.user.experience} Years Engineering`;
+  const userAvailability = adminUser?.availability || mockupData.user.availability;
   const resumeUrl = adminUser?.resume?.trim();
 
-  const title = aboutData?.title || "Behind the Architecture";
-  const subtitle =
-    aboutData?.subtitle || "Building products with clarity & longevity";
-  const excerpt =
-    aboutData?.excerpt ||
-    "I am a dedicated software engineer with a strong commitment to continuous learning and professional growth. I enjoy building scalable and optimized solutions.";
-  const rawDescription =
-    aboutData?.description ||
-    "My journey in software development is rooted in a passion for craftsmanship. Over the past 6+ years, I have architected web platforms that serve millions of requests, led engineering teams in adopting modern frameworks like Next.js 16 and React 19, and built domain-driven design systems from scratch.\n\nMy philosophy is heavily influenced by traditional Japanese minimalism (*Wabi-Sabi* & *Ma*) — eliminating unnecessary clutter to let core function and performance shine. Every line of code, database query, and UI component is crafted with intentionality.\n\nWhether designing micro-frontends, optimizing PostgreSQL query access with Prisma 7, or fine-tuning Core Web Vitals to 99/100 scores, I focus on delivering long-term architectural longevity and delightful user experiences.";
+  const title = aboutData?.title || mockupData.about.title;
+  const subtitle = aboutData?.subtitle || mockupData.about.subtitle;
+  const excerpt = aboutData?.excerpt || mockupData.about.excerpt;
+  const rawDescription = aboutData?.description || mockupData.about.description;
 
   const paragraphs: string[] = rawDescription
     .split("\n")
@@ -155,7 +153,7 @@ export default async function AboutPage() {
           {/* Header Banner */}
           <div className="space-y-4 border-b border-border-warm pb-8">
             <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
-              自己紹介 • BIOGRAPHY &amp; PHILOSOPHY
+              {contentData.about.page.kanjiLabel}
             </span>
             <h1 className="text-4xl sm:text-5xl font-serif font-bold text-ink tracking-tight">
               {title}
@@ -183,7 +181,7 @@ export default async function AboutPage() {
               <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
                 <Image
                   src="/zen.svg?v=2"
-                  alt="Zaenal Alfian Logo"
+                  alt={contentData.nav.logoAlt}
                   width={40}
                   height={40}
                   className="w-10 h-10 object-contain"
@@ -200,19 +198,19 @@ export default async function AboutPage() {
 
               <div className="space-y-3 text-xs font-mono">
                 <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">
-                  <span className="text-ink-muted shrink-0">Location:</span>
+                  <span className="text-ink-muted shrink-0">{contentData.about.page.locationLabel}</span>
                   <span className="text-ink font-bold text-right">
                     {userLocation}
                   </span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">
-                  <span className="text-ink-muted shrink-0">Experience:</span>
+                  <span className="text-ink-muted shrink-0">{contentData.about.page.experienceLabel}</span>
                   <span className="text-primary font-bold text-right">
-                    {userExperience} Years
+                    {userExperience}
                   </span>
                 </div>
                 <div className="flex items-center justify-between py-2 border-b border-border-subtle gap-4">
-                  <span className="text-ink-muted shrink-0">Availability:</span>
+                  <span className="text-ink-muted shrink-0">{contentData.about.page.availabilityLabel}</span>
                   <span className="text-emerald-600 font-bold flex items-center gap-1.5 text-right shrink-0">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                     <span>{userAvailability}</span>
@@ -234,7 +232,7 @@ export default async function AboutPage() {
                       className="w-full justify-center"
                       icon={<FileText className="w-4 h-4" />}
                     >
-                      Get My Resume
+                      {contentData.about.page.resumeButton}
                     </Button>
                   </a>
                 ) : (
@@ -245,7 +243,7 @@ export default async function AboutPage() {
                       className="w-full justify-center"
                       icon={<FileText className="w-4 h-4" />}
                     >
-                      Get My Resume
+                      {contentData.about.page.resumeButton}
                     </Button>
                   </Link>
                 )}
@@ -257,19 +255,19 @@ export default async function AboutPage() {
           <div className="space-y-6 pt-6 border-t border-border-warm">
             <div>
               <span className="font-serif text-primary/60 tracking-widest text-xs font-semibold uppercase block">
-                美学 • PHILOSOPHY PILLARS
+                {contentData.about.page.philosophyKanji}
               </span>
               <h2 className="text-3xl font-serif font-bold text-ink mt-1">
-                Core Engineering Principles
+                {contentData.about.page.philosophyTitle}
               </h2>
             </div>
 
             {cards.length === 0 ? (
               <EmptyState
                 icon={Layers}
-                title="There are no values or pillars posted yet"
-                subtitleKanji="データなし"
-                description="Engineering principles and core values will appear here once published from the admin panel."
+                title={contentData.emptyStates.pillars.title}
+                subtitleKanji={contentData.emptyStates.pillars.subtitleKanji}
+                description={contentData.emptyStates.pillars.description}
                 className="my-0"
               />
             ) : (
@@ -320,19 +318,19 @@ export default async function AboutPage() {
           <div className="space-y-6 pt-10 border-t border-border-warm">
             <div>
               <span className="font-serif text-primary/60 tracking-widest text-xs font-semibold uppercase block">
-                技術 • TECHNICAL SKILLSETS
+                {contentData.about.page.skillsKanji}
               </span>
               <h2 className="text-3xl font-serif font-bold text-ink mt-1">
-                Technical Skillset &amp; Competencies
+                {contentData.about.page.skillsTitle}
               </h2>
             </div>
 
             {skillCategories.length === 0 ? (
               <EmptyState
                 icon={Layers}
-                title="There are no skills or competencies posted yet"
-                subtitleKanji="データなし"
-                description="Technical skills will appear here once published."
+                title={contentData.emptyStates.skills.title}
+                subtitleKanji={contentData.emptyStates.skills.subtitleKanji}
+                description={contentData.emptyStates.skills.description}
                 className="my-0"
               />
             ) : (
@@ -405,12 +403,12 @@ export default async function AboutPage() {
 
           {/* Reusable Bottom Action Footer */}
           <ActionFooter
-            title="Interested in working together?"
-            description="Let's discuss architecture consulting, senior engineering roles, or custom web development projects."
-            secondaryButtonText="My Projects"
-            secondaryButtonHref="/projects"
-            primaryButtonText="Start Conversation"
-            primaryButtonHref="/#contact"
+            title={contentData.about.page.actionFooter.title}
+            description={contentData.about.page.actionFooter.description}
+            secondaryButtonText={contentData.about.page.actionFooter.secondaryText}
+            secondaryButtonHref={contentData.about.page.actionFooter.secondaryHref}
+            primaryButtonText={contentData.about.page.actionFooter.primaryText}
+            primaryButtonHref={contentData.about.page.actionFooter.primaryHref}
           />
         </Container>
       </div>

@@ -6,9 +6,10 @@ import { SectionWrapper } from "../ui/SectionWrapper";
 import { Button } from "../ui/Button";
 import { CardCornerSeigaiha } from "../ui/CardCornerSeigaiha";
 import { ArrowRight, FolderGit2 } from "lucide-react";
-
 import Image from "next/image";
 import { EmptyState } from "../ui/EmptyState";
+import { normalizeImageUrl } from "@/lib/seo";
+import contentData from "@/data/content.json";
 
 export interface ProjectItem {
   id: string;
@@ -19,8 +20,6 @@ export interface ProjectItem {
   thumbnail: string;
   techstack: string[];
 }
-
-import { normalizeImageUrl } from "@/lib/seo";
 
 const ProjectCardThumbnail: React.FC<{
   thumbnail: string;
@@ -65,7 +64,7 @@ export const BoxyProjectCard: React.FC<{
   index: number;
   className?: string;
 }> = ({ project, index, className = "" }) => {
-  const kanjiNumbers = ["一", "二", "三", "四", "五", "六"];
+  const kanjiNumbers = contentData.projects.cardKanjiNumbers;
   const kanjiNum = kanjiNumbers[index % kanjiNumbers.length] || "一";
 
   // Limit techstack badges on image to max 3 items, showing "+N more" badge if overflow
@@ -125,7 +124,7 @@ export const BoxyProjectCard: React.FC<{
               {project.category}
             </span>
             <span className="font-serif text-xs font-bold text-primary shrink-0">
-              実績作品
+              {contentData.projects.cardKanjiLabel}
             </span>
           </div>
 
@@ -155,7 +154,7 @@ export const BoxyProjectCard: React.FC<{
             <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.08)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.08)_50%,rgba(255,255,255,0.08)_75%,transparent_75%,transparent)] bg-[length:12px_12px] opacity-40 pointer-events-none" />
 
             <span className="font-mono text-xs font-semibold uppercase tracking-wider relative z-10 text-amber-200">
-              View Project
+              {contentData.projects.ctaViewProject}
             </span>
             <ArrowRight className="w-3.5 h-3.5 relative z-10 text-amber-200 transform group-hover:translate-x-1 transition-transform" />
           </div>
@@ -173,9 +172,9 @@ export const FeaturedProjectsSection: React.FC<{
   return (
     <SectionWrapper
       id="projects"
-      kanjiSubtitle="主要実績"
-      sectionTitle="Featured Projects"
-      sectionDescription="Production web applications, architectural platforms, and technical open-source contributions."
+      kanjiSubtitle={contentData.projects.kanjiSubtitle}
+      sectionTitle={contentData.projects.sectionTitle}
+      sectionDescription={contentData.projects.sectionDescription}
       headerAlign="center"
       bgVariant="paper"
       containerSize="wide"
@@ -184,9 +183,9 @@ export const FeaturedProjectsSection: React.FC<{
       {!hasProjects ? (
         <EmptyState
           icon={FolderGit2}
-          title="No projects posted yet"
-          subtitleKanji="実績作品はまだありません"
-          description="Production web applications, architecture platforms, and technical contributions will be showcased here once published."
+          title={contentData.emptyStates.projects.title}
+          subtitleKanji={contentData.emptyStates.projects.subtitleKanji}
+          description={contentData.emptyStates.projects.description}
         />
       ) : (
         <>
@@ -210,7 +209,7 @@ export const FeaturedProjectsSection: React.FC<{
                 className="rounded-xl px-5 py-2.5 text-xs font-mono font-semibold border-border-warm bg-surface text-ink hover:bg-primary hover:!text-white hover:border-primary transition-all duration-300"
                 icon={<ArrowRight className="w-3.5 h-3.5" />}
               >
-                Show More Projects
+                {contentData.projects.ctaShowMore}
               </Button>
             </Link>
             <div className="flex-1 h-px bg-border-subtle" />

@@ -7,7 +7,7 @@ export const JsonLd: React.FC = () => {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Zaenal Alfian",
-    alternateName: "才",
+    alternateName: ["zenovasi", "astrocoding"],
     jobTitle: "Full-Stack Engineer",
     url: baseUrl,
     sameAs: [

@@ -15,6 +15,9 @@ import {
 } from "lucide-react";
 import { sendContactMessageAction } from "@/app/actions/contact";
 
+import contentData from "@/data/content.json";
+import mockupData from "@/data/mockup.json";
+
 export interface ContactSectionProps {
   contactData?: {
     name?: string | null;
@@ -28,12 +31,11 @@ export interface ContactSectionProps {
 export const ContactSection: React.FC<ContactSectionProps> = ({
   contactData,
 }) => {
-  const name = contactData?.name || "Zaenal Alfian";
-  const position = contactData?.position || "Full-Stack Engineer";
-  const gmail = contactData?.gmail || "zaenalalfian20@gmail.com";
-  const location = contactData?.location || "Karawang, Indonesia / Remote";
-  const availability =
-    contactData?.availability || "Accepting Projects & Roles";
+  const name = contactData?.name || mockupData.user.name;
+  const position = contactData?.position || mockupData.user.position;
+  const gmail = contactData?.gmail || mockupData.contact.gmail;
+  const location = contactData?.location || mockupData.contact.location;
+  const availability = contactData?.availability || mockupData.contact.availability;
 
   const [submitted, setSubmitted] = React.useState(false);
   const [failed, setFailed] = React.useState(false);
@@ -70,9 +72,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   return (
     <SectionWrapper
       id="contact"
-      kanjiSubtitle="お問い合わせ"
-      sectionTitle="Let's Build Something Great!"
-      sectionDescription="Open for senior engineering leadership, frontend architecture consulting, and high-impact web product development."
+      kanjiSubtitle={contentData.contact.kanjiSubtitle}
+      sectionTitle={contentData.contact.sectionTitle}
+      sectionDescription={contentData.contact.sectionDescription}
       bgVariant="paper"
       className="pt-10 sm:pt-14 pb-16 sm:pb-24"
     >
@@ -82,7 +84,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
           <Card className="p-6 bg-surface space-y-6">
             <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
               <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-serif font-bold text-lg">
-                印
+                {contentData.contact.infoCard.hankoGlyph}
               </div>
               <div>
                 <h3 className="font-serif font-bold text-lg text-ink">
@@ -97,7 +99,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 <Mail className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs font-mono text-ink-muted block uppercase">
-                    Direct Email
+                    {contentData.contact.infoCard.labelDirectEmail}
                   </span>
                   <a
                     href={`mailto:${gmail}`}
@@ -112,7 +114,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs font-mono text-ink-muted block uppercase">
-                    Location
+                    {contentData.contact.infoCard.labelLocation}
                   </span>
                   <span className="text-ink font-medium">{location}</span>
                 </div>
@@ -122,7 +124,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 <Sparkles className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
                   <span className="text-xs font-mono text-ink-muted block uppercase">
-                    Availability
+                    {contentData.contact.infoCard.labelAvailability}
                   </span>
                   <span className="text-emerald-700 font-medium flex items-center gap-1.5 mt-0.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -133,8 +135,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             </div>
 
             <div className="p-4 rounded bg-[#f6e0ce]/40 border border-[#ebd9c8] text-xs text-ink-muted font-serif italic">
-              &quot;Quality is never an accident; it is always the result of
-              high intention, sincere effort, and intelligent execution.&quot;
+              &quot;{contentData.contact.infoCard.quote}&quot;
             </div>
           </Card>
         </div>
@@ -148,10 +149,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   <Loader2 className="w-8 h-8 animate-spin" />
                 </div>
                 <h3 className="text-2xl font-serif font-bold text-ink">
-                  Sending Message / 送信中...
+                  {contentData.contact.states.loading.title}
                 </h3>
                 <p className="text-sm text-ink-muted max-w-md mx-auto">
-                  Please wait a moment. Your message is being delivered.
+                  {contentData.contact.states.loading.description}
                 </p>
               </div>
             ) : submitted ? (
@@ -160,11 +161,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <h3 className="text-2xl font-serif font-bold text-ink">
-                  Message Sent / 送信完了
+                  {contentData.contact.states.success.title}
                 </h3>
                 <p className="text-sm text-ink-muted max-w-md mx-auto">
-                  Thank you for reaching out. I have received your message and
-                  will respond within 24 hours.
+                  {contentData.contact.states.success.description}
                 </p>
                 <Button
                   variant="outline"
@@ -172,7 +172,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   onClick={() => setSubmitted(false)}
                   className="mt-4"
                 >
-                  Send Another Message
+                  {contentData.contact.states.success.ctaSendAnother}
                 </Button>
               </div>
             ) : failed ? (
@@ -181,15 +181,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   <XCircle className="w-8 h-8" />
                 </div>
                 <h3 className="text-2xl font-serif font-bold text-ink">
-                  Failed to Send / 送信失敗
+                  {contentData.contact.states.failed.title}
                 </h3>
                 <p className="text-sm text-ink-muted max-w-sm mx-auto">
-                  Something went wrong while delivering your message. You can
-                  try again or reach out directly.
+                  {contentData.contact.states.failed.description}
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
                   <Button variant="outline" size="sm" onClick={handleRetry}>
-                    Try Again
+                    {contentData.contact.states.failed.ctaRetry}
                   </Button>
                   {fallbackGmail && (
                     <a
@@ -199,7 +198,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors"
                     >
                       <Mail className="w-4 h-4" />
-                      Email Directly
+                      {contentData.contact.states.failed.ctaEmailDirect}
                     </a>
                   )}
                 </div>
@@ -209,7 +208,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-mono text-ink font-medium">
-                      Your Name / お名前 *
+                      {contentData.contact.form.labelName}
                     </label>
                     <input
                       type="text"
@@ -218,14 +217,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
                       }
-                      placeholder="e.g. Zaenal Alfian"
+                      placeholder={contentData.contact.form.placeholderName}
                       className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
                     />
                   </div>
 
                   <div className="space-y-1.5">
                     <label className="text-xs font-mono text-ink font-medium">
-                      Email Address / メール *
+                      {contentData.contact.form.labelEmail}
                     </label>
                     <input
                       type="email"
@@ -234,7 +233,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       onChange={(e) =>
                         setFormData({ ...formData, email: e.target.value })
                       }
-                      placeholder="e.g. zaenal@example.com"
+                      placeholder={contentData.contact.form.placeholderEmail}
                       className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
                     />
                   </div>
@@ -242,7 +241,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-mono text-ink font-medium">
-                    Subject / 件名 *
+                    {contentData.contact.form.labelSubject}
                   </label>
                   <input
                     type="text"
@@ -251,14 +250,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                     onChange={(e) =>
                       setFormData({ ...formData, subject: e.target.value })
                     }
-                    placeholder="e.g. Project Architecture Inquiry"
+                    placeholder={contentData.contact.form.placeholderSubject}
                     className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-mono text-ink font-medium">
-                    Message / 本文 *
+                    {contentData.contact.form.labelMessage}
                   </label>
                   <textarea
                     required
@@ -267,7 +266,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                     onChange={(e) =>
                       setFormData({ ...formData, message: e.target.value })
                     }
-                    placeholder="Tell me about your project, timeline, and product goals...."
+                    placeholder={contentData.contact.form.placeholderMessage}
                     className="w-full px-3.5 py-2.5 rounded-md border border-border-warm bg-paper text-ink text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors resize-none"
                   />
                 </div>
@@ -280,7 +279,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   className="w-full justify-center"
                   icon={<Send className="w-4 h-4" />}
                 >
-                  {loading ? "Sending Message..." : "Send Message"}
+                  {loading
+                    ? contentData.contact.form.submitSending
+                    : contentData.contact.form.submitLabel}
                 </Button>
               </form>
             )}

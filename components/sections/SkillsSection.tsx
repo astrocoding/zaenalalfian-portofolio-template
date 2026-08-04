@@ -3,6 +3,8 @@
 import * as React from "react";
 import { SectionWrapper, Card, Badge, CardCornerSeigaiha } from "../ui";
 import { Code, Database, Layers, Wrench } from "lucide-react";
+import contentData from "@/data/content.json";
+import mockupData from "@/data/mockup.json";
 
 export interface SkillItem {
   id?: string;
@@ -28,89 +30,40 @@ export const CATEGORY_META: Record<
   { kanji: string; icon: React.ReactNode }
 > = {
   "Frontend Engineering": {
-    kanji: "フロントエンド",
+    kanji: contentData.skills.categoryMeta["Frontend Engineering"].kanji,
     icon: <Code className="w-5 h-5 text-primary" />,
   },
   "Backend & Database": {
-    kanji: "バックエンド",
+    kanji: contentData.skills.categoryMeta["Backend & Database"].kanji,
     icon: <Database className="w-5 h-5 text-primary" />,
   },
   "Backend & Databases": {
-    kanji: "バックエンド",
+    kanji: contentData.skills.categoryMeta["Backend & Databases"].kanji,
     icon: <Database className="w-5 h-5 text-primary" />,
   },
   "Architecture & DevOps": {
-    kanji: "アーキテクチャ",
+    kanji: contentData.skills.categoryMeta["Architecture & DevOps"].kanji,
     icon: <Layers className="w-5 h-5 text-primary" />,
   },
   "Tools & Methodologies": {
-    kanji: "ツール",
+    kanji: contentData.skills.categoryMeta["Tools & Methodologies"].kanji,
     icon: <Wrench className="w-5 h-5 text-primary" />,
   },
 };
 
-export const DEFAULT_SKILL_CATEGORIES: SkillCategoryGroup[] = [
-  {
-    title: "Frontend Engineering",
-    kanji: "フロントエンド",
-    icon: <Code className="w-5 h-5 text-primary" />,
-    skills: [
-      "Next.js 16 (App Router)",
-      "React 19",
-      "TypeScript",
-      "TailwindCSS v4",
-      "Framer Motion",
-      "State Management (Zustand)",
-      "HTML5 / Semantic Web",
-      "Web Performance (CWV)",
-    ],
-  },
-  {
-    title: "Backend & Database",
-    kanji: "バックエンド",
-    icon: <Database className="w-5 h-5 text-primary" />,
-    skills: [
-      "Node.js / Bun",
-      "PostgreSQL",
-      "Prisma 7 ORM",
-      "RESTful & GraphQL APIs",
-      "Server Actions",
-      "Redis Caching",
-      "Database Indexing",
-      "Auth (NextAuth / Lucia)",
-    ],
-  },
-  {
-    title: "Architecture & DevOps",
-    kanji: "アーキテクチャ",
-    icon: <Layers className="w-5 h-5 text-primary" />,
-    skills: [
-      "Vercel Deployment",
-      "Docker & Containers",
-      "CI/CD Pipelines",
-      "Microservice Patterns",
-      "Edge Computing",
-      "SEO Optimization",
-      "Serverless Functions",
-      "Monorepos (Turborepo)",
-    ],
-  },
-  {
-    title: "Tools & Methodologies",
-    kanji: "ツール",
-    icon: <Wrench className="w-5 h-5 text-primary" />,
-    skills: [
-      "Git & GitHub Actions",
-      "Figma to Code",
-      "Jest & React Testing Library",
-      "Playwright End-to-End",
-      "ESLint & Prettier",
-      "Agile & Pair Programming",
-      "Technical Documentation",
-      "Design Systems",
-    ],
-  },
+const categoryIcons = [
+  <Code key="code" className="w-5 h-5 text-primary" />,
+  <Database key="db" className="w-5 h-5 text-primary" />,
+  <Layers key="layers" className="w-5 h-5 text-primary" />,
+  <Wrench key="wrench" className="w-5 h-5 text-primary" />,
 ];
+
+export const DEFAULT_SKILL_CATEGORIES: SkillCategoryGroup[] = mockupData.skillCategories.map((cat, idx) => ({
+  title: cat.title,
+  kanji: cat.kanji,
+  icon: categoryIcons[idx] || <Code key={idx} className="w-5 h-5 text-primary" />,
+  skills: cat.skills,
+}));
 
 export const SkillsSection: React.FC<SkillsSectionProps> = ({
   skillCategories: propsCategories,
@@ -124,18 +77,18 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
   return (
     <SectionWrapper
       id="skills"
-      kanjiSubtitle="技術スキル"
-      sectionTitle="Technical Skillset"
-      sectionDescription="Comprehensive toolset honed across years of full-stack engineering and product deployment."
+      kanjiSubtitle={contentData.skills.kanjiSubtitle}
+      sectionTitle={contentData.skills.sectionTitle}
+      sectionDescription={contentData.skills.sectionDescription}
       bgVariant="paper"
       className="pt-10 sm:pt-14 pb-16 sm:pb-24 relative overflow-hidden"
     >
-      {/* Subtle Japanese Watermark Accent ("技術スキル") matching paper bg (#fef0de) */}
+      {/* Subtle Japanese Watermark Accent matching paper bg (#fef0de) */}
       <div
         className="hidden md:block absolute top-8 sm:top-12 right-6 sm:right-16 font-serif text-5xl sm:text-7xl lg:text-8xl font-bold tracking-[0.08em] select-none pointer-events-none z-0 leading-none text-[var(--color-watermark)] opacity-90"
         aria-hidden="true"
       >
-        技術スキル
+        {contentData.skills.watermarkKanji}
       </div>
 
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6">

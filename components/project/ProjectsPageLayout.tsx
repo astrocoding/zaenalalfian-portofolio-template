@@ -5,6 +5,8 @@ import { FolderGit2, ChevronLeft, ChevronRight } from "lucide-react";
 import { BoxyProjectCard, ProjectItem } from "@/components/sections/FeaturedProjectsSection";
 import { EmptyState } from "@/components/ui/EmptyState";
 
+import contentData from "@/data/content.json";
+
 const PROJECTS_PER_PAGE = 8;
 
 // ─── Pagination ───────────────────────────────────────────────────────────────
@@ -112,13 +114,13 @@ export const ProjectsPageLayout: React.FC<{ projects: ProjectItem[] }> = ({ proj
       {/* ── Header ── */}
       <div className="text-center space-y-3 pb-10 sm:pb-14">
         <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
-          主要実績
+          {contentData.projects.page.kanjiLabel}
         </span>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink tracking-tight">
-          Featured Projects
+          {contentData.projects.page.title}
         </h1>
         <p className="text-sm sm:text-base text-ink-muted max-w-xl mx-auto leading-relaxed font-sans">
-          Production web applications, architectural platforms, and technical open-source contributions.
+          {contentData.projects.page.description}
         </p>
         {/* decorative rule */}
         <div className="flex items-center justify-center pt-1">
@@ -133,9 +135,9 @@ export const ProjectsPageLayout: React.FC<{ projects: ProjectItem[] }> = ({ proj
       {!hasProjects ? (
         <EmptyState
           icon={FolderGit2}
-          title="No projects posted yet"
-          subtitleKanji="実績作品はまだありません"
-          description="Production web applications, architecture platforms, and technical contributions will be showcased here once published."
+          title={contentData.emptyStates.projects.title}
+          subtitleKanji={contentData.emptyStates.projects.subtitleKanji}
+          description={contentData.emptyStates.projects.description}
         />
       ) : (
         <>

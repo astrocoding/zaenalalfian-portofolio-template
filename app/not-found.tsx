@@ -10,13 +10,16 @@ import { ArrowLeft, Mail } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+import contentData from "@/data/content.json";
+import mockupData from "@/data/mockup.json";
+
 export const metadata: Metadata = {
   title: "404 - Page Not Found | Zaenal Alfian",
   description: "The requested page or resource could not be found.",
 };
 
 export default async function NotFound() {
-  let supportEmail = "zaenalalfian.dev@gmail.com";
+  let supportEmail = mockupData.contact.gmail;
   let session = null;
 
   try {
@@ -27,7 +30,7 @@ export default async function NotFound() {
 
   const isAdmin = Boolean(session?.user && session.user.role === "ADMIN");
   const backHref = isAdmin ? "/admin" : "/";
-  const backText = isAdmin ? "Back to Admin" : "Back to Home";
+  const backText = isAdmin ? contentData.notFound.backToAdmin : contentData.notFound.backToHome;
 
   try {
     const contactData = await prisma.contact.findFirst({
@@ -70,22 +73,21 @@ export default async function NotFound() {
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse shrink-0" />
             <span className="font-serif text-xs font-semibold text-primary tracking-widest uppercase">
-              見つかりません • PAGE NOT FOUND
+              {contentData.notFound.badgeKanji}
             </span>
           </div>
 
           {/* Main Title Header */}
           <div className="space-y-2 sm:space-y-3">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-primary tracking-tight">
-              NOT FOUND
+              {contentData.notFound.heading}
             </h1>
             <div className="w-12 h-0.5 bg-primary/40 mx-auto rounded-full" />
           </div>
 
           {/* Contextual Description */}
           <p className="text-base sm:text-lg text-ink-muted leading-relaxed font-sans max-w-md mx-auto">
-            The page or resource you are looking for might have been removed,
-            had its name changed, or is temporarily unavailable.
+            {contentData.notFound.description}
           </p>
 
           {/* Back Action Button */}
@@ -106,8 +108,7 @@ export default async function NotFound() {
           {/* Bottom Contact Support Section */}
           <div className="pt-6 sm:pt-7 border-t border-border-warm/60 mt-6 sm:mt-8 space-y-3">
             <p className="text-xs sm:text-sm text-ink-muted font-sans">
-              If you need assistance or believe this is an error, feel free to
-              reach out:
+              {contentData.notFound.supportText}
             </p>
             <div className="flex items-center justify-center">
               <a
@@ -115,7 +116,7 @@ export default async function NotFound() {
                 className="inline-flex items-center space-x-2 text-xs sm:text-sm font-mono font-medium text-primary hover:text-[#993b3d] bg-primary/5 hover:bg-primary/10 border border-primary/20 px-4 py-2 rounded-lg transition-all"
               >
                 <Mail className="w-4 h-4 text-primary shrink-0" />
-                <span>Contact ({supportEmail})</span>
+                <span>{contentData.notFound.contactLabel} ({supportEmail})</span>
               </a>
             </div>
           </div>

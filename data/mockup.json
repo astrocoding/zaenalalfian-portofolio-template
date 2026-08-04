@@ -1,0 +1,153 @@
+{
+  "_comment": "Fallback/mockup data used when database records do not exist yet. These values are shown as placeholder data during development or when the DB is empty.",
+
+  "user": {
+    "name": "Zaenal Alfian",
+    "username": "zaenalalfian",
+    "position": "Full-Stack Engineer",
+    "activity": "Building Great Products",
+    "location": "Karawang, Indonesia / Remote",
+    "experience": "6+",
+    "availability": "Accepting Projects & Roles",
+    "resume": null,
+    "gmail": "zaenalalfian20@gmail.com"
+  },
+
+  "about": {
+    "title": "Behind the Architecture",
+    "subtitle": "Building products with clarity & longevity",
+    "excerpt": "I am a dedicated software engineer with a strong commitment to continuous learning and professional growth. I enjoy building scalable and optimized solutions.",
+    "description": "My journey in software development is rooted in a passion for craftsmanship. Over the past 6+ years, I have architected web platforms that serve millions of requests, led engineering teams in adopting modern frameworks like Next.js 16 and React 19, and built domain-driven design systems from scratch.\n\nMy philosophy is heavily influenced by traditional Japanese minimalism (*Wabi-Sabi* & *Ma*) — eliminating unnecessary clutter to let core function and performance shine. Every line of code, database query, and UI component is crafted with intentionality.\n\nWhether designing micro-frontends, optimizing PostgreSQL query access with Prisma 7, or fine-tuning Core Web Vitals to 99/100 scores, I focus on delivering long-term architectural longevity and delightful user experiences.",
+    "cards": [
+      {
+        "title": "Clean Architecture",
+        "subtitle": "Strict separation of concerns, domain-driven boundaries, and maintainable codebases built to scale smoothly.",
+        "badge": "設計",
+        "order": 1
+      },
+      {
+        "title": "High Performance",
+        "subtitle": "Sub-second page loads, Server Component optimization, minimal bundle sizes, and pristine Core Web Vitals.",
+        "badge": "高速",
+        "order": 2
+      },
+      {
+        "title": "Editorial UI/UX",
+        "subtitle": "Thoughtful Japanese minimalist aesthetics, soft paper palettes, typography hierarchy, and smooth micro-interactions.",
+        "badge": "美学",
+        "order": 3
+      },
+      {
+        "title": "Technical Credibility",
+        "subtitle": "Type-safe contracts, automated testing, reliable database migrations, and production-ready deployments.",
+        "badge": "信頼",
+        "order": 4
+      }
+    ]
+  },
+
+  "contact": {
+    "gmail": "zaenalalfian20@gmail.com",
+    "github": "https://github.com/astrocoding",
+    "linkedin": "https://www.linkedin.com/in/zaenal-alfian/",
+    "instagram": "https://www.instagram.com/zenovasi/",
+    "facebook": "https://www.facebook.com/zaenal.alfian.2025/",
+    "location": "Karawang, Indonesia / Remote",
+    "availability": "Accepting Projects & Roles"
+  },
+
+  "experiences": [
+    {
+      "role": "Lead & Full-Stack Developer",
+      "company": "Cipta Grafika, Karawang (On-site)",
+      "period": "Dec 2024 — Present",
+      "isCurrent": true,
+      "description": "Architected a three-tier architecture for ERP system using Node.js & Hapi, React, PostgreSQL, and Redis, improving system performance by 150% compared to legacy code. Developed and deployed a web-based employee attendance system using barcode scanning integrated with payroll management in Laravel, reducing HR's time spent on attendance reconciliation by 65%.",
+      "skills": ["Node.js", "Hapi.js", "React", "Laravel", "PostgreSQL", "Redis"]
+    },
+    {
+      "role": "Backend Developer Intern",
+      "company": "SchoolTech Indonesia, Malang (Remote)",
+      "period": "Aug 2024 — Dec 2024",
+      "isCurrent": false,
+      "description": "Contributed to backend development of InternPro, a web-based internship platform for vocational high school students, using Laravel. Collaborated closely with Frontend Developers, System Analysts, Project Managers, and QA teams to deliver features aligned with specifications and timelines.",
+      "skills": ["Laravel", "PHP", "REST API", "MySQL", "Agile"]
+    },
+    {
+      "role": "Full-Stack Developer",
+      "company": "Kodetopia Indonesia, Karawang (Hybrid)",
+      "period": "Feb 2023 — Mar 2024",
+      "isCurrent": false,
+      "description": "Developed custom web applications based on client requirements using diverse technology stacks including Laravel, React, Express, MySQL, and PostgreSQL. Involved in end-to-end development from requirements analysis to deployment with a strong focus on deadlines, coding standards, sprint planning, and code reviews in Agile teams.",
+      "skills": ["Laravel", "React", "Express.js", "MySQL", "PostgreSQL", "CI/CD"]
+    }
+  ],
+
+  "skillCategories": [
+    {
+      "title": "Frontend Engineering",
+      "kanji": "フロントエンド",
+      "categoryOrder": 1,
+      "skills": [
+        "Next.js 16 (App Router)",
+        "React 19",
+        "TypeScript",
+        "TailwindCSS v4",
+        "State Management (Zustand)",
+        "HTML5 / Semantic Web",
+        "Web Performance (CWV)"
+      ]
+    },
+    {
+      "title": "Backend & Database",
+      "kanji": "バックエンド",
+      "categoryOrder": 2,
+      "skills": [
+        "Node.js / Bun",
+        "PostgreSQL",
+        "Prisma 7 ORM",
+        "RESTful & GraphQL APIs",
+        "Server Actions",
+        "Redis Caching",
+        "Database Indexing",
+        "Auth (NextAuth / Lucia)"
+      ]
+    },
+    {
+      "title": "Architecture & DevOps",
+      "kanji": "アーキテクチャ",
+      "categoryOrder": 3,
+      "skills": [
+        "Vercel Deployment",
+        "Docker & Containers",
+        "CI/CD Pipelines",
+        "Microservice Patterns",
+        "Edge Computing",
+        "SEO Optimization",
+        "Serverless Functions",
+        "Monorepos (Turborepo)"
+      ]
+    },
+    {
+      "title": "Tools & Methodologies",
+      "kanji": "ツール",
+      "categoryOrder": 4,
+      "skills": [
+        "Git & GitHub Actions",
+        "Figma to Code",
+        "Jest & React Testing Library",
+        "Playwright End-to-End",
+        "ESLint & Prettier",
+        "Agile & Pair Programming",
+        "Technical Documentation",
+        "Design Systems"
+      ]
+    }
+  ],
+
+  "stats": {
+    "experienceYears": 6,
+    "totalProjects": 30,
+    "totalBlogs": 12
+  }
+}
