@@ -94,8 +94,9 @@ export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const isAdmin = Boolean(session?.user && session.user.role === "ADMIN");
+  const sessionLoading = sessionStatus === "loading";
 
   const isHomePage = pathname === "/";
   const navItems = getNavItems(isHomePage);
@@ -352,7 +353,13 @@ export const Navbar: React.FC = () => {
 
             <div className="h-4 w-px bg-border-warm mx-2" />
 
-            {isAdmin ? (
+            {/* Desktop CTA: skeleton during session load, then Dashboard or Get in Touch */}
+            {sessionLoading ? (
+              <div
+                className="h-8 w-24 rounded-md bg-border-warm/60 animate-pulse"
+                aria-hidden="true"
+              />
+            ) : isAdmin ? (
               <Link
                 href="/admin"
                 className="inline-flex items-center justify-center text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-primary text-white hover:bg-[#993b3d] transition-colors shadow-2xs space-x-1"
@@ -423,7 +430,13 @@ export const Navbar: React.FC = () => {
               </div>
 
               <div className="pt-4 border-t border-border-subtle flex flex-col space-y-3">
-                {isAdmin ? (
+                {/* Mobile CTA: skeleton during session load, then Dashboard or Get in Touch */}
+                {sessionLoading ? (
+                  <div
+                    className="h-11 w-full rounded-md bg-border-warm/60 animate-pulse"
+                    aria-hidden="true"
+                  />
+                ) : isAdmin ? (
                   <Link
                     href="/admin"
                     onClick={() => setIsOpen(false)}
