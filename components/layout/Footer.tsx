@@ -1,7 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Flame } from "lucide-react";
+import { ArrowUpRight, Flame, Mail } from "lucide-react";
 import { Container } from "../ui/Container";
 import { GithubContributionGraph } from "../ui/GithubContributionGraph";
 import { prisma } from "@/lib/prisma";
@@ -129,8 +129,8 @@ export const Footer: React.FC<FooterProps> = async ({
             <GithubContributionGraph />
           </div>
 
-          {/* Navigation & Connect Wrapper Column for Tablet Responsive Layout */}
-          <div className="md:col-span-1 lg:col-span-2 flex flex-col space-y-10 lg:grid lg:grid-cols-2 lg:space-y-0 lg:gap-10">
+          {/* Navigation & Connect Wrapper Column */}
+          <div className="md:col-span-1 lg:col-span-2 grid grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
             {/* Quick Navigation Links */}
             <div className="space-y-3">
               <h2 className="font-serif font-bold text-sm text-ink uppercase tracking-wider">
@@ -220,6 +220,15 @@ export const Footer: React.FC<FooterProps> = async ({
                   <span className="text-[10px] text-primary font-serif font-medium">/ 公式</span>
                   <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
                 </a>
+                <Link
+                  href="/contact"
+                  className="hover:text-primary transition-colors inline-flex items-center gap-2"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>Contact Me</span>
+                  <span className="text-[10px] text-primary font-serif font-medium">/ 連絡</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-60 ml-auto" />
+                </Link>
               </div>
             </div>
           </div>
