@@ -1,11 +1,56 @@
 "use client";
 
-import * as React from "react";
-import { motion, type HTMLMotionProps } from "framer-motion";
+/**
+ * Motion.tsx — Native CSS animation wrappers (zero framer-motion dependency).
+ *
+ * Animation is driven by:
+ *  1. data-animate="<direction>" sets the initial hidden state via animation.css
+ *  2. IntersectionObserver sets data-animate-done when the element enters the viewport
+ *  3. animation.css fires the corresponding @keyframes animation once
+ *
+ * This is equivalent to framer-motion's `whileInView={{ once: true }}` pattern,
+ * but ~26 kB lighter (no framer-motion JS bundle for scroll-triggered animations).
+ */
 
-export interface FadeInProps extends HTMLMotionProps<"div"> {
+import * as React from "react";
+
+/* ──────────────────────────────────────────────────────────────
+   Shared IntersectionObserver hook
+   ────────────────────────────────────────────────────────────── */
+
+function useIntersectionAnimation(
+  ref: React.RefObject<HTMLElement | null>,
+  rootMargin = "-40px",
+) {
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.setAttribute("data-animate-done", "");
+          observer.disconnect();
+        }
+      },
+      { rootMargin, threshold: 0 },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref, rootMargin]);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   FadeIn
+   Replaces: <motion.div initial={{ opacity: 0, y/x: ±20 }} whileInView … />
+   ────────────────────────────────────────────────────────────── */
+
+export interface FadeInProps {
+  children?: React.ReactNode;
   delay?: number;
   direction?: "up" | "down" | "left" | "right" | "none";
+  className?: string;
 }
 
 export const FadeIn: React.FC<FadeInProps> = ({
@@ -13,91 +58,91 @@ export const FadeIn: React.FC<FadeInProps> = ({
   delay = 0,
   direction = "up",
   className,
-  ...props
 }) => {
-  const getDirectionOffset = () => {
-    switch (direction) {
-      case "up":
-        return { y: 20 };
-      case "down":
-        return { y: -20 };
-      case "left":
-        return { x: 20 };
-      case "right":
-        return { x: -20 };
-      case "none":
-        return {};
-    }
-  };
+  const ref = React.useRef<HTMLDivElement>(null);
+  useIntersectionAnimation(ref as React.RefObject<HTMLElement | null>);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, ...getDirectionOffset() }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{
-        duration: 0.5,
-        delay,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
+    <div
+      ref={ref}
+      data-animate={direction}
+      data-delay={delay > 0 ? String(delay) : undefined}
+      style={delay > 0 ? { animationDelay: `${delay}ms` } : undefined}
       className={className}
-      {...props}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
 
-export interface StaggerContainerProps extends HTMLMotionProps<"div"> {
+/* ──────────────────────────────────────────────────────────────
+   StaggerContainer
+   Replaces: <motion.div variants={staggerChildren} whileInView … />
+   Children receive incremental animation-delay via CSS custom property.
+   ────────────────────────────────────────────────────────────── */
+
+export interface StaggerContainerProps {
+  children?: React.ReactNode;
   staggerDelay?: number;
+  className?: string;
 }
 
 export const StaggerContainer: React.FC<StaggerContainerProps> = ({
   children,
-  staggerDelay = 0.1,
+  staggerDelay = 100,
   className,
-  ...props
 }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  // Assign --stagger-delay to each direct child once on mount
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const items = el.querySelectorAll<HTMLElement>("[data-animate='stagger']");
+    items.forEach((item, i) => {
+      item.style.setProperty("--stagger-delay", `${i * staggerDelay}ms`);
+    });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          items.forEach((item) => item.setAttribute("data-animate-done", ""));
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "-40px", threshold: 0 },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [staggerDelay]);
+
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-40px" }}
-      variants={{
-        hidden: {},
-        show: {
-          transition: {
-            staggerChildren: staggerDelay,
-          },
-        },
-      }}
-      className={className}
-      {...props}
-    >
+    <div ref={ref} className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 };
 
-export const StaggerItem: React.FC<HTMLMotionProps<"div">> = ({
+/* ──────────────────────────────────────────────────────────────
+   StaggerItem
+   Replaces: <motion.div variants={{ hidden, show }} />
+   Must be a direct child of <StaggerContainer>.
+   ────────────────────────────────────────────────────────────── */
+
+export interface StaggerItemProps {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+export const StaggerItem: React.FC<StaggerItemProps> = ({
   children,
   className,
-  ...props
 }) => {
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 16 },
-        show: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
-        },
-      }}
-      className={className}
-      {...props}
-    >
+    <div data-animate="stagger" className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 };

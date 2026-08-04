@@ -976,5 +976,3 @@ export async function reorderEducationsAction(items: { id: string; order: number
     return { success: false, error: getErrorMessage(error, "Failed to reorder education entries") };
   }
 }
-
-

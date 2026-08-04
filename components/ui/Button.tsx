@@ -3,16 +3,12 @@
 import * as React from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { motion, type HTMLMotionProps } from "framer-motion";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export interface ButtonProps extends Omit<
-  HTMLMotionProps<"button">,
-  "children"
-> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   children: React.ReactNode;
@@ -35,7 +31,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-md cursor-pointer [&_svg]:text-current [&_svg]:transition-colors [&_span]:text-inherit";
+      "inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-md cursor-pointer active:scale-[0.98] hover:scale-[1.02] [&_svg]:text-current [&_svg]:transition-colors [&_span]:text-inherit";
 
     const variantStyles = {
       primary:
@@ -55,10 +51,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     return (
-      <motion.button
+      <button
         ref={ref}
-        whileHover={{ scale: disabled ? 1 : 1.02 }}
-        whileTap={{ scale: disabled ? 1 : 0.98 }}
         className={cn(
           baseStyles,
           variantStyles[variant],
@@ -75,7 +69,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {icon && iconPosition === "right" && (
           <span className="inline-flex shrink-0">{icon}</span>
         )}
-      </motion.button>
+      </button>
     );
   },
 );

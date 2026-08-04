@@ -35,7 +35,7 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
     <div className="space-y-6 pb-8 border-b border-border-warm">
       {/* Back Navigation Link */}
       <Link
-        href="/#projects"
+        href="/projects"
         className="inline-flex items-center space-x-2 text-xs font-mono text-ink-muted hover:text-primary transition-colors"
       >
         <ArrowLeft className="w-3.5 h-3.5" />

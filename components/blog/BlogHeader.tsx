@@ -28,7 +28,7 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
   return (
     <div className="space-y-6 pb-4 border-b border-border-warm">
       <Link
-        href="/#blogs"
+        href="/blogs"
         className="inline-flex items-center space-x-2 text-xs font-mono text-ink-muted hover:text-primary transition-colors"
       >
         <ArrowLeft className="w-3.5 h-3.5" />

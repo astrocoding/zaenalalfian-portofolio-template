@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
 
 const SeigaihaFan: React.FC<{ cx: number; cy: number }> = ({ cx, cy }) => {
   const radii = [40, 33, 26, 19, 12, 5];
@@ -36,20 +35,12 @@ export const SeigaihaPattern: React.FC<SeigaihaPatternProps> = ({
   height,
 }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      style={{
-        ...(height ? { height } : {}),
-        transform: "translate3d(0,0,0)",
-        willChange: "transform, opacity",
-        backfaceVisibility: "hidden",
-      }}
-      className={`absolute bottom-0 left-0 right-0 w-full h-14 sm:h-16 lg:h-20 overflow-hidden leading-none pointer-events-none z-20 transform-gpu [contain:layout_paint_style] ${className}`}
+    <div
+      style={height ? { height } : undefined}
+      className={`absolute bottom-0 left-0 right-0 w-full h-14 sm:h-16 lg:h-20 overflow-hidden leading-none pointer-events-none z-20 seigaiha-fade-in ${className}`}
     >
       <svg
-        className="w-full h-full text-primary/45 transform-gpu"
+        className="w-full h-full text-primary/45"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         shapeRendering="geometricPrecision"
@@ -88,6 +79,6 @@ export const SeigaihaPattern: React.FC<SeigaihaPatternProps> = ({
           fill="url(#seigaiha-hero-pattern)"
         />
       </svg>
-    </motion.div>
+    </div>
   );
 };
