@@ -1,4 +1,7 @@
+"use client";
+
 import * as React from "react";
+import { optimizeHtmlCodeBlocks } from "@/lib/markdownUtils";
 
 export interface MarkdownRendererProps {
   contentHtml: string;
@@ -7,8 +10,43 @@ export interface MarkdownRendererProps {
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   contentHtml,
 }) => {
+  // Synchronously ensure code blocks have syntax highlighting and container boxes
+  const renderedHtml = React.useMemo(() => {
+    return optimizeHtmlCodeBlocks(contentHtml);
+  }, [contentHtml]);
+
+  // Handle interactive Copy buttons via event delegation
+  const handleArticleClick = (e: React.MouseEvent<HTMLElement>) => {
+    const target = e.target as HTMLElement;
+    const copyBtn = target.closest(
+      "button[data-copy-code='true']"
+    ) as HTMLButtonElement;
+    if (!copyBtn) return;
+
+    const wrapper = copyBtn.closest(".code-block-wrapper");
+    if (!wrapper) return;
+
+    const codeEl = wrapper.querySelector("code");
+    if (!codeEl) return;
+
+    const textToCopy = codeEl.textContent || "";
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      const span = copyBtn.querySelector("span");
+      if (span) {
+        const originalText = span.textContent;
+        span.textContent = "Copied!";
+        span.className = "text-emerald-400 font-bold";
+        setTimeout(() => {
+          span.textContent = originalText;
+          span.className = "";
+        }, 2000);
+      }
+    });
+  };
+
   return (
     <article
+      onClick={handleArticleClick}
       className="pt-7 pb-10 space-y-6 text-ink font-sans leading-relaxed text-base
         [&>:first-child]:mt-3
         [&>h1]:text-2xl [&>h1]:sm:text-3xl [&>h1]:font-bold [&>h1]:font-serif [&>h1]:text-ink [&>h1]:mt-8 [&>h1]:mb-4 [&>h1]:pb-2 [&>h1]:border-b [&>h1]:border-border-subtle
@@ -18,12 +56,12 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ul]:my-4 [&_ul]:text-ink-muted
         [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2 [&_ol]:my-4 [&_ol]:text-ink-muted
         [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:py-1 [&_blockquote]:italic [&_blockquote]:font-serif [&_blockquote]:my-6 [&_blockquote]:text-ink
-        [&>pre]:bg-[#1e1e1e] [&>pre]:text-neutral-100 [&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto [&>pre]:font-mono [&>pre]:text-xs [&>pre]:my-6 [&>pre]:border [&>pre]:border-neutral-800
+        [&_pre]:bg-[#1e1e1e] [&_pre]:text-neutral-100 [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre]:font-mono [&_pre]:text-xs sm:[&_pre]:text-sm
         [&>code]:font-mono [&>code]:text-xs [&>code]:bg-[#f6e0ce]/50 [&>code]:px-1.5 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-primary
         [&>a]:text-primary [&>a]:underline [&>a]:underline-offset-4 [&>a]:hover:text-[#993b3d]
         [&_div[data-align='left']]:text-left [&_div[data-align='center']]:text-center [&_div[data-align='right']]:text-right [&_div[data-align='justify']]:text-justify
         [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-lg [&_img]:inline-block"
-      dangerouslySetInnerHTML={{ __html: contentHtml }}
+      dangerouslySetInnerHTML={{ __html: renderedHtml }}
     />
   );
 };

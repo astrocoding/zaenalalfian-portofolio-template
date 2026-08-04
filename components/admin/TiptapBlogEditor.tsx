@@ -30,6 +30,20 @@ import {
   Globe,
 } from "lucide-react";
 
+const CODE_LANGUAGES = [
+  { label: "Code (Auto)", value: "" },
+  { label: "JavaScript", value: "js" },
+  { label: "TypeScript", value: "ts" },
+  { label: "Python", value: "python" },
+  { label: "Bash / Shell", value: "bash" },
+  { label: "HTML", value: "html" },
+  { label: "CSS", value: "css" },
+  { label: "JSON", value: "json" },
+  { label: "SQL", value: "sql" },
+  { label: "Go", value: "go" },
+  { label: "Rust", value: "rust" },
+];
+
 export interface TiptapBlogEditorProps {
   content: string;
   onChange: (newContent: string) => void;
@@ -77,6 +91,11 @@ export const TiptapBlogEditor: React.FC<TiptapBlogEditorProps> = ({
         orderedList: {
           HTMLAttributes: {
             class: "list-decimal pl-6 space-y-1.5 my-3 text-ink-muted",
+          },
+        },
+        codeBlock: {
+          HTMLAttributes: {
+            class: "bg-[#1e1e1e] text-neutral-100 p-4 rounded-lg font-mono text-xs my-4 border border-neutral-800",
           },
         },
       }),
@@ -339,7 +358,7 @@ export const TiptapBlogEditor: React.FC<TiptapBlogEditorProps> = ({
 
           <span className="w-px h-5 bg-border-warm my-auto" />
 
-          {/* Quote, Code, Link, Image */}
+          {/* Quote, Code + Language Dropdown, Link, Image */}
           <div className="flex items-center space-x-1 bg-paper px-1.5 py-1 rounded-lg border border-border-subtle">
             <button
               type="button"
@@ -351,16 +370,40 @@ export const TiptapBlogEditor: React.FC<TiptapBlogEditorProps> = ({
             >
               <Quote className="w-4 h-4" />
             </button>
-            <button
-              type="button"
-              onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-              className={`p-1.5 rounded transition-colors ${
-                editor.isActive("codeBlock") ? "bg-primary text-white" : "text-ink hover:bg-surface"
-              }`}
-              title="Code Block (```code```)"
-            >
-              <Code className="w-4 h-4" />
-            </button>
+
+            {/* Code Block Button + Language Selector */}
+            <div className="flex items-center space-x-1 bg-surface/80 rounded-md px-1 border border-border-subtle">
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+                className={`p-1 rounded transition-colors ${
+                  editor.isActive("codeBlock") ? "bg-primary text-white" : "text-ink hover:bg-surface"
+                }`}
+                title="Code Block (```code```)"
+              >
+                <Code className="w-4 h-4" />
+              </button>
+              <select
+                value={editor.getAttributes("codeBlock").language || ""}
+                onChange={(e) => {
+                  const lang = e.target.value;
+                  if (editor.isActive("codeBlock")) {
+                    editor.chain().focus().updateAttributes("codeBlock", { language: lang }).run();
+                  } else {
+                    editor.chain().focus().toggleCodeBlock({ language: lang }).run();
+                  }
+                }}
+                className="text-[11px] font-mono bg-transparent text-ink border-none focus:outline-none cursor-pointer py-0.5 pr-1 font-semibold"
+                title="Select Code Language"
+              >
+                {CODE_LANGUAGES.map((item) => (
+                  <option key={item.value} value={item.value} className="bg-paper text-ink">
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <button
               type="button"
               onClick={() => setShowLinkModal(true)}

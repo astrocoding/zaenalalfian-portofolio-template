@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
 import { prisma } from "@/lib/prisma";
+import { optimizeHtmlCodeBlocks } from "@/lib/markdownUtils";
 
 export interface BlogFrontmatter {
   title: string;
@@ -69,7 +70,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
             const { data, content } = matter(fileContent);
 
             const processedContent = await remark().use(html, { sanitize: false, allowDangerousHtml: true }).process(content);
-            const htmlContent = optimizeHtmlImages(processedContent.toString());
+            const htmlContent = optimizeHtmlCodeBlocks(optimizeHtmlImages(processedContent.toString()));
             const frontmatter = data as BlogFrontmatter;
 
             postsMap.set(frontmatter.slug, {
@@ -106,7 +107,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
             : new Date().toISOString().split("T")[0],
         },
         content: blog.content,
-        htmlContent: optimizeHtmlImages(processedContent.toString()),
+        htmlContent: optimizeHtmlCodeBlocks(optimizeHtmlImages(processedContent.toString())),
         readingTime: calculateReadingTime(blog.content),
       });
     }
@@ -147,7 +148,7 @@ export async function getBlogPost(
             : new Date().toISOString().split("T")[0],
         },
         content: dbBlog.content,
-        htmlContent: optimizeHtmlImages(processedContent.toString()),
+        htmlContent: optimizeHtmlCodeBlocks(optimizeHtmlImages(processedContent.toString())),
         readingTime: calculateReadingTime(dbBlog.content),
       };
     }
@@ -175,7 +176,7 @@ export async function getBlogPost(
     return {
       frontmatter: data as BlogFrontmatter,
       content,
-      htmlContent: optimizeHtmlImages(processedContent.toString()),
+      htmlContent: optimizeHtmlCodeBlocks(optimizeHtmlImages(processedContent.toString())),
       readingTime: calculateReadingTime(content),
     };
   }
@@ -187,7 +188,7 @@ export async function getBlogPost(
   return {
     frontmatter: data as BlogFrontmatter,
     content,
-    htmlContent: optimizeHtmlImages(processedContent.toString()),
+    htmlContent: optimizeHtmlCodeBlocks(optimizeHtmlImages(processedContent.toString())),
     readingTime: calculateReadingTime(content),
   };
 }

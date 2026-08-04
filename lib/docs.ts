@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
 import { prisma } from "@/lib/prisma";
+import { optimizeHtmlCodeBlocks } from "@/lib/markdownUtils";
 
 export interface DocTocItem {
   id: string;
@@ -71,7 +72,7 @@ export async function getAllDocs(): Promise<DocPost[]> {
             docsMap.set(frontmatter.slug, {
               frontmatter,
               content,
-              htmlContent: processedContent.toString(),
+              htmlContent: optimizeHtmlCodeBlocks(processedContent.toString()),
               toc: extractToc(content),
             });
           }
@@ -100,7 +101,7 @@ export async function getAllDocs(): Promise<DocPost[]> {
           order: doc.order,
         },
         content: doc.content,
-        htmlContent: processedContent.toString(),
+        htmlContent: optimizeHtmlCodeBlocks(processedContent.toString()),
         toc: extractToc(doc.content),
       });
     }
@@ -157,7 +158,7 @@ export async function getDocPost(
           order: dbDoc.order,
         },
         content: dbDoc.content,
-        htmlContent: processedContent.toString(),
+        htmlContent: optimizeHtmlCodeBlocks(processedContent.toString()),
         toc: extractToc(dbDoc.content),
       };
     }
@@ -193,7 +194,7 @@ export async function getDocPost(
   return {
     frontmatter: data as DocFrontmatter,
     content,
-    htmlContent: processedContent.toString(),
+    htmlContent: optimizeHtmlCodeBlocks(processedContent.toString()),
     toc: extractToc(content),
   };
 }
