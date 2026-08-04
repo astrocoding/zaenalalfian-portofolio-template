@@ -55,7 +55,7 @@ export const BlogHeader: React.FC<BlogHeaderProps> = ({
           {title}
         </h1>
 
-        <p className="text-lg text-ink-muted leading-relaxed font-serif italic max-w-3xl border-l-2 border-primary/40 pl-4 py-1">
+        <p className="text-base sm:text-lg text-ink-muted leading-relaxed font-serif italic w-full border-l-2 sm:border-l-4 border-primary/40 pl-4 py-1.5 bg-primary/5 rounded-r-lg">
           &quot;{description}&quot;
         </p>
 

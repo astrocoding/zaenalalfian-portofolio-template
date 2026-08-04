@@ -5,6 +5,7 @@ import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
 import { DocHeader } from "@/components/docs/DocHeader";
 import { MarkdownRenderer } from "@/components/blog/MarkdownRenderer";
+import { BlogSidebar } from "@/components/blog/BlogSidebar";
 import { getDocPost, getAllDocs } from "@/lib/docs";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
@@ -79,7 +80,7 @@ export default async function DocumentationDetailPage({
   return (
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper min-h-screen">
-        <Container size="narrow">
+        <Container size="wide">
           {/* Header */}
           <DocHeader
             title={doc.frontmatter.title}
@@ -87,8 +88,27 @@ export default async function DocumentationDetailPage({
             description={doc.frontmatter.description}
           />
 
-          {/* Document Content Body */}
-          <MarkdownRenderer contentHtml={doc.htmlContent} />
+          {/* Main Content & Right Sidebar Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 mt-8">
+            {/* Main Document Body (9 cols on xl for dominant content width) */}
+            <main className="lg:col-span-8 xl:col-span-9 min-w-0">
+              <MarkdownRenderer contentHtml={doc.htmlContent} />
+            </main>
+
+            {/* Right Sidebar Aside (3 cols on xl, sticky top) */}
+            <aside className="lg:col-span-4 xl:col-span-3 space-y-8 lg:sticky lg:top-24 h-fit">
+              <BlogSidebar
+                title={doc.frontmatter.title}
+                keywords={[
+                  doc.frontmatter.category,
+                  "Documentation",
+                  "Technical Reference",
+                ]}
+                slug={doc.frontmatter.slug}
+                category={doc.frontmatter.category}
+              />
+            </aside>
+          </div>
         </Container>
       </div>
     </MainLayout>

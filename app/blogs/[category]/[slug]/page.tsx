@@ -3,7 +3,12 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { MainLayout } from "@/components/layout";
 import { Container } from "@/components/ui/Container";
-import { BlogHeader, MarkdownRenderer, RelatedArticles } from "@/components/blog";
+import {
+  BlogHeader,
+  MarkdownRenderer,
+  RelatedArticles,
+  BlogSidebar,
+} from "@/components/blog";
 import { getBlogPost, getAllBlogPosts, getRelatedPosts } from "@/lib/blogs";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
@@ -93,7 +98,7 @@ export default async function BlogDetailPage({
   return (
     <MainLayout>
       <div className="py-12 sm:py-16 bg-paper">
-        <Container size="narrow">
+        <Container size="default">
           {/* Header */}
           <BlogHeader
             title={post.frontmatter.title}
@@ -104,11 +109,31 @@ export default async function BlogDetailPage({
             thumbnail={post.frontmatter.thumbnail}
           />
 
-          {/* Article Body */}
-          <MarkdownRenderer contentHtml={post.htmlContent} />
+          {/* Main Content & Right Sidebar Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mt-8">
+            {/* Main Article Body (8 cols on desktop) */}
+            <main className="lg:col-span-8 min-w-0">
+              <MarkdownRenderer contentHtml={post.htmlContent} />
+            </main>
+
+            {/* Right Sidebar Aside (4 cols on desktop, sticky top) */}
+            <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-24 h-fit">
+              <BlogSidebar
+                title={post.frontmatter.title}
+                keywords={
+                  post.frontmatter.keywords || [
+                    post.frontmatter.category,
+                    "Software Architecture",
+                  ]
+                }
+                slug={post.frontmatter.slug}
+                category={post.frontmatter.category}
+              />
+            </aside>
+          </div>
 
           {/* Related Articles Footer */}
-          <div className="pt-10">
+          <div className="pt-16 border-t border-border-warm mt-16">
             <RelatedArticles posts={relatedPosts} />
           </div>
         </Container>

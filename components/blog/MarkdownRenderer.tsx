@@ -47,11 +47,11 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   return (
     <article
       onClick={handleArticleClick}
-      className="pt-7 pb-10 space-y-6 text-ink font-sans leading-relaxed text-base
-        [&>:first-child]:mt-3
-        [&>h1]:text-2xl [&>h1]:sm:text-3xl [&>h1]:font-bold [&>h1]:font-serif [&>h1]:text-ink [&>h1]:mt-8 [&>h1]:mb-4 [&>h1]:pb-2 [&>h1]:border-b [&>h1]:border-border-subtle
-        [&>h2]:text-xl [&>h2]:sm:text-2xl [&>h2]:font-bold [&>h2]:font-serif [&>h2]:text-ink [&>h2]:mt-8 [&>h2]:mb-3
-        [&>h3]:text-lg [&>h3]:font-semibold [&>h3]:text-ink [&>h3]:mt-6 [&>h3]:mb-2
+      className="pb-10 space-y-6 text-ink font-sans leading-relaxed text-base
+        [&>:first-child]:mt-0 [&>:first-child]:pt-0
+        [&>h1]:text-2xl [&>h1]:sm:text-3xl [&>h1]:font-bold [&>h1]:font-serif [&>h1]:text-ink [&>h1]:mb-4 [&>h1]:pb-2 [&>h1]:border-b [&>h1]:border-border-subtle [&>h1:not(:first-child)]:mt-8
+        [&>h2]:text-xl [&>h2]:sm:text-2xl [&>h2]:font-bold [&>h2]:font-serif [&>h2]:text-ink [&>h2]:mb-3 [&>h2:not(:first-child)]:mt-8
+        [&>h3]:text-lg [&>h3]:font-semibold [&>h3]:text-ink [&>h3]:mb-2 [&>h3:not(:first-child)]:mt-6
         [&>p]:text-ink-muted [&>p]:leading-relaxed [&>p]:mb-4
         [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ul]:my-4 [&_ul]:text-ink-muted
         [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2 [&_ol]:my-4 [&_ol]:text-ink-muted
