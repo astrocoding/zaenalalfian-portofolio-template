@@ -18,12 +18,14 @@ const newsreader = Newsreader({
   variable: "--font-newsreader",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 const baseUrl = getSiteUrl();
