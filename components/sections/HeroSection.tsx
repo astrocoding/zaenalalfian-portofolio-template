@@ -248,7 +248,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
       <Container
         size="wide"
-        className="relative z-10 w-full flex-1 flex flex-col justify-between pt-0 pb-16 sm:pb-20 lg:pb-24 min-h-0"
+        className="relative z-10 w-full flex-1 flex flex-col justify-between pt-0 pb-28 sm:pb-32 lg:pb-24 min-h-0"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 lg:items-stretch">
           {/* Main Hero Copy */}
