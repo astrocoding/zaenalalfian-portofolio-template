@@ -51,7 +51,7 @@ export default async function BlogsPage() {
 
   return (
     <MainLayout>
-      <div className="py-12 sm:py-16 bg-paper min-h-screen">
+      <div className="py-12 sm:py-16 bg-paper min-h-screen section-fade-in">
         <Container size="wide" className="space-y-12">
           <BlogsPageLayout blogs={formattedBlogs} />
           <ActionFooter

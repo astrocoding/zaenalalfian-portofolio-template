@@ -29,24 +29,24 @@ function syncSidebarStateToStorage(newState: SidebarState) {
   }
 }
 
+function getInitialSidebarState(fallback: SidebarState): SidebarState {
+  if (typeof window === "undefined") return fallback;
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === "open" || saved === "close") return saved;
+  } catch {
+    // Ignore
+  }
+  return fallback;
+}
+
 export const SidebarProvider: React.FC<SidebarProviderProps> = ({
   children,
   initialState = "open",
 }) => {
-  const [state, setState] = React.useState<SidebarState>(initialState);
-
-  // Sync client state with localStorage if client has saved state
-  React.useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if ((saved === "open" || saved === "close") && saved !== state) {
-        setState(saved);
-        document.cookie = `sidebar=${saved}; path=/; max-age=31536000; SameSite=Lax`;
-      }
-    } catch {
-      // Ignore
-    }
-  }, []);
+  const [state, setState] = React.useState<SidebarState>(() =>
+    getInitialSidebarState(initialState)
+  );
 
   const setSidebarState = React.useCallback((newState: SidebarState) => {
     setState(newState);

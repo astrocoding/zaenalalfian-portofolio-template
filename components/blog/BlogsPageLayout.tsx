@@ -4,6 +4,7 @@ import * as React from "react";
 import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
 import { BlogCard, BlogItem } from "@/components/sections/LatestBlogsSection";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/Motion";
 
 import contentData from "@/data/content.json";
 
@@ -112,41 +113,50 @@ export const BlogsPageLayout: React.FC<{ blogs: BlogItem[] }> = ({ blogs }) => {
   return (
     <section className="w-full">
       {/* ── Header ── */}
-      <div className="text-center space-y-3 pb-10 sm:pb-14">
-        <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
-          {contentData.blogs.page.kanjiLabel}
-        </span>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink tracking-tight">
-          {contentData.blogs.page.title}
-        </h1>
-        <p className="text-sm sm:text-base text-ink-muted max-w-xl mx-auto leading-relaxed font-sans">
-          {contentData.blogs.page.description}
-        </p>
-        {/* decorative rule */}
-        <div className="flex items-center justify-center pt-1">
-          <div className="w-12 h-px bg-primary/30" />
+      <FadeIn direction="up">
+        <div className="text-center space-y-3 pb-10 sm:pb-14">
+          <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
+            {contentData.blogs.page.kanjiLabel}
+          </span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink tracking-tight">
+            {contentData.blogs.page.title}
+          </h1>
+          <p className="text-sm sm:text-base text-ink-muted max-w-xl mx-auto leading-relaxed font-sans">
+            {contentData.blogs.page.description}
+          </p>
+          {/* decorative rule */}
+          <div className="flex items-center justify-center pt-1">
+            <div className="w-12 h-px bg-primary/30" />
+          </div>
         </div>
-      </div>
+      </FadeIn>
 
       {/* ── Scroll anchor ── */}
       <div id="blogs-grid-top" className="-mt-4 pt-4" aria-hidden />
 
       {/* ── Content ── */}
       {!hasBlogs ? (
-        <EmptyState
-          icon={BookOpen}
-          title={contentData.emptyStates.blogs.title}
-          subtitleKanji={contentData.emptyStates.blogs.subtitleKanji}
-          description={contentData.emptyStates.blogs.description}
-        />
+        <FadeIn direction="up" delay={100}>
+          <EmptyState
+            icon={BookOpen}
+            title={contentData.emptyStates.blogs.title}
+            subtitleKanji={contentData.emptyStates.blogs.subtitleKanji}
+            description={contentData.emptyStates.blogs.description}
+          />
+        </FadeIn>
       ) : (
         <>
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+          <StaggerContainer
+            staggerDelay={60}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10"
+          >
             {paginated.map((blog) => (
-              <BlogCard key={blog.id} blog={blog} />
+              <StaggerItem key={blog.id}>
+                <BlogCard blog={blog} />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
 
           {/* Pagination */}
           <Pagination

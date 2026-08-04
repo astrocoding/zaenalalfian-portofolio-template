@@ -4,6 +4,7 @@ import * as React from "react";
 import { FolderGit2, ChevronLeft, ChevronRight } from "lucide-react";
 import { BoxyProjectCard, ProjectItem } from "@/components/sections/FeaturedProjectsSection";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/Motion";
 
 import contentData from "@/data/content.json";
 
@@ -112,41 +113,47 @@ export const ProjectsPageLayout: React.FC<{ projects: ProjectItem[] }> = ({ proj
   return (
     <section className="w-full">
       {/* ── Header ── */}
-      <div className="text-center space-y-3 pb-10 sm:pb-14">
-        <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
-          {contentData.projects.page.kanjiLabel}
-        </span>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink tracking-tight">
-          {contentData.projects.page.title}
-        </h1>
-        <p className="text-sm sm:text-base text-ink-muted max-w-xl mx-auto leading-relaxed font-sans">
-          {contentData.projects.page.description}
-        </p>
-        {/* decorative rule */}
-        <div className="flex items-center justify-center pt-1">
-          <div className="w-12 h-px bg-primary/30" />
+      <FadeIn direction="up">
+        <div className="text-center space-y-3 pb-10 sm:pb-14">
+          <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
+            {contentData.projects.page.kanjiLabel}
+          </span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink tracking-tight">
+            {contentData.projects.page.title}
+          </h1>
+          <p className="text-sm sm:text-base text-ink-muted max-w-xl mx-auto leading-relaxed font-sans">
+            {contentData.projects.page.description}
+          </p>
+          {/* decorative rule */}
+          <div className="flex items-center justify-center pt-1">
+            <div className="w-12 h-px bg-primary/30" />
+          </div>
         </div>
-      </div>
+      </FadeIn>
 
       {/* ── Scroll anchor ── */}
       <div id="projects-grid-top" className="-mt-4 pt-4" aria-hidden />
 
       {/* ── Content ── */}
       {!hasProjects ? (
-        <EmptyState
-          icon={FolderGit2}
-          title={contentData.emptyStates.projects.title}
-          subtitleKanji={contentData.emptyStates.projects.subtitleKanji}
-          description={contentData.emptyStates.projects.description}
-        />
+        <FadeIn direction="up" delay={100}>
+          <EmptyState
+            icon={FolderGit2}
+            title={contentData.emptyStates.projects.title}
+            subtitleKanji={contentData.emptyStates.projects.subtitleKanji}
+            description={contentData.emptyStates.projects.description}
+          />
+        </FadeIn>
       ) : (
         <>
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          <StaggerContainer staggerDelay={60} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {paginated.map((project, index) => (
-              <BoxyProjectCard key={project.id} project={project} index={index} />
+              <StaggerItem key={project.id}>
+                <BoxyProjectCard project={project} index={index} />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
 
           {/* Pagination */}
           <Pagination

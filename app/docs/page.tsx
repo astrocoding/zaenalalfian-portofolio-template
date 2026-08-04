@@ -47,7 +47,7 @@ export default async function DocsPage() {
 
   return (
     <MainLayout>
-      <div className="py-12 sm:py-16 bg-paper min-h-screen">
+      <div className="py-12 sm:py-16 bg-paper min-h-screen section-fade-in">
         <Container size="wide" className="space-y-12">
           <DocsPageLayout docs={formattedDocs} />
           <ActionFooter

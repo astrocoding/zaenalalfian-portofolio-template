@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
@@ -77,7 +77,6 @@ export const Navbar: React.FC = () => {
   const mounted = useIsMounted();
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
-  const router = useRouter();
   const { data: session, status: sessionStatus } = useSession();
   const isAdmin = Boolean(session?.user && session.user.role === "ADMIN");
   const sessionLoading = sessionStatus === "loading";

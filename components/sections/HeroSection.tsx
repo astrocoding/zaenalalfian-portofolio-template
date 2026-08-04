@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
 import { Button, Badge, Container, SeigaihaPattern } from "../ui";
+import { FadeIn } from "../ui/Motion";
 import contentData from "@/data/content.json";
 import mockupData from "@/data/mockup.json";
 
@@ -149,7 +150,7 @@ const DesktopArchitectureCard: React.FC<{
   status: string;
 }> = ({ name, role, status }) => {
   return (
-    <div className="hidden md:block lg:col-span-5 relative pt-4 md:pt-6 lg:self-end lg:pb-4 animate-float">
+    <div className="w-full animate-float">
       {/* Japanese Minimalist Frame Container */}
       <div className="relative mx-auto max-w-md bg-surface border border-border-warm rounded-2xl p-5 sm:p-6 shadow-xl hover:shadow-2xl transition-shadow duration-500 overflow-hidden">
         {/* Top Red Japanese Hanko Stamp Motif */}
@@ -235,7 +236,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section
       id="hero"
-      className="relative w-full min-h-[calc(100svh-65px)] sm:min-h-[calc(100vh-65px)] lg:min-h-0 lg:h-[90vh] flex flex-col justify-between pt-1 sm:pt-3 lg:pt-[5px] pb-0 overflow-hidden bg-paper transform-gpu"
+      className="relative w-full min-h-[calc(100svh-65px)] sm:min-h-[calc(100vh-65px)] lg:min-h-0 lg:h-[90vh] flex flex-col justify-between pt-1 sm:pt-3 lg:pt-[5px] pb-0 overflow-hidden bg-paper transform-gpu section-fade-in"
     >
       {/* Decorative Subtle Japanese Grid & Background Motifs */}
       <div className="absolute inset-0 bg-[radial-gradient(#b04749_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none" />
@@ -252,132 +253,146 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 lg:items-stretch">
           {/* Main Hero Copy */}
           <div className="lg:col-span-7 space-y-3 sm:space-y-4">
-            {/* Status Pill Badge */}
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#f6e0ce]/60 border border-border-warm text-ink text-xs font-mono">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>{contentData.hero.availablePill}</span>
-            </div>
+            <FadeIn direction="up">
+              {/* Status Pill Badge */}
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#f6e0ce]/60 border border-border-warm text-ink text-xs font-mono">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>{contentData.hero.availablePill}</span>
+              </div>
+            </FadeIn>
 
             {/* Headline */}
-            <div className="space-y-2">
-              <div className="flex items-center space-x-3">
-                <span className="font-serif text-primary font-bold text-xs sm:text-sm tracking-widest uppercase">
-                  {contentData.hero.craftLabel}
-                </span>
-                <div className="h-px w-12 bg-primary/30" />
+            <FadeIn direction="up" delay={50}>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-3">
+                  <span className="font-serif text-primary font-bold text-xs sm:text-sm tracking-widest uppercase">
+                    {contentData.hero.craftLabel}
+                  </span>
+                  <div className="h-px w-12 bg-primary/30" />
+                </div>
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink leading-[1.14] tracking-tight">
+                  Crafting Scalable Systems with{" "}
+                  <span className="text-primary italic">{contentData.hero.headlineAccent}</span>{" "}
+                  Precision.
+                </h1>
               </div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink leading-[1.14] tracking-tight">
-                Crafting Scalable Systems with{" "}
-                <span className="text-primary italic">{contentData.hero.headlineAccent}</span>{" "}
-                Precision.
-              </h1>
-            </div>
+            </FadeIn>
 
             {/* Sub-headline */}
-            <p className="text-base sm:text-lg text-ink-muted leading-relaxed font-sans max-w-2xl">
-              {contentData.hero.subheadline}
-            </p>
+            <FadeIn direction="up" delay={100}>
+              <p className="text-base sm:text-lg text-ink-muted leading-relaxed font-sans max-w-2xl">
+                {contentData.hero.subheadline}
+              </p>
+            </FadeIn>
 
             {/* Professional Value Badges Row */}
-            <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
-              {contentData.hero.badges.map((badgeText) => (
-                <Badge key={badgeText} variant="tech">{badgeText}</Badge>
-              ))}
-            </div>
+            <FadeIn direction="up" delay={150}>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
+                {contentData.hero.badges.map((badgeText) => (
+                  <Badge key={badgeText} variant="tech">{badgeText}</Badge>
+                ))}
+              </div>
+            </FadeIn>
 
             {/* Call to Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Link href="/projects">
-                <Button
-                  variant="primary"
-                  size="md"
-                  icon={<ArrowRight className="w-4 h-4" />}
-                >
-                  {contentData.hero.ctaExploreWork}
-                </Button>
-              </Link>
-              {resumeUrl ? (
-                <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
+            <FadeIn direction="up" delay={200}>
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <Link href="/projects">
                   <Button
-                    variant="secondary"
+                    variant="primary"
                     size="md"
-                    icon={<FileText className="w-4 h-4 text-primary" />}
+                    icon={<ArrowRight className="w-4 h-4" />}
                   >
-                    {contentData.hero.ctaResume}
-                  </Button>
-                </a>
-              ) : (
-                <Link
-                  href="/#contact"
-                  onClick={(e) => {
-                    const el = document.getElementById("contact");
-                    if (el) {
-                      e.preventDefault();
-                      el.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  <Button
-                    variant="secondary"
-                    size="md"
-                    icon={<FileText className="w-4 h-4 text-primary" />}
-                  >
-                    {contentData.hero.ctaResume}
+                    {contentData.hero.ctaExploreWork}
                   </Button>
                 </Link>
-              )}
-            </div>
+                {resumeUrl ? (
+                  <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
+                    <Button
+                      variant="secondary"
+                      size="md"
+                      icon={<FileText className="w-4 h-4 text-primary" />}
+                    >
+                      {contentData.hero.ctaResume}
+                    </Button>
+                  </a>
+                ) : (
+                  <Link
+                    href="/#contact"
+                    onClick={(e) => {
+                      const el = document.getElementById("contact");
+                      if (el) {
+                        e.preventDefault();
+                        el.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                  >
+                    <Button
+                      variant="secondary"
+                      size="md"
+                      icon={<FileText className="w-4 h-4 text-primary" />}
+                    >
+                      {contentData.hero.ctaResume}
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </FadeIn>
 
             {/* Key Metrics Strip (Flex Justify-Between for Equal Visual Spacing) */}
-            <div className="pt-5 border-t border-border-subtle w-full max-w-md sm:max-w-[460px]">
-              <div className="flex items-start justify-between gap-3 sm:gap-6">
-                <div className="shrink-0">
-                  <div className="text-2xl sm:text-3xl font-bold font-serif text-ink">
-                    <CounterNumber
-                      to={experienceYears}
-                      suffix="+"
-                      delay={0.15}
-                      duration={0.65}
-                    />
+            <FadeIn direction="up" delay={250}>
+              <div className="pt-5 border-t border-border-subtle w-full max-w-md sm:max-w-[460px]">
+                <div className="flex items-start justify-between gap-3 sm:gap-6">
+                  <div className="shrink-0">
+                    <div className="text-2xl sm:text-3xl font-bold font-serif text-ink">
+                      <CounterNumber
+                        to={experienceYears}
+                        suffix="+"
+                        delay={0.15}
+                        duration={0.65}
+                      />
+                    </div>
+                    <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
+                      {contentData.hero.statsYearsExp}
+                    </div>
                   </div>
-                  <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
-                    {contentData.hero.statsYearsExp}
-                  </div>
-                </div>
 
-                <div className="shrink-0">
-                  <div className="text-2xl sm:text-3xl font-bold font-serif text-primary">
-                    <CounterNumber
-                      to={totalProjects}
-                      suffix="+"
-                      delay={0.2}
-                      duration={0.75}
-                    />
+                  <div className="shrink-0">
+                    <div className="text-2xl sm:text-3xl font-bold font-serif text-primary">
+                      <CounterNumber
+                        to={totalProjects}
+                        suffix="+"
+                        delay={0.2}
+                        duration={0.75}
+                      />
+                    </div>
+                    <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
+                      {contentData.hero.statsProjects}
+                    </div>
                   </div>
-                  <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
-                    {contentData.hero.statsProjects}
-                  </div>
-                </div>
 
-                <div className="shrink-0">
-                  <div className="text-2xl sm:text-3xl font-bold font-serif text-ink">
-                    <CounterNumber
-                      to={totalBlogs}
-                      suffix="+"
-                      delay={0.25}
-                      duration={0.85}
-                    />
-                  </div>
-                  <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
-                    {contentData.hero.statsArticles}
+                  <div className="shrink-0">
+                    <div className="text-2xl sm:text-3xl font-bold font-serif text-ink">
+                      <CounterNumber
+                        to={totalBlogs}
+                        suffix="+"
+                        delay={0.25}
+                        duration={0.85}
+                      />
+                    </div>
+                    <div className="text-xs text-ink-muted font-mono mt-0.5 whitespace-nowrap">
+                      {contentData.hero.statsArticles}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </FadeIn>
           </div>
 
           {/* Right Visual Card Component (Desktop Only - Unmounted on Mobile/Tablet for Performance Optimization) */}
-          <DesktopArchitectureCard name={name} role={role} status={status} />
+          <FadeIn direction="up" delay={150} className="hidden md:block lg:col-span-5 relative pt-4 md:pt-6 lg:self-end lg:pb-4">
+            <DesktopArchitectureCard name={name} role={role} status={status} />
+          </FadeIn>
         </div>
       </Container>
 

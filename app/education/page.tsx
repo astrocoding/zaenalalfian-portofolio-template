@@ -8,6 +8,7 @@ import { ActionFooter } from "@/components/ui/ActionFooter";
 import { GraduationCap } from "lucide-react";
 import { buildCanonical, DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { prisma } from "@/lib/prisma";
+import { FadeIn } from "@/components/ui/Motion";
 
 export const metadata: Metadata = {
   title: "Education & Academic Qualifications | Zaenal Alfian",
@@ -67,30 +68,36 @@ export default async function EducationPage() {
 
   return (
     <MainLayout>
-      <div className="py-12 sm:py-16 bg-paper">
+      <div className="py-12 sm:py-16 bg-paper section-fade-in">
         <Container size="default" className="space-y-10">
           {/* Page Header */}
-          <div className="space-y-4 pb-2">
-            <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
-              学歴 • ACADEMIC BACKGROUND &amp; DEGREES
-            </span>
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-ink tracking-tight">
-              Educational Journey
-            </h1>
-            <p className="text-lg text-ink-muted leading-relaxed font-sans max-w-3xl">
-              A comprehensive overview of formal computer science education, software engineering diplomas, academic achievements, and foundational coursework.
-            </p>
-          </div>
+          <FadeIn direction="up">
+            <div className="space-y-4 pb-2">
+              <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
+                学歴 • ACADEMIC BACKGROUND &amp; DEGREES
+              </span>
+              <h1 className="text-4xl sm:text-5xl font-serif font-bold text-ink tracking-tight">
+                Educational Journey
+              </h1>
+              <p className="text-lg text-ink-muted leading-relaxed font-sans max-w-3xl">
+                A comprehensive overview of formal computer science education, software engineering diplomas, academic achievements, and foundational coursework.
+              </p>
+            </div>
+          </FadeIn>
 
           {/* Reusable Timeline Component / Dynamic Empty State */}
           {educationItems.length === 0 ? (
-            <EmptyState
-              icon={GraduationCap}
-              title="No education records posted yet / 学歴データはまだありません"
-              description="Academic qualifications and degrees will appear here once published from the admin panel."
-            />
+            <FadeIn direction="up" delay={100}>
+              <EmptyState
+                icon={GraduationCap}
+                title="No education records posted yet / 学歴データはまだありません"
+                description="Academic qualifications and degrees will appear here once published from the admin panel."
+              />
+            </FadeIn>
           ) : (
-            <TimelineCardList items={educationItems} type="education" />
+            <FadeIn direction="up" delay={100}>
+              <TimelineCardList items={educationItems} type="education" />
+            </FadeIn>
           )}
 
           {/* Reusable Bottom Action Footer */}

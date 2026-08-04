@@ -61,7 +61,7 @@ export default async function ProjectsPage() {
 
   return (
     <MainLayout>
-      <div className="py-12 sm:py-16 bg-paper min-h-screen">
+      <div className="py-12 sm:py-16 bg-paper min-h-screen section-fade-in">
         <Container size="wide" className="space-y-12">
           <ProjectsPageLayout projects={projects} />
           <ActionFooter

@@ -86,14 +86,14 @@ export const AdminFormHeader: React.FC<AdminFormHeaderProps> = ({
 
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
-  const initialSearchParam = searchParams?.get(searchParamName) || "";
-  const [searchTerm, setSearchTerm] = React.useState(initialSearchParam);
+  const currentParam = searchParams?.get(searchParamName) || "";
+  const [searchTerm, setSearchTerm] = React.useState(currentParam);
+  const [prevParam, setPrevParam] = React.useState(currentParam);
 
-  // Synchronize state with URL query params
-  React.useEffect(() => {
-    const currentParam = searchParams?.get(searchParamName) || "";
+  if (currentParam !== prevParam) {
+    setPrevParam(currentParam);
     setSearchTerm(currentParam);
-  }, [searchParams, searchParamName]);
+  }
 
   // ⌘K Keyboard Shortcut handler
   React.useEffect(() => {
