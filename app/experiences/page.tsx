@@ -99,7 +99,7 @@ export default async function ExperiencesPage() {
             secondaryButtonText="My Education"
             secondaryButtonHref="/education"
             primaryButtonText="Get in Touch"
-            primaryButtonHref="/#contact"
+            primaryButtonHref="/contact"
           />
         </Container>
       </div>

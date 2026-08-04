@@ -235,7 +235,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section
       id="hero"
-      className="relative w-full min-h-[90svh] sm:min-h-[90vh] lg:h-[90dvh] flex flex-col justify-between pt-[5px] sm:pt-[5px] lg:pt-[5px] pb-0 overflow-hidden bg-paper transform-gpu"
+      className="relative w-full min-h-[calc(100svh-65px)] sm:min-h-[calc(100vh-65px)] lg:min-h-0 lg:h-[90vh] flex flex-col justify-between pt-1 sm:pt-3 lg:pt-[5px] pb-0 overflow-hidden bg-paper transform-gpu"
     >
       {/* Decorative Subtle Japanese Grid & Background Motifs */}
       <div className="absolute inset-0 bg-[radial-gradient(#b04749_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none" />
@@ -247,7 +247,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
       <Container
         size="wide"
-        className="relative z-10 w-full flex-1 flex flex-col justify-start pt-0 pb-10 sm:pb-10 lg:pb-20 min-h-0"
+        className="relative z-10 w-full flex-1 flex flex-col justify-between pt-0 pb-16 sm:pb-20 lg:pb-24 min-h-0"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 lg:items-stretch">
           {/* Main Hero Copy */}

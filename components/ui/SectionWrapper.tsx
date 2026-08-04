@@ -60,7 +60,7 @@ export const SectionWrapper: React.FC<SectionWrapperProps> = ({
         {(sectionTitle || kanjiSubtitle) && (
           <div
             className={cn(
-              "mb-12 relative flex w-full",
+              "mb-8 sm:mb-12 relative flex w-full",
               isCenter
                 ? "flex-col items-center text-center space-y-2"
                 : "flex-col sm:flex-row sm:items-end justify-between gap-4",

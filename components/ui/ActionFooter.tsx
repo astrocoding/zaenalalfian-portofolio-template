@@ -19,7 +19,7 @@ export const ActionFooter: React.FC<ActionFooterProps> = ({
   title,
   description,
   primaryButtonText = "Get in Touch",
-  primaryButtonHref = "/#contact",
+  primaryButtonHref = "/contact",
   primaryButtonIcon = <ArrowRight className="w-4 h-4" />,
   secondaryButtonText,
   secondaryButtonHref,

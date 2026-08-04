@@ -41,7 +41,7 @@
                 "label": "Contact",
                 "kanji": "連絡",
                 "id": "contact",
-                "href": "/#contact"
+                "href": "/contact"
             }
         ],
         "cta": {
@@ -98,7 +98,7 @@
                 "title": "Interested in working together?",
                 "description": "Let's discuss architecture consulting, senior engineering roles, or custom web development projects.",
                 "primaryText": "Start Conversation",
-                "primaryHref": "/#contact",
+                "primaryHref": "/contact",
                 "secondaryText": "My Projects",
                 "secondaryHref": "/projects"
             }

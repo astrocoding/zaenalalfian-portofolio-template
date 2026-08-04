@@ -100,7 +100,7 @@ export default async function EducationPage() {
             secondaryButtonText="My Experiences"
             secondaryButtonHref="/experiences"
             primaryButtonText="Contact Me"
-            primaryButtonHref="/#contact"
+            primaryButtonHref="/contact"
           />
         </Container>
       </div>

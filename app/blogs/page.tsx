@@ -60,7 +60,7 @@ export default async function BlogsPage() {
             secondaryButtonText="My Projects"
             secondaryButtonHref="/projects"
             primaryButtonText="Let's Connect!"
-            primaryButtonHref="/#contact"
+            primaryButtonHref="/contact"
           />
         </Container>
       </div>

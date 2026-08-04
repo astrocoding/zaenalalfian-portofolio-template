@@ -236,7 +236,7 @@ export default async function AboutPage() {
                     </Button>
                   </a>
                 ) : (
-                  <Link href="/#contact" className="w-full block">
+                  <Link href="/contact" className="w-full block">
                     <Button
                       variant="primary"
                       size="md"

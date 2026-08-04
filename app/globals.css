@@ -20,6 +20,7 @@
 }
 
 @layer base {
+
   *,
   ::after,
   ::before {
@@ -27,7 +28,6 @@
   }
 
   html {
-    scroll-padding-top: 65px;
     scroll-behavior: smooth;
     background-color: var(--color-bg);
     color: var(--color-text);
@@ -47,16 +47,19 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
 
 /* Hardware-accelerated GPU Float Animation (0ms JS Main-Thread Overhead) */
 @keyframes floatAnimation {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-12px);
   }

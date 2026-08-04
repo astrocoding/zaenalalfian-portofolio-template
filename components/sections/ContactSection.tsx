@@ -26,10 +26,14 @@ export interface ContactSectionProps {
     location?: string | null;
     availability?: string | null;
   } | null;
+  className?: string;
+  isStandalonePage?: boolean;
 }
 
 export const ContactSection: React.FC<ContactSectionProps> = ({
   contactData,
+  className,
+  isStandalonePage = false,
 }) => {
   const name = contactData?.name || mockupData.user.name;
   const position = contactData?.position || mockupData.user.position;
@@ -76,12 +80,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
       sectionTitle={contentData.contact.sectionTitle}
       sectionDescription={contentData.contact.sectionDescription}
       bgVariant="paper"
-      className="pt-10 sm:pt-14 pb-16 sm:pb-24"
+      className={
+        className ||
+        (isStandalonePage
+          ? "pt-3 sm:pt-5 lg:pt-6 pb-16 sm:pb-24"
+          : "pt-10 sm:pt-14 pb-16 sm:pb-24")
+      }
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-10">
         {/* Left Information Column */}
         <div className="lg:col-span-5 space-y-6">
-          <Card className="p-6 bg-surface space-y-6">
+          <Card className="p-5 sm:p-6 bg-surface space-y-5 sm:space-y-6">
             <div className="flex items-center space-x-3 pb-4 border-b border-border-subtle">
               <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-serif font-bold text-lg">
                 {contentData.contact.infoCard.hankoGlyph}
@@ -142,7 +151,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
         {/* Right Contact Form Column */}
         <div className="lg:col-span-7">
-          <Card className="p-6 sm:p-8 bg-surface">
+          <Card className="p-5 sm:p-6 lg:p-8 bg-surface">
             {loading ? (
               <div className="py-12 text-center space-y-4">
                 <div className="w-14 h-14 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center">

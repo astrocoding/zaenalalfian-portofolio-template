@@ -28,7 +28,7 @@ const getNavItems = (isHomePage: boolean): NavItem[] =>
       if (item.id === "blogs") href = "/#blogs";
       if (item.id === "contact") href = "/#contact";
     } else {
-      if (item.id === "contact") href = "/";
+      if (item.id === "contact") href = "/contact";
     }
     return { ...item, href };
   });
@@ -57,6 +57,7 @@ const getSectionForPath = (path: string) => {
   if (path.startsWith("/experiences") || path.startsWith("/experience"))
     return "experience";
   if (path.startsWith("/docs")) return "docs";
+  if (path.startsWith("/contact")) return "contact";
   if (path === "/") return "home";
   return "";
 };
@@ -64,7 +65,7 @@ const getSectionForPath = (path: string) => {
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
 
-const emptySubscribe = () => () => {};
+const emptySubscribe = () => () => { };
 const useIsMounted = () =>
   React.useSyncExternalStore(
     emptySubscribe,
@@ -137,7 +138,7 @@ export const Navbar: React.FC = () => {
             }
           }, 150);
         }
-      } catch {}
+      } catch { }
     }
   }, [isHomePage, unlockScrollSpy]);
 
@@ -209,19 +210,22 @@ export const Navbar: React.FC = () => {
 
       const doScroll = () => {
         if (item.id === "home") {
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         } else {
           const targetEl = document.getElementById(item.id);
           if (targetEl) {
             const headerOffset = 65; // Exact 65px scrolled header height
-            const elementPosition = targetEl.getBoundingClientRect().top;
-            const offsetPosition =
-              elementPosition + window.scrollY - headerOffset;
+            const elementPosition =
+              targetEl.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = Math.max(0, elementPosition - headerOffset);
 
             window.scrollTo({
               top: offsetPosition,
+              left: 0,
               behavior: "smooth",
             });
+          } else {
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
           }
         }
 
@@ -230,38 +234,33 @@ export const Navbar: React.FC = () => {
       };
 
       if (wasOpen) {
-        // Defer scroll slightly on mobile drawer so collapse animation does not cancel smooth scroll
-        setTimeout(doScroll, 120);
+        // Wait 310ms for mobile drawer animation & DOM unmount to finish so smooth scroll is not cancelled mid-flight
+        setTimeout(doScroll, 310);
       } else {
         doScroll();
-      }
-    } else {
-      if (item.id === "contact") {
-        e.preventDefault();
-        try {
-          sessionStorage.setItem("scrollToSection", "contact");
-        } catch {}
-        router.push("/");
       }
     }
   };
 
   const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    handleNavClick(e, {
-      label: "Contact",
-      href: "/#contact",
-      id: "contact",
-      kanji: "連絡",
-    });
+    if (isHomePage) {
+      handleNavClick(e, {
+        label: "Contact",
+        href: "/#contact",
+        id: "contact",
+        kanji: "お問い合わせ",
+      });
+    } else {
+      setIsOpen(false);
+    }
   };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/95 backdrop-blur-md border-b border-border-subtle shadow-xs py-3.5"
-          : "bg-transparent py-5"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+        ? "bg-white/95 backdrop-blur-md border-b border-border-subtle shadow-xs py-3.5"
+        : "bg-transparent py-5"
+        }`}
     >
       <Container size="wide">
         <nav
@@ -309,11 +308,10 @@ export const Navbar: React.FC = () => {
                   key={item.id}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item)}
-                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all relative group flex items-center space-x-1.5 ${
-                    isActive
-                      ? "text-primary font-semibold"
-                      : "text-ink-muted hover:text-ink hover:bg-black/5"
-                  }`}
+                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all relative group flex items-center space-x-1.5 ${isActive
+                    ? "text-primary font-semibold"
+                    : "text-ink-muted hover:text-ink hover:bg-black/5"
+                    }`}
                 >
                   <span>{item.label}</span>
                   <span className="text-[10px] text-primary font-serif font-normal">
@@ -352,7 +350,7 @@ export const Navbar: React.FC = () => {
               </Link>
             ) : (
               <Link
-                href={isHomePage ? "/#contact" : "/"}
+                href={isHomePage ? "/#contact" : "/contact"}
                 onClick={handleContactClick}
                 className="inline-flex items-center justify-center text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-primary text-white hover:bg-[#993b3d] transition-colors shadow-2xs space-x-1"
               >
@@ -397,11 +395,10 @@ export const Navbar: React.FC = () => {
                       key={item.id}
                       href={item.href}
                       onClick={(e) => handleNavClick(e, item)}
-                      className={`flex items-center justify-between py-3 px-3.5 rounded-md font-medium transition-colors ${
-                        isActive
-                          ? "bg-primary/10 text-primary font-bold"
-                          : "text-ink hover:bg-[#f6e0ce]/40"
-                      }`}
+                      className={`flex items-center justify-between py-3 px-3.5 rounded-md font-medium transition-colors ${isActive
+                        ? "bg-primary/10 text-primary font-bold"
+                        : "text-ink hover:bg-[#f6e0ce]/40"
+                        }`}
                     >
                       <span className="text-base">{item.label}</span>
                       <span className="text-xs font-serif text-primary/60">
@@ -430,7 +427,7 @@ export const Navbar: React.FC = () => {
                   </Link>
                 ) : (
                   <Link
-                    href={isHomePage ? "/#contact" : "/"}
+                    href={isHomePage ? "/#contact" : "/contact"}
                     onClick={handleContactClick}
                     className="w-full py-3 px-4 bg-primary text-white text-center font-medium rounded-md text-sm shadow-xs flex items-center justify-center space-x-2"
                   >
