@@ -42,20 +42,20 @@ jobs:
             
             npm install --legacy-peer-deps
             
-            # 3. Generate Prisma Client
+            # 3. Synchronize & Migrate Database (MUST RUN BEFORE BUILD)
+            echo "Running database schema synchronization & migrations..."
+            npx prisma db push || npx prisma migrate deploy || true
+            
+            # 4. Generate Prisma Client
             echo "Generating Prisma Client..."
             npx prisma generate
             
-            # 4. Build aplikasi Next.js
+            # 5. Build aplikasi Next.js
             echo "Building Next.js application..."
             npm run build
             
-            # 5. Jalankan Migrasi Database (Seamless Baseline Fail-Safe)
-            echo "Running database migrations..."
-            npx prisma migrate deploy || npx prisma migrate resolve --applied "20260731000000_init_portfolio_refactored_schema" || true
-            
             # 6. Reload Next.js server via PM2
             echo "Reloading application via PM2..."
-            pm2 reload zaenal-porto || pm2 restart zaenal-porto || true
+            pm2 reload zaenal-porto --update-env || pm2 restart zaenal-porto --update-env || true
             
             echo "Deployment completed successfully! Sistem berhasil di-update."

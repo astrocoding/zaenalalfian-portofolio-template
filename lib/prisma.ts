@@ -14,6 +14,7 @@ type PrismaClientInternal = PrismaClient & {
   about?: unknown;
   aboutCard?: unknown;
   contact?: unknown;
+  pageView?: unknown;
   _runtimeDataModel?: {
     models?: {
       Project?: {
@@ -37,10 +38,13 @@ const createPrismaClient = () => {
 const getPrismaClient = (): PrismaClient => {
   if (globalForPrisma.prisma) {
     const internalPrisma = globalForPrisma.prisma as PrismaClientInternal;
-    const runtimeFields = internalPrisma._runtimeDataModel?.models?.Project?.fields;
+    const runtimeProjectFields = internalPrisma._runtimeDataModel?.models?.Project?.fields;
     const hasImagesField =
-      Array.isArray(runtimeFields) &&
-      runtimeFields.some((f) => f.name === "images");
+      Array.isArray(runtimeProjectFields) &&
+      runtimeProjectFields.some((f) => f.name === "images");
+    const hasViewsField =
+      Array.isArray(runtimeProjectFields) &&
+      runtimeProjectFields.some((f) => f.name === "views");
 
     // Reset cached instance if missing newly added models or schema fields
     if (
@@ -51,7 +55,9 @@ const getPrismaClient = (): PrismaClient => {
       !internalPrisma.about ||
       !internalPrisma.aboutCard ||
       !internalPrisma.contact ||
-      !hasImagesField
+      !internalPrisma.pageView ||
+      !hasImagesField ||
+      !hasViewsField
     ) {
       globalForPrisma.prisma = undefined;
     }
