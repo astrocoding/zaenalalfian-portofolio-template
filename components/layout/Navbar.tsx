@@ -144,6 +144,36 @@ export const Navbar: React.FC = () => {
 
   // Optimized rAF-throttled scroll state & scroll spy listener (0ms forced reflow)
   useIsomorphicLayoutEffect(() => {
+    // Evaluate initial client scroll position & active section synchronously on mount before paint
+    if (typeof window !== "undefined") {
+      const scrollY = window.scrollY;
+      setScrolled(scrollY > 20);
+
+      if (isHomePage && !isProgrammaticScrollRef.current) {
+        if (scrollY < 180) {
+          setActiveSection((prev) => (prev !== "home" ? "home" : prev));
+        } else if (window.location.hash) {
+          const hashId = window.location.hash.replace("#", "");
+          if (sectionToNavMap[hashId]) {
+            setActiveSection(sectionToNavMap[hashId]);
+          }
+        } else {
+          const anchorY = 70;
+          for (const id of observedSectionIds) {
+            const el = document.getElementById(id);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              if (rect.top <= anchorY && rect.bottom > anchorY) {
+                const matched = sectionToNavMap[id] || id;
+                setActiveSection((prev) => (prev !== matched ? matched : prev));
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+
     let ticking = false;
 
     const onScroll = () => {
@@ -156,7 +186,7 @@ export const Navbar: React.FC = () => {
             if (scrollY < 180) {
               setActiveSection((prev) => (prev !== "home" ? "home" : prev));
             } else {
-              let current = "home";
+              let matched: string | null = null;
               const anchorY = 70; // Precise 70px viewport anchor line (5px below 65px header)
 
               for (const id of observedSectionIds) {
@@ -164,12 +194,15 @@ export const Navbar: React.FC = () => {
                 if (el) {
                   const rect = el.getBoundingClientRect();
                   if (rect.top <= anchorY && rect.bottom > anchorY) {
-                    current = sectionToNavMap[id] || id;
+                    matched = sectionToNavMap[id] || id;
                     break;
                   }
                 }
               }
-              setActiveSection((prev) => (prev !== current ? current : prev));
+
+              if (matched) {
+                setActiveSection((prev) => (prev !== matched ? matched : prev));
+              }
             }
           }
           ticking = false;
@@ -185,7 +218,6 @@ export const Navbar: React.FC = () => {
       }
     };
 
-    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("scrollend", handleScrollEnd, { passive: true });
 
@@ -214,16 +246,19 @@ export const Navbar: React.FC = () => {
         } else {
           const targetEl = document.getElementById(item.id);
           if (targetEl) {
-            const headerOffset = 65; // Exact 65px scrolled header height
-            const elementPosition =
-              targetEl.getBoundingClientRect().top + window.scrollY;
-            const offsetPosition = Math.max(0, elementPosition - headerOffset);
-
-            window.scrollTo({
-              top: offsetPosition,
-              left: 0,
-              behavior: "smooth",
-            });
+            try {
+              targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            } catch {
+              const headerOffset = 65;
+              const elementPosition =
+                targetEl.getBoundingClientRect().top + window.scrollY;
+              const offsetPosition = Math.max(0, elementPosition - headerOffset);
+              window.scrollTo({
+                top: offsetPosition,
+                left: 0,
+                behavior: "smooth",
+              });
+            }
           } else {
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
           }
@@ -260,6 +295,9 @@ export const Navbar: React.FC = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
         ? "bg-white/95 backdrop-blur-md border-b border-border-subtle shadow-xs py-3.5"
         : "bg-transparent py-5"
+        } ${mounted
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 -translate-y-4 pointer-events-none"
         }`}
     >
       <Container size="wide">
