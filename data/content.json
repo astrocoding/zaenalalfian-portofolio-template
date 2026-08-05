@@ -27,7 +27,7 @@
             },
             {
                 "label": "Projects",
-                "kanji": "実績",
+                "kanji": "作品",
                 "id": "projects",
                 "href": "/projects"
             },
@@ -136,7 +136,7 @@
         "currentGlyph": "現職"
     },
     "projects": {
-        "kanjiSubtitle": "主要実績",
+        "kanjiSubtitle": "原作品",
         "sectionTitle": "Featured Projects",
         "sectionDescription": "Production web applications, architectural platforms, and technical open-source contributions.",
         "ctaShowMore": "Show More Projects",
@@ -162,7 +162,7 @@
             }
         },
         "page": {
-            "kanjiLabel": "主要実績",
+            "kanjiLabel": "作品",
             "title": "Featured Projects",
             "description": "Production web applications, architectural platforms, and technical open-source contributions."
         }
@@ -170,7 +170,7 @@
     "blogs": {
         "kanjiSubtitle": "最新記事",
         "sectionTitle": "Latest Technical Insights",
-        "sectionDescription": "Articles on modern frontend engineering, system design, performance, and editorial UI craftsmanship.",
+        "sectionDescription": "Articles on modern software engineering, system design, insights, and product craftsmanship.",
         "ctaShowMore": "Show More Articles",
         "backLink": "Back to Articles / 記事一覧へ戻る",
         "defaultAuthor": "Zaenal Alfian",
@@ -178,13 +178,13 @@
         "page": {
             "kanjiLabel": "最新記事",
             "title": "Latest Technical Insights",
-            "description": "Articles on modern frontend engineering, system design, performance, and editorial UI craftsmanship."
+            "description": "Articles on modern software engineering, system design, insights, and product craftsmanship."
         }
     },
     "contact": {
         "kanjiSubtitle": "お問い合わせ",
         "sectionTitle": "Let's Build Something Great!",
-        "sectionDescription": "Open for senior engineering leadership, frontend architecture consulting, and high-impact web product development.",
+        "sectionDescription": "Open for senior engineering leadership, IT consulting, mentoring, and impact-driven product development.",
         "infoCard": {
             "hankoGlyph": "印",
             "labelDirectEmail": "Direct Email",

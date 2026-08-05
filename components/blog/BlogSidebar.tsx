@@ -178,7 +178,7 @@ export const BlogSidebar: React.FC<BlogSidebarProps> = ({
         {/* Header Kanji Decorator & Icon */}
         <div className="flex items-center justify-between border-b border-border-subtle pb-4">
           <span className="font-serif font-bold text-xl text-primary tracking-wide">
-            建築
+            作品
           </span>
           <div className="bg-watermark-surface border border-border-subtle rounded-xl p-2 text-primary">
             <Code2 className="w-5 h-5" />
