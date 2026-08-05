@@ -13,6 +13,8 @@ import {
 import { Button } from "../ui/Button";
 import { ArrowRight, Cpu, Layout, ShieldCheck, Zap } from "lucide-react";
 
+import { GenkoYoshiPattern } from "../ui/GenkoYoshiPattern";
+
 import contentData from "@/data/content.json";
 import mockupData from "@/data/mockup.json";
 import { getLucideIcon } from "../ui/DynamicIcon";
@@ -59,20 +61,17 @@ const renderCardIcon = (
   badge?: string | null,
   index: number = 0,
 ) => {
-  const DynamicLucideIcon = getLucideIcon(iconName);
-  if (DynamicLucideIcon) {
-    return <DynamicLucideIcon className="w-5 h-5 text-primary" />;
+  if (iconName) {
+    const Dynamic = getLucideIcon(iconName);
+    if (Dynamic) {
+      return <Dynamic className="w-5 h-5 text-primary" />;
+    }
   }
-
-  if (badge === "建築" || index === 0)
-    return <Cpu className="w-5 h-5 text-primary" />;
-  if (badge === "高速" || index === 1)
-    return <Zap className="w-5 h-5 text-primary" />;
-  if (badge === "美学" || index === 2)
-    return <Layout className="w-5 h-5 text-primary" />;
-  if (badge === "信頼" || index === 3)
-    return <ShieldCheck className="w-5 h-5 text-primary" />;
-  return <Cpu className="w-5 h-5 text-primary" />;
+  return (
+    defaultCoreValues[index]?.icon || (
+      <Cpu className="w-5 h-5 text-primary" />
+    )
+  );
 };
 
 export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
@@ -84,7 +83,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
       ? aboutData.cards.slice(0, 4).map((card, idx) => ({
           icon: renderCardIcon(card.icon, card.badge, idx),
           title: card.title,
-          kanji: card.badge || `0${idx + 1}`,
+          kanji: card.badge || "核心",
           description: card.subtitle,
         }))
       : defaultCoreValues.slice(0, 4);
@@ -111,10 +110,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ aboutData }) => {
             <span className="font-serif text-primary tracking-widest text-xs font-semibold uppercase block">
               {contentData.about.kanjiSubtitle}
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold font-serif text-ink tracking-tight leading-tight">
-              About &amp; <span className="text-primary">Code Philosophy</span>
-            </h2>
-            <div className="w-12 h-0.5 bg-primary/40 mt-3 rounded-full" />
+            <div className="relative py-2 px-3 sm:px-4 -mx-3 sm:-mx-4 rounded-2xl overflow-hidden inline-block">
+              <GenkoYoshiPattern />
+              <h2 className="relative z-10 text-3xl sm:text-4xl font-bold font-serif text-ink tracking-tight leading-tight">
+                About &amp; <span className="text-primary">Code Philosophy</span>
+              </h2>
+            </div>
           </div>
 
           <div className="space-y-3 pt-2">

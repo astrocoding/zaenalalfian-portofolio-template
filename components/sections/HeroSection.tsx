@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
-import { Button, Badge, Container, SeigaihaPattern } from "../ui";
+import { Button, Badge, Container, SeigaihaPattern, GenkoYoshiPattern } from "../ui";
 import { FadeIn } from "../ui/Motion";
 import contentData from "@/data/content.json";
 import mockupData from "@/data/mockup.json";
@@ -201,6 +201,8 @@ const DesktopArchitectureCard: React.FC<{
   );
 };
 
+
+
 export interface HeroSectionProps {
   userData?: {
     name?: string | null;
@@ -261,20 +263,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </div>
             </FadeIn>
 
-            {/* Headline */}
+            {/* Headline with Genkō Yōshi (原稿用紙) Manuscript Background Art */}
             <FadeIn direction="up" delay={50}>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-3">
-                  <span className="font-serif text-primary font-bold text-xs sm:text-sm tracking-widest uppercase">
-                    {contentData.hero.craftLabel}
-                  </span>
-                  <div className="h-px w-12 bg-primary/30" />
+              <div className="relative py-2 px-3 sm:px-4 -mx-3 sm:-mx-4 rounded-2xl overflow-hidden space-y-2">
+                <GenkoYoshiPattern />
+                <div className="relative z-10 space-y-2">
+                  <div className="flex items-center">
+                    <span className="font-serif text-primary font-bold text-xs sm:text-sm tracking-widest uppercase">
+                      {contentData.hero.craftLabel}
+                    </span>
+                  </div>
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink leading-[1.14] tracking-tight">
+                    Crafting Scalable Systems with{" "}
+                    <span className="text-primary italic">{contentData.hero.headlineAccent}</span>{" "}
+                    Precision.
+                  </h1>
                 </div>
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-ink leading-[1.14] tracking-tight">
-                  Crafting Scalable Systems with{" "}
-                  <span className="text-primary italic">{contentData.hero.headlineAccent}</span>{" "}
-                  Precision.
-                </h1>
               </div>
             </FadeIn>
 

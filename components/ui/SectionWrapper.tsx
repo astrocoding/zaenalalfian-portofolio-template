@@ -4,6 +4,7 @@ import * as React from "react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Container } from "./Container";
+import { GenkoYoshiPattern } from "./GenkoYoshiPattern";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -80,29 +81,26 @@ export const SectionWrapper: React.FC<SectionWrapperProps> = ({
                 </span>
               )}
               {sectionTitle && (
-                <h2 className="text-3xl sm:text-4xl font-bold font-serif text-ink tracking-tight">
-                  {sectionTitle}
-                </h2>
+                <div className="relative py-2 px-3 sm:px-4 -mx-3 sm:-mx-4 rounded-2xl overflow-hidden inline-block">
+                  <GenkoYoshiPattern />
+                  <h2 className="relative z-10 text-3xl sm:text-4xl font-bold font-serif text-ink tracking-tight">
+                    {sectionTitle}
+                  </h2>
+                </div>
               )}
               {sectionDescription && (
                 <p
                   className={cn(
-                    "text-base text-ink-muted max-w-2xl leading-relaxed",
+                    "text-base text-ink-muted max-w-2xl leading-relaxed pt-1",
                     isCenter && "mx-auto",
                   )}
                 >
                   {sectionDescription}
                 </p>
               )}
-              <div
-                className={cn(
-                  "w-12 h-0.5 bg-primary/40 mt-3 rounded-full",
-                  isCenter && "mx-auto",
-                )}
-              />
             </div>
             {headerAction && (
-              <div className="shrink-0 pb-1">{headerAction}</div>
+              <div className="shrink-0 pb-1 relative z-10">{headerAction}</div>
             )}
           </div>
         )}

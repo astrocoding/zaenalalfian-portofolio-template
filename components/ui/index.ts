@@ -11,4 +11,5 @@ export * from "./TimelineCardList";
 export * from "./EmptyState";
 export * from "./SeigaihaPattern";
 export * from "./ActionFooter";
+export * from "./GenkoYoshiPattern";
 
