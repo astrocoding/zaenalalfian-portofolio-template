@@ -10,77 +10,83 @@
  */
 
 /* ============================================================
-   KEYFRAMES
+    KEYFRAMES
    ============================================================ */
 
 /** Fade in from below (was: FadeIn direction="up", y: 20) */
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /** Fade in from above (was: FadeIn direction="down", y: -20) */
 @keyframes fade-down {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /** Fade in from right (was: FadeIn direction="left", x: 20) */
 @keyframes fade-left {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 /** Fade in from left (was: FadeIn direction="right", x: -20) */
 @keyframes fade-right {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 /** Plain opacity fade (was: SectionWrapper, SeigaihaPattern, FadeIn direction="none") */
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /** Stagger item slide-up (was: StaggerItem, y: 16) */
 @keyframes stagger-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ============================================================
@@ -94,7 +100,7 @@
  * IntersectionObserver in Motion.tsx removes this class once visible.
  */
 [data-animate] {
-  opacity: 0;
+    opacity: 0;
 }
 
 /**
@@ -102,102 +108,147 @@
  * IntersectionObserver adds this attribute when element enters viewport.
  */
 [data-animate-done] {
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
-  animation-duration: 0.5s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    animation-duration: 0.5s;
 }
 
 /* Direction variants */
 [data-animate-done][data-animate="up"] {
-  animation-name: fade-up;
+    animation-name: fade-up;
 }
 
 [data-animate-done][data-animate="down"] {
-  animation-name: fade-down;
+    animation-name: fade-down;
 }
 
 [data-animate-done][data-animate="left"] {
-  animation-name: fade-left;
+    animation-name: fade-left;
 }
 
 [data-animate-done][data-animate="right"] {
-  animation-name: fade-right;
+    animation-name: fade-right;
 }
 
 [data-animate-done][data-animate="none"],
 [data-animate-done][data-animate="fade"] {
-  animation-name: fade-in;
+    animation-name: fade-in;
 }
 
 /* Stagger children — each child gets an incremental delay via inline style var */
 [data-animate-done][data-animate="stagger"] {
-  animation-name: stagger-up;
-  animation-duration: 0.4s;
-  animation-delay: var(--stagger-delay, 0ms);
+    animation-name: stagger-up;
+    animation-duration: 0.4s;
+    animation-delay: var(--stagger-delay, 0ms);
 }
 
 /* Explicit delay overrides (data-delay="100" etc.) */
-[data-animate-done][data-delay="50"]  { animation-delay: 50ms; }
-[data-animate-done][data-delay="100"] { animation-delay: 100ms; }
-[data-animate-done][data-delay="150"] { animation-delay: 150ms; }
-[data-animate-done][data-delay="200"] { animation-delay: 200ms; }
-[data-animate-done][data-delay="250"] { animation-delay: 250ms; }
-[data-animate-done][data-delay="300"] { animation-delay: 300ms; }
-[data-animate-done][data-delay="400"] { animation-delay: 400ms; }
-[data-animate-done][data-delay="500"] { animation-delay: 500ms; }
+[data-animate-done][data-delay="50"] {
+    animation-delay: 50ms;
+}
+
+[data-animate-done][data-delay="100"] {
+    animation-delay: 100ms;
+}
+
+[data-animate-done][data-delay="150"] {
+    animation-delay: 150ms;
+}
+
+[data-animate-done][data-delay="200"] {
+    animation-delay: 200ms;
+}
+
+[data-animate-done][data-delay="250"] {
+    animation-delay: 250ms;
+}
+
+[data-animate-done][data-delay="300"] {
+    animation-delay: 300ms;
+}
+
+[data-animate-done][data-delay="400"] {
+    animation-delay: 400ms;
+}
+
+[data-animate-done][data-delay="500"] {
+    animation-delay: 500ms;
+}
 
 /* ============================================================
-   SECTION WRAPPER FADE
-   Applied directly to <section> via CSS class (no JS needed)
+    SECTION WRAPPER FADE
+    Applied directly to <section> via CSS class (no JS needed)
    ============================================================ */
 
 .section-fade-in {
-  animation: fade-in 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+    animation: fade-in 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
 }
 
 /* ============================================================
-   SEIGAIHA PATTERN FADE
+    SEIGAIHA PATTERN FADE
    ============================================================ */
 
 .seigaiha-fade-in {
-  animation: fade-in 0.5s ease-out both;
+    animation: fade-in 0.5s ease-out both;
 }
 
 /* ============================================================
-   SCROLL-TO-TOP BUTTON
-   CSS-only fade via transition on opacity + visibility.
-   Rendered always in DOM; shown/hidden via .scroll-top-visible.
+    SCROLL-TO-TOP BUTTON
+    CSS-only fade via transition on opacity + visibility.
+    Rendered always in DOM; shown/hidden via .scroll-top-visible.
    ============================================================ */
 
 .scroll-to-top {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition:
-    opacity 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .scroll-to-top.scroll-top-visible {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 /* ============================================================
-   REDUCED MOTION — accessibility override
-   Collapses all animation durations to near-zero.
+    REDUCED MOTION — accessibility override
+    Collapses all animation durations to near-zero.
    ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  [data-animate],
-  [data-animate-done],
-  .section-fade-in,
-  .seigaiha-fade-in,
-  .scroll-to-top {
-    animation-duration: 0.01ms;
-    animation-delay: 0ms;
-    transition-duration: 0.01ms;
-    transition-delay: 0ms;
-  }
+
+    [data-animate],
+    [data-animate-done],
+    .section-fade-in,
+    .seigaiha-fade-in,
+    .scroll-to-top {
+        animation-duration: 0.01ms;
+        animation-delay: 0ms;
+        transition-duration: 0.01ms;
+        transition-delay: 0ms;
+    }
+}
+
+/* ============================================================
+    MOBILE HERO OVERRIDE — disable fade animation on mobile (< 768px)
+    Uses high-specificity ID chaining (#hero) to override base rules without !important.
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+    #hero,
+    #hero.section-fade-in,
+    #hero .seigaiha-fade-in,
+    #hero [data-animate],
+    #hero [data-animate-done],
+    #hero [data-animate-done][data-animate],
+    #hero [data-animate-done][data-delay] {
+        opacity: 1;
+        transform: none;
+        animation: none;
+        transition: none;
+    }
 }
