@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { SessionProviderWrapper } from "@/components/admin/SessionProviderWrapper";
 import { SidebarProvider } from "@/components/admin/SidebarContext";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminFooter } from "@/components/admin/AdminFooter";
 
 export const dynamic = "force-dynamic";
 
@@ -28,8 +29,11 @@ export default async function AdminLayout({
       <SidebarProvider initialState={initialSidebarState}>
         <div className="admin-portal min-h-screen lg:h-screen w-full lg:overflow-hidden bg-paper text-ink flex flex-col lg:flex-row">
           {session && <AdminSidebar user={session.user} />}
-          <main className="flex-1 min-w-0 lg:h-full lg:overflow-y-auto bg-paper flex flex-col transition-all duration-300 ease-in-out pt-[63px] lg:pt-0">
-            {children}
+          <main className="flex-1 min-w-0 min-h-screen lg:h-full lg:overflow-y-auto bg-paper flex flex-col justify-between transition-all duration-300 ease-in-out pt-[63px] lg:pt-0">
+            <div className="flex-1 min-w-0">
+              {children}
+            </div>
+            {session && <AdminFooter />}
           </main>
         </div>
       </SidebarProvider>

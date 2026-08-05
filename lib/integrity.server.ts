@@ -80,6 +80,34 @@ export function verifyServerAttributionIntegrity(): boolean {
       }
     }
 
+    // 5. Verify AdminFooter.tsx active uncommented code if source tree exists
+    const adminFooterPath = path.join(rootDir, "components/admin/AdminFooter.tsx");
+    if (fs.existsSync(adminFooterPath)) {
+      const rawAdminFooter = fs.readFileSync(adminFooterPath, "utf-8");
+      const activeAdminFooter = stripComments(rawAdminFooter);
+
+      if (
+        !activeAdminFooter.includes("checkAttributionIntegrity") ||
+        !activeAdminFooter.includes("ADMIN_FOOTER_ENCRYPTED_PAYLOAD")
+      ) {
+        throw new Error('You can\'t changed the creator name "Zaenal Alfian"');
+      }
+    }
+
+    // 6. Verify app/admin/layout.tsx contains AdminFooter
+    const adminLayoutPath = path.join(rootDir, "app/admin/layout.tsx");
+    if (fs.existsSync(adminLayoutPath)) {
+      const rawAdminLayout = fs.readFileSync(adminLayoutPath, "utf-8");
+      const activeAdminLayout = stripComments(rawAdminLayout);
+
+      if (
+        !activeAdminLayout.includes("AdminFooter") ||
+        !activeAdminLayout.includes("<AdminFooter")
+      ) {
+        throw new Error('You can\'t changed the creator name "Zaenal Alfian"');
+      }
+    }
+
     return true;
   } catch {
     throw new Error('You can\'t changed the creator name "Zaenal Alfian"');
