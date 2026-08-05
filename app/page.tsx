@@ -36,20 +36,20 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Zaenal Alfian — Senior Full-Stack Engineer & Product Architect",
+  title: "Zaenal Alfian — Full-Stack Engineer / Software Engineer",
   description:
-    "Personal portfolio of Zaenal Alfian — Senior Full-Stack Engineer & Frontend Architect specializing in Next.js, React, TypeScript, PostgreSQL, and Japanese minimalist design.",
+    "Personal portfolio of Zaenal Alfian — Full-Stack Engineer / Software Engineer specializing in scalable systems and optimized solutions.",
   keywords: [
     "Zaenal Alfian",
     "Full-Stack Engineer",
-    "Frontend Architect",
-    "Next.js",
-    "React",
-    "TypeScript",
-    "PostgreSQL",
-    "Prisma",
+    "Software Engineering",
+    "Web Development",
+    "System Design",
+    "API Programming",
+    "Data Engineering",
+    "Developer Productivity",
     "Software Engineer Indonesia",
-    "Japanese Minimalist Design",
+    "Software Developer Indonesia",
   ],
   alternates: {
     canonical: buildCanonical("/"),
@@ -57,15 +57,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: buildCanonical("/"),
-    title: "Zaenal Alfian — Senior Full-Stack Engineer & Product Architect",
+    title: "Zaenal Alfian — Full-Stack Engineer / Software Engineer",
     description:
-      "Personal portfolio of Zaenal Alfian — crafting scalable systems with optimized precision. Next.js, React 19, TypeScript, Prisma.",
+      "Personal portfolio of Zaenal Alfian — Full-Stack Engineer / Software Engineer specializing in scalable systems and optimized solutions.",
     images: [
       {
         url: DEFAULT_OG_IMAGE(),
         width: 1200,
         height: 630,
-        alt: "Zaenal Alfian — Senior Full-Stack Engineer",
+        alt: "Zaenal Alfian — Full-Stack Engineer / Software Engineer",
       },
     ],
     siteName: "Zaenal Alfian Portfolio",
@@ -73,9 +73,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Zaenal Alfian — Senior Full-Stack Engineer & Product Architect",
+    title: "Zaenal Alfian — Full-Stack Engineer / Software Engineer",
     description:
-      "Crafting scalable systems with optimized precision. Next.js, React 19, TypeScript, Prisma.",
+      "Full-Stack Engineer & Software Engineer. Crafting scalable systems with optimized precision.",
     images: [DEFAULT_OG_IMAGE()],
     creator: "@zaenalalfian",
   },
@@ -99,8 +99,8 @@ export default async function HomePage() {
   let dbAbout: Awaited<ReturnType<typeof prisma.about.findFirst>> = null;
   let dbAdminUser:
     | (Awaited<ReturnType<typeof prisma.user.findFirst>> & {
-        contact?: Awaited<ReturnType<typeof prisma.contact.findFirst>> | null;
-      })
+      contact?: Awaited<ReturnType<typeof prisma.contact.findFirst>> | null;
+    })
     | null = null;
   let totalProjectsCount = 0;
   let totalBlogsCount = 0;
@@ -162,14 +162,14 @@ export default async function HomePage() {
   const experiences =
     dbExperiences.length > 0
       ? dbExperiences.map((e) => ({
-          id: e.id,
-          role: e.role,
-          company: e.company,
-          period: e.period,
-          isCurrent: e.isCurrent,
-          description: e.description,
-          skills: e.skills,
-        }))
+        id: e.id,
+        role: e.role,
+        company: e.company,
+        period: e.period,
+        isCurrent: e.isCurrent,
+        description: e.description,
+        skills: e.skills,
+      }))
       : undefined;
 
   const skillCategoriesMap = new Map<
@@ -205,8 +205,8 @@ export default async function HomePage() {
   const skillCategories =
     dbSkillsets.length > 0
       ? Array.from(skillCategoriesMap.values()).sort(
-          (a, b) => a.categoryOrder - b.categoryOrder,
-        )
+        (a, b) => a.categoryOrder - b.categoryOrder,
+      )
       : undefined;
 
   return (
@@ -215,12 +215,12 @@ export default async function HomePage() {
         userData={
           dbAdminUser
             ? {
-                name: dbAdminUser.name,
-                position: dbAdminUser.position,
-                activity: dbAdminUser.activity,
-                resume: dbAdminUser.resume,
-                experience: dbAdminUser.experience,
-              }
+              name: dbAdminUser.name,
+              position: dbAdminUser.position,
+              activity: dbAdminUser.activity,
+              resume: dbAdminUser.resume,
+              experience: dbAdminUser.experience,
+            }
             : undefined
         }
         stats={{
@@ -237,12 +237,12 @@ export default async function HomePage() {
         contactData={
           dbAdminUser
             ? {
-                name: dbAdminUser.name,
-                position: dbAdminUser.position,
-                gmail: dbAdminUser.contact?.gmail,
-                location: dbAdminUser.location,
-                availability: dbAdminUser.availability,
-              }
+              name: dbAdminUser.name,
+              position: dbAdminUser.position,
+              gmail: dbAdminUser.contact?.gmail,
+              location: dbAdminUser.location,
+              availability: dbAdminUser.availability,
+            }
             : undefined
         }
       />
