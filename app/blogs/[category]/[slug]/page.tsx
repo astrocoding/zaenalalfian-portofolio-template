@@ -133,7 +133,7 @@ export default async function BlogDetailPage({
           </div>
 
           {/* Related Articles Footer */}
-          <div className="pt-16 border-t border-border-warm mt-16">
+          <div className="mt-16">
             <RelatedArticles posts={relatedPosts} />
           </div>
         </Container>
